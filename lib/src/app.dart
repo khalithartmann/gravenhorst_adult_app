@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'pages/home_page.dart';
 import 'settings/settings_controller.dart';
 
@@ -53,8 +54,19 @@ class MyApp extends StatelessWidget {
           // Define a light and dark color theme. Then, read the user's
           // preferred ThemeMode (light, dark, or system default) from the
           // SettingsController to display the correct theme.
-          theme: ThemeData(),
-          darkTheme: ThemeData.dark(),
+          theme: ThemeData(
+            fontFamily: 'DIN',
+            primaryColor: deepOrange,
+            textTheme: const TextTheme(
+              headline1: TextStyle(fontSize: 82.0),
+              headline2: TextStyle(fontSize: 52.0),
+              headline3: TextStyle(fontSize: 36.0),
+              headline4: TextStyle(fontSize: 25.0),
+              headline5: TextStyle(fontSize: 21.0),
+              headline6: TextStyle(fontSize: 16.0),
+            ),
+          ),
+
           themeMode: settingsController.themeMode,
 
           // Define a function to handle named routes in order to support

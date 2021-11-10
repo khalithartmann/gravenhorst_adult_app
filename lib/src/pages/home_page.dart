@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:latlong2/latlong.dart' as ltlng;
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
+import 'dart:math' as math;
 
 /// Displays a list of SampleItems.
 class HomePage extends StatefulWidget {
@@ -14,45 +15,188 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   MapController mapController = MapController();
   List<Marker> markers = [];
+  bool isExpanded = false;
+
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 4000),
+    vsync: this,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          onLongPress: addPin,
-          center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-          zoom: 17,
-        ),
-        layers: [
-          TileLayerOptions(
-            maxZoom: 22,
-            urlTemplate:
-                'https://api.mapbox.com/styles/v1/khalithartmann/ckvs8razh0tfn14o2jutpj34j/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2hhbGl0aGFydG1hbm4iLCJhIjoiY2t2cnpvODhjMnlxZzJ2dGt0cWE4d3BweSJ9.naUoolwn23SAgadMXFKDnA',
-            tileProvider: const CachedTileProvider(),
+      body: Stack(
+        children: [
+          AbsorbPointer(
+            absorbing: true,
+            child: FlutterMap(
+              mapController: mapController,
+              options: MapOptions(
+                onLongPress: addPin,
+                center:
+                    ltlng.LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
+                zoom: 17,
+              ),
+              layers: [
+                TileLayerOptions(
+                  maxZoom: 22,
+                  urlTemplate:
+                      'https://api.mapbox.com/styles/v1/khalithartmann/ckvs8razh0tfn14o2jutpj34j/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2hhbGl0aGFydG1hbm4iLCJhIjoiY2t2cnpvODhjMnlxZzJ2dGt0cWE4d3BweSJ9.naUoolwn23SAgadMXFKDnA',
+                  tileProvider: const CachedTileProvider(),
+                ),
+                MarkerLayerOptions(markers: markers),
+              ],
+            ),
           ),
-          MarkerLayerOptions(markers: markers),
+          AnimatedBuilder(
+            animation: _controller,
+            child: Stack(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: CustomPaint(
+                    painter: OverlayWithHolePainter(),
+                    child: SafeArea(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 54),
+                            child: Transform.rotate(
+                                angle: 270 * math.pi / 180,
+                                child: Text(
+                                  'Kunsthaus\nKloster\nGravenhorst',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(color: Colors.white),
+                                )),
+                          ),
+                          AnimatedBuilder(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    height: 77,
+                                    width: 121,
+                                    child: Placeholder()),
+                              ),
+                              animation: _controller,
+                              builder: (context, child) {
+                                return Transform.translate(
+                                  offset: Offset(
+                                      0,
+                                      _controller.value *
+                                          MediaQuery.of(context).size.height /
+                                          1.9),
+                                  child: child,
+                                );
+                              }),
+                          Column(
+                            children: [
+                              AnimatedBuilder(
+                                  animation: _controller,
+                                  child: Text(
+                                    'Reisen durch\nRaum und Zeit',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline2!
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                  builder: (context, child) {
+                                    return Transform.translate(
+                                      offset: Offset(
+                                          _controller.value *
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3,
+                                          _controller.value * 90),
+                                      child: Transform.scale(
+                                          scale: 1 - (_controller.value * 0.8),
+                                          child: child),
+                                    );
+                                  }),
+                              IconButton(
+                                  onPressed: () {
+                                    if (isExpanded) {
+                                      _controller.animateTo(0);
+                                    } else {
+                                      print((MediaQuery.of(context)
+                                                  .size
+                                                  .height -
+                                              137) /
+                                          MediaQuery.of(context).size.height);
+                                      _controller.animateTo(
+                                          (MediaQuery.of(context).size.height -
+                                                  137) /
+                                              MediaQuery.of(context)
+                                                  .size
+                                                  .height);
+                                    }
+                                    isExpanded = !isExpanded;
+                                  },
+                                  icon: AnimatedBuilder(
+                                    child: const Icon(Icons.arrow_upward,
+                                        color: Colors.white),
+                                    animation: _controller,
+                                    builder: (context, child) {
+                                      return RotationTransition(
+                                        turns: AlwaysStoppedAnimation(
+                                            (180 * (_controller.value)) / 360),
+                                        child: child,
+                                      );
+                                    },
+                                  ))
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            builder: (BuildContext context, Widget? child) {
+              return Transform.translate(
+                offset: Offset(0,
+                    -(MediaQuery.of(context).size.height * _controller.value)),
+                child: child,
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
-  void addPin(TapPosition tapPosition, LatLng coordinates) {
+  void addPin(TapPosition tapPosition, ltlng.LatLng coordinates) {
     setState(() {
       markers.add(Marker(
         width: 30.0,
         height: 30.0,
-        point: LatLng(52.319080, 12.744740),
+        point: ltlng.LatLng(52.319080, 12.744740),
         builder: (ctx) => const Icon(Icons.location_city),
       ));
     });
+  }
+
+  double appBarHeight(BuildContext context) {
+    if (isExpanded) {
+      return MediaQuery.of(context).size.height;
+    } else {
+      return 137;
+    }
   }
 }
 
@@ -64,5 +208,28 @@ class CachedTileProvider extends TileProvider {
       getTileUrl(coords, options),
       //Now you can set options that determine how the image gets cached via whichever plugin you use.
     );
+  }
+}
+
+class OverlayWithHolePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.red;
+    canvas.drawPath(
+        Path.combine(
+          PathOperation.difference,
+          Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height)),
+          Path()
+            ..addOval(Rect.fromCircle(
+                center: Offset(size.width / 2, size.height / 2 - 10),
+                radius: 38.5))
+            ..close(),
+        ),
+        paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }

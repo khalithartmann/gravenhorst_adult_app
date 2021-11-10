@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   cached_network_image: ^3.1.0+1
-  device_preview: ^0.8.0
+
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -33,3 +33,30 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+
+  fonts:
+    - family: DIN Alternate
+      fonts:
+        - asset: assets/fonts/DIN_Alternate_Black.ttf
+          weight: 800
+        - asset: assets/fonts/DIN_Alternate_Bold.ttf
+          weight: 600
+        - asset: assets/fonts/DIN_Alternate_Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DIN_Alternate.ttf
+          weight: 400
+        - asset: assets/fonts/DIN_Alternate_Light.ttf
+          weight: 300
+
+    - family: DIN
+      fonts:
+        - asset: assets/fonts/DIN_Black.ttf
+          weight: 800
+        - asset: assets/fonts/DIN_Bold.ttf
+          weight: 600
+        - asset: assets/fonts/DIN_Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DIN.ttf
+          weight: 400
+        - asset: assets/fonts/DIN_Light.ttf
+          weight: 300
