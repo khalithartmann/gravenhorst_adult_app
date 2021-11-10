@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:latlong2/latlong.dart' as ltlng;
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 import 'dart:math' as math;
@@ -18,10 +19,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   MapController mapController = MapController();
   List<Marker> markers = [];
-  bool isExpanded = false;
+  bool isExpanded = true;
+  static const _mapZoom = 18.0;
 
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 4000),
+    duration: standardAnimationDuration,
     vsync: this,
   );
 
@@ -44,11 +46,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 onLongPress: addPin,
                 center:
                     ltlng.LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-                zoom: 17,
+                zoom: _mapZoom,
               ),
               layers: [
                 TileLayerOptions(
-                  maxZoom: 22,
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/khalithartmann/ckvs8razh0tfn14o2jutpj34j/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2hhbGl0aGFydG1hbm4iLCJhIjoiY2t2cnpvODhjMnlxZzJ2dGt0cWE4d3BweSJ9.naUoolwn23SAgadMXFKDnA',
                   tileProvider: const CachedTileProvider(),
@@ -74,97 +75,61 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Container(
                             margin: EdgeInsets.only(top: 54),
                             child: Transform.rotate(
-                                angle: 270 * math.pi / 180,
-                                child: Text(
-                                  'Kunsthaus\nKloster\nGravenhorst',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(color: Colors.white),
-                                )),
-                          ),
-                          AnimatedBuilder(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                    height: 77,
-                                    width: 121,
-                                    child: Placeholder()),
+                              angle: 270 * math.pi / 180,
+                              child: Text(
+                                'Kunsthaus\nKloster\nGravenhorst',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(color: Colors.white),
                               ),
-                              animation: _controller,
-                              builder: (context, child) {
-                                return Transform.translate(
-                                  offset: Offset(
-                                      0,
-                                      _controller.value *
-                                          MediaQuery.of(context).size.height /
-                                          1.9),
-                                  child: child,
-                                );
-                              }),
+                            ),
+                          ),
                           Column(
-                            children: [
-                              AnimatedBuilder(
-                                  animation: _controller,
-                                  child: Text(
-                                    'Reisen durch\nRaum und Zeit',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline2!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  builder: (context, child) {
-                                    return Transform.translate(
-                                      offset: Offset(
-                                          _controller.value *
-                                              MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          _controller.value * 90),
-                                      child: Transform.scale(
-                                          scale: 1 - (_controller.value * 0.8),
-                                          child: child),
-                                    );
-                                  }),
-                              IconButton(
-                                  onPressed: () {
-                                    if (isExpanded) {
-                                      _controller.animateTo(0);
-                                    } else {
-                                      print((MediaQuery.of(context)
-                                                  .size
-                                                  .height -
-                                              137) /
-                                          MediaQuery.of(context).size.height);
-                                      _controller.animateTo(
-                                          (MediaQuery.of(context).size.height -
-                                                  137) /
-                                              MediaQuery.of(context)
-                                                  .size
-                                                  .height);
-                                    }
-                                    isExpanded = !isExpanded;
-                                  },
-                                  icon: AnimatedBuilder(
-                                    child: const Icon(Icons.arrow_upward,
-                                        color: Colors.white),
-                                    animation: _controller,
-                                    builder: (context, child) {
-                                      return RotationTransition(
-                                        turns: AlwaysStoppedAnimation(
-                                            (180 * (_controller.value)) / 360),
-                                        child: child,
-                                      );
-                                    },
-                                  ))
-                            ],
+                            children: [],
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
+                AnimatedAlign(
+                  duration: standardAnimationDuration,
+                  alignment: isExpanded
+                      ? Alignment.bottomCenter
+                      : Alignment.bottomRight,
+                  child: AnimatedBuilder(
+                    animation: _controller,
+                    child: AnimatedPadding(
+                      duration: standardAnimationDuration,
+                      padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
+                      child: Container(
+                        child: Text(
+                          'Reisen durch\nRaum und Zeit',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline2!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(
+                          MediaQuery.of(context).size.width /
+                              3.5 *
+                              _controller.value,
+                          30 * _controller.value,
+                        ),
+                        child: Transform.scale(
+                            scale: 1 - (_controller.value * 0.8), child: child),
+                      );
+                      // scale: 1 - (_controller.value * 0.8), child: child);
+                    },
+                  ),
+                ),
+                logo(),
+                arrowIconButton(context),
               ],
             ),
             builder: (BuildContext context, Widget? child) {
@@ -177,6 +142,51 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ],
       ),
+    );
+  }
+
+  Widget arrowIconButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: IconButton(
+          onPressed: () {
+            if (isExpanded) {
+              print((MediaQuery.of(context).size.height - 137) /
+                  MediaQuery.of(context).size.height);
+              _controller.animateTo((MediaQuery.of(context).size.height - 137) /
+                  MediaQuery.of(context).size.height);
+            } else {
+              _controller.animateTo(0);
+            }
+            setState(() {
+              isExpanded = !isExpanded;
+            });
+          },
+          icon: AnimatedBuilder(
+            child: const Icon(Icons.arrow_upward, color: Colors.white),
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.rotate(
+                angle: ((180 * 1.2) * _controller.value) * math.pi / 180,
+                child: child,
+              );
+            },
+          )),
+    );
+  }
+
+  AnimatedAlign logo() {
+    return AnimatedAlign(
+      duration: standardAnimationDuration,
+      alignment: isExpanded ? Alignment.centerLeft : Alignment.bottomLeft,
+      child: const SizedBox(
+          height: 77,
+          width: 121,
+          child: Icon(
+            Icons.circle,
+            color: Colors.white,
+            size: 40,
+          )),
     );
   }
 
