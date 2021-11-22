@@ -36,7 +36,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
           buildHeadline1(context),
           buildLogo(),
           buildArrowIconButton(context),
-          ExhibitionDataDownloadIndicator(),
+          // const ExhibitionDataDownloadIndicator(),
         ],
       ),
       builder: (BuildContext context, Widget? child) {
@@ -69,7 +69,12 @@ class _StartOverlayViewState extends State<StartOverlayView>
                     alignment: WrapAlignment.center,
                     children: [
                       ...supportedLocales.map((locale) => InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            context
+                                .read<ExhibitoinDataController>()
+                                .getExhibitionDataForLocale(
+                                    localeId: locale.id);
+                          },
                           child: Container(
                               margin: const EdgeInsets.only(
                                 left: 10,

@@ -1,65 +1,4 @@
-import 'dart:convert';
-
-import 'package:dartz/dartz.dart';
-import 'package:gravenhorst_adults_app/src/core/api_config.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_locale.dart';
-import 'package:gravenhorst_adults_app/src/core/failure.dart';
-import 'package:gravenhorst_adults_app/src/core/globals.dart';
-
-import 'package:http/http.dart';
-import 'package:injectable/injectable.dart';
-
-@singleton
-class ExhibitionService {
-  final ApiConfig _apiConfig;
-  final Client _client;
-
-  ExhibitionService(this._apiConfig, this._client);
-  Future<Either<Failure, List<ExhibitionLocale>>>
-      fetchSupportedLocales() async {
-    var uri = _apiConfig.getSupportedLocalesUri();
-    try {
-      var res = await _client.get(uri);
-      if (res.statusCode != 200) {
-        logger
-            .w('[fetchSupportedLocales] returned StatusCode ${res.statusCode}');
-        return left(Failure(
-            msg: 'Failed to get supported locales from server',
-            code: getFailureCodeFromResponse(response: res)));
-      }
-
-      var localesJsonList = List.from(jsonDecode(res.body));
-      return right(localesJsonList
-          .map((localeJson) => ExhibitionLocale.fromJson(localeJson))
-          .toList());
-    } catch (e, s) {
-      return left(Failure(
-        msg: '[fetchSupportedLocales] unexpected Failure',
-        e: e,
-        s: s,
-        code: FailureCode.clientError,
-      ));
-    }
-  }
-
-  Future<Either<Failure, ExhibitionData>> fetchExhibitionData(
-      {required String localeId}) async {
-    var uri = _apiConfig.getTourDataForLocale(localeId: localeId);
-    print(uri);
-    try {
-      // var res = await _client.get(uri);
-      // print(res.body);
-
-      // if (res.statusCode != 200) {
-      //   logger.w(
-      //       '[fetchExhibitionData] returned StatusCode ${res.statusCode}, body: ${res.body}');
-      //   return left(Failure(
-      //       msg: 'Failed to get exhibition data for locale',
-      //       code: getFailureCodeFromResponse(response: res)));
-      // }
-
-      var exhibitionData = ExhibitionData.fromJson(jsonDecode('''{
+{
   "id": "de",
   "locale_name": "deutsch",
   "content_size": 3679694,
@@ -129,7 +68,7 @@ class ExhibitionService {
               "title": "",
               "description": "Die Archäologie konnte insgesamt acht Bauphasen rekonstruieren, durch die im Laufe der Jahrhunderte das Kloster sein Aussehen erhielt.",
               "background": {
-                "image_asset_id": 4,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -183,7 +122,7 @@ class ExhibitionService {
               "title": "",
               "description": "Das Kloster wurde durch Mühle, Grund und Boden mit einer wirtschaftlichen Grundlage ausgestattet.",
               "background": {
-                "image_asset_id": 5,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -211,7 +150,7 @@ class ExhibitionService {
               "title": "",
               "description": "Das Kloster wurde durch Mühle, Grund und Boden mit einer wirtschaftlichen Grundlage ausgestattet.",
               "background": {
-                "image_asset_id": 6,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -250,7 +189,7 @@ class ExhibitionService {
               "title": "Westfälischer Adel, Politik und immerwährendes Gedenken – Klostergründung",
               "description": "",
               "background": {
-                "image_asset_id": 7,
+                "image_asset_id": null,
                 "color": "#A2ABAB",
                 "size": "",
                 "position": ""
@@ -278,7 +217,7 @@ class ExhibitionService {
               "title": "",
               "description": "",
               "background": {
-                "image_asset_id": 8,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -306,7 +245,7 @@ class ExhibitionService {
               "title": "",
               "description": "",
               "background": {
-                "image_asset_id": 9,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -345,7 +284,7 @@ class ExhibitionService {
               "title": "„Zu Ehren der Gottesmutter Maria“ – Der Westflügel",
               "description": "",
               "background": {
-                "image_asset_id": 1,
+                "image_asset_id": null,
                 "color": "#A2ABAB",
                 "size": "",
                 "position": ""
@@ -373,7 +312,7 @@ class ExhibitionService {
               "title": "",
               "description": "",
               "background": {
-                "image_asset_id": 2,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -414,7 +353,7 @@ class ExhibitionService {
               "title": "",
               "description": "",
               "background": {
-                "image_asset_id": 3,
+                "image_asset_id": null,
                 "color": "",
                 "size": "contain",
                 "position": ""
@@ -440,18 +379,4 @@ class ExhibitionService {
       ]
     }
   ]
-}
-'''));
-      print(exhibitionData);
-      return right(exhibitionData);
-    } catch (e, s) {
-      logger.w('exception: $e , $s');
-      return left(Failure(
-        msg: '[fetchExhibitionData] unexpected Failure',
-        e: e,
-        s: s,
-        code: FailureCode.clientError,
-      ));
-    }
-  }
 }

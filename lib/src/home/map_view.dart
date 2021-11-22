@@ -1,13 +1,44 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:gravenhorst_adults_app/src/core/colors.dart';
+import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
-class MapView extends StatelessWidget {
+class MapView extends StatefulWidget {
   MapView({Key? key}) : super(key: key);
-  final MapController mapController = MapController();
-  final List<Marker> markers = [];
   static const _mapZoom = 18.0;
+
+  @override
+  State<MapView> createState() => _MapViewState();
+}
+
+class _MapViewState extends State<MapView> {
+  final MapController mapController = MapController();
+
+  List<Marker> markers = [];
+
+  @override
+  void initState() {
+    var exhibitionDataController = context.read<ExhibitoinDataController>();
+    exhibitionDataController.addListener(() {
+      exhibitionDataController.exhibitionDataList.first.fold((l) => null, (r) {
+        markers = r.tours.first.locations
+            .map((loc) => Marker(
+                point: LatLng(
+                    double.parse(loc.latitude), double.parse(loc.longitude)),
+                builder: (context) => Container(
+                      height: 50,
+                      width: 50,
+                      color: deepOrange,
+                    )))
+            .toList();
+        setState(() {});
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +48,7 @@ class MapView extends StatelessWidget {
         mapController: mapController,
         options: MapOptions(
           center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-          zoom: _mapZoom,
+          zoom: MapView._mapZoom,
         ),
         layers: [
           TileLayerOptions(

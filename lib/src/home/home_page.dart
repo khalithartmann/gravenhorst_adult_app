@@ -17,7 +17,11 @@ class HomePage extends StatelessWidget {
       drawerScrimColor: deepOrange,
       backgroundColor: deepOrange,
       body: Stack(
-        children: [MapView(), const Keyboard(), const StartOverlayView()],
+        children: [
+          MapView(),
+          const Keyboard(),
+          const StartOverlayView(),
+        ],
       ),
     );
   }
