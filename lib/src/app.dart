@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
-import 'pages/home_page.dart';
-import 'settings/settings_controller.dart';
+import 'package:gravenhorst_adults_app/src/core/dependency_injection/dependency_injection.dart';
+import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
+import 'package:provider/provider.dart';
+import 'home/home_page.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
-  const MyApp({
-    Key? key,
-    required this.settingsController,
-  }) : super(key: key);
-
-  final SettingsController settingsController;
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,71 +17,75 @@ class MyApp extends StatelessWidget {
     //
     // The AnimatedBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
-    return AnimatedBuilder(
-      animation: settingsController,
-      builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
-          // Providing a restorationScopeId allows the Navigator built by the
-          // MaterialApp to restore the navigation stack when a user leaves and
-          // returns to the app after it has been killed while running in the
-          // background.
-          restorationScopeId: 'app',
 
-          // Provide the generated AppLocalizations to the MaterialApp. This
-          // allows descendant Widgets to display the correct translations
-          // depending on the user's locale.
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', ''), // English, no country code
-          ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ExhibitoinDataController>(
+            lazy: false,
+            create: (_) =>
+                getIt<ExhibitoinDataController>()..getSupportedLocales())
+      ],
+      child: MaterialApp(
+        // Providing a restorationScopeId allows the Navigator built by the
+        // MaterialApp to restore the navigation stack when a user leaves and
+        // returns to the app after it has been killed while running in the
+        // background.
+        restorationScopeId: 'app',
 
-          // Use AppLocalizations to configure the correct application title
-          // depending on the user's locale.
-          //
-          // The appTitle is defined in .arb files found in the localization
-          // directory.
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)!.appTitle,
+        // Provide the generated AppLocalizations to the MaterialApp. This
+        // allows descendant Widgets to display the correct translations
+        // depending on the user's locale.
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('de', ''), // English, no country code
+          Locale('en', ''),
+        ],
 
-          // Define a light and dark color theme. Then, read the user's
-          // preferred ThemeMode (light, dark, or system default) from the
-          // SettingsController to display the correct theme.
-          theme: ThemeData(
-            fontFamily: 'DIN',
-            primaryColor: deepOrange,
-            textTheme: const TextTheme(
-              headline1: TextStyle(fontSize: 82.0),
-              headline2: TextStyle(fontSize: 52.0),
-              headline3: TextStyle(fontSize: 36.0),
-              headline4: TextStyle(fontSize: 25.0),
-              headline5: TextStyle(fontSize: 21.0),
-              headline6: TextStyle(fontSize: 16.0),
-            ),
+        // Use AppLocalizations to configure the correct application title
+        // depending on the user's locale.
+        //
+        // The appTitle is defined in .arb files found in the localization
+        // directory.
+        onGenerateTitle: (BuildContext context) =>
+            AppLocalizations.of(context)!.appTitle,
+
+        // Define a light and dark color theme. Then, read the user's
+        // preferred ThemeMode (light, dark, or system default) from the
+        // SettingsController to display the correct theme.
+        theme: ThemeData(
+          fontFamily: 'DIN',
+          primaryColor: deepOrange,
+          textTheme: const TextTheme(
+            headline1: TextStyle(fontSize: 61.5),
+            headline2: TextStyle(fontSize: 39.0),
+            headline3: TextStyle(fontSize: 27.0),
+            headline4: TextStyle(fontSize: 18.75),
+            headline5: TextStyle(fontSize: 15.75),
+            headline6: TextStyle(fontSize: 12.0),
+            button: TextStyle(fontSize: 42.0, letterSpacing: 0),
           ),
+        ),
 
-          themeMode: settingsController.themeMode,
-
-          // Define a function to handle named routes in order to support
-          // Flutter web url navigation and deep linking.
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case HomePage.routeName:
-                  default:
-                    return const HomePage();
-                }
-              },
-            );
-          },
-        );
-      },
+        // Define a function to handle named routes in order to support
+        // Flutter web url navigation and deep linking.
+        onGenerateRoute: (RouteSettings routeSettings) {
+          return MaterialPageRoute<void>(
+            settings: routeSettings,
+            builder: (BuildContext context) {
+              switch (routeSettings.name) {
+                case HomePage.routeName:
+                default:
+                  return const HomePage();
+              }
+            },
+          );
+        },
+      ),
     );
   }
 }

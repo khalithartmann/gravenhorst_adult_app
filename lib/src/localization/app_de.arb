@@ -1,0 +1,18 @@
+{
+  "appTitle": "gravenhorst_adults_app",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "startPageH1": "Reisen durch\nRaum und Zeit",
+  "@startPageH1": {
+    "description": "The headline positioned in the bottom center of the start page overlay"
+  },
+  "startPageH2": "Kunsthaus\nKloster\nGravenhorst",
+  "@startPageH2": {
+    "description": "The headline positioned in the top center of the start page overlay"
+  },
+  "downloadingHint": "Einen Moment Geduld, wir laden Ihre Daten",
+  "@downloadingHint": {
+    "description": "The hint text displayed when downloading a dataset"
+  }
+}
