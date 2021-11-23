@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ExhibitoinDataController>(
-            lazy: false,
             create: (_) =>
                 getIt<ExhibitoinDataController>()..getSupportedLocales())
       ],

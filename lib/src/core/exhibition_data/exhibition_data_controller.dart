@@ -24,6 +24,20 @@ class ExhibitoinDataController extends ChangeNotifier {
   ExhibitionLocale? get currentLocale => _currentLocale;
   bool get localeSelected => currentLocale != null;
 
+  ExhibitionData? get exhibitionDataForCurrentLocale {
+    var res = failureOrexhibitionDataList.firstWhere((element) {
+      return element.fold(
+          (l) => false,
+          (exhibitionData) =>
+              exhibitionData.localeName == _currentLocale?.name);
+    });
+
+    return res as ExhibitionData?;
+  }
+
+  bool get exhibitionDataIsLoadedForLocale =>
+      exhibitionDataForCurrentLocale != null;
+
   void getSupportedLocales() async {
     _state = ExhibitoinDataControllerState.loadingSupportedLocales;
     notifyListeners();
@@ -37,7 +51,7 @@ class ExhibitoinDataController extends ChangeNotifier {
   }
 
   List<Either<Failure, ExhibitionData>> _exhibitionDataList = [];
-  List<Either<Failure, ExhibitionData>> get exhibitionDataList =>
+  List<Either<Failure, ExhibitionData>> get failureOrexhibitionDataList =>
       _exhibitionDataList;
 
   void getExhibitionDataForLocale({required String localeId}) async {
@@ -52,6 +66,6 @@ class ExhibitoinDataController extends ChangeNotifier {
     notifyListeners();
 
     logger.v(
-        '[getExhibitionDataForLocale]: loaded exhibition data  $exhibitionDataList');
+        '[getExhibitionDataForLocale]: loaded exhibition data  $failureOrexhibitionDataList');
   }
 }

@@ -25,13 +25,13 @@ Map<String, dynamic> _$ExhibitionDataToJson(ExhibitionData instance) =>
       'content_size': instance.contentSize,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
-      'tours': instance.tours,
+      'tours': instance.tours.map((e) => e.toJson()).toList(),
     };
 
 Tours _$ToursFromJson(Map<String, dynamic> json) => Tours(
       id: json['id'] as int,
       name: json['name'] as String,
-      sortOrder: json['sortOrder'] as int?,
+      sortOrder: json['sort_order'] as int,
       description: json['description'] as String,
       locations: (json['locations'] as List<dynamic>)
           .map((e) => Locations.fromJson(e as Map<String, dynamic>))
@@ -41,19 +41,19 @@ Tours _$ToursFromJson(Map<String, dynamic> json) => Tours(
 Map<String, dynamic> _$ToursToJson(Tours instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'sortOrder': instance.sortOrder,
+      'sort_order': instance.sortOrder,
       'description': instance.description,
-      'locations': instance.locations,
+      'locations': instance.locations.map((e) => e.toJson()).toList(),
     };
 
 Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(
       id: json['id'] as int,
-      sortOrder: json['sortOrder'] as int?,
+      sortOrder: json['sort_order'] as int,
       name: json['name'] as String,
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
-      markerColor: json['markerColor'] as String?,
-      textColor: json['textColor'] as String?,
+      markerColor: json['marker_color'] as String,
+      textColor: json['text_color'] as String,
       entries: (json['entries'] as List<dynamic>)
           .map((e) => Entries.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -61,24 +61,23 @@ Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(
 
 Map<String, dynamic> _$LocationsToJson(Locations instance) => <String, dynamic>{
       'id': instance.id,
-      'sortOrder': instance.sortOrder,
+      'sort_order': instance.sortOrder,
       'name': instance.name,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
-      'markerColor': instance.markerColor,
-      'textColor': instance.textColor,
-      'entries': instance.entries,
+      'marker_color': instance.markerColor,
+      'text_color': instance.textColor,
+      'entries': instance.entries.map((e) => e.toJson()).toList(),
     };
 
 Entries _$EntriesFromJson(Map<String, dynamic> json) => Entries(
       id: json['id'] as int,
-      sortOrder: json['sortOrder'] as int?,
+      sortOrder: json['sort_order'] as int,
       type: json['type'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      background: json['background'] == null
-          ? null
-          : Background.fromJson(json['background'] as Map<String, dynamic>),
+      background:
+          Background.fromJson(json['background'] as Map<String, dynamic>),
       assets: (json['assets'] as List<dynamic>)
           .map((e) => Asset.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -86,16 +85,16 @@ Entries _$EntriesFromJson(Map<String, dynamic> json) => Entries(
 
 Map<String, dynamic> _$EntriesToJson(Entries instance) => <String, dynamic>{
       'id': instance.id,
-      'sortOrder': instance.sortOrder,
+      'sort_order': instance.sortOrder,
       'type': instance.type,
       'title': instance.title,
       'description': instance.description,
-      'background': instance.background,
-      'assets': instance.assets,
+      'background': instance.background.toJson(),
+      'assets': instance.assets.map((e) => e.toJson()).toList(),
     };
 
 Background _$BackgroundFromJson(Map<String, dynamic> json) => Background(
-      imageAssetId: json['imageAssetId'] as int?,
+      imageAssetId: json['image_asset_id'] as int?,
       color: json['color'] as String,
       size: json['size'] as String,
       position: json['position'] as String,
@@ -103,36 +102,36 @@ Background _$BackgroundFromJson(Map<String, dynamic> json) => Background(
 
 Map<String, dynamic> _$BackgroundToJson(Background instance) =>
     <String, dynamic>{
-      'imageAssetId': instance.imageAssetId,
+      'image_asset_id': instance.imageAssetId,
       'color': instance.color,
       'size': instance.size,
       'position': instance.position,
     };
 
-Asset _$AssetsFromJson(Map<String, dynamic> json) => Asset(
+Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
       id: json['id'] as int,
-      sortOrder: json['sortOrder'] as int?,
-      assetUrl: json['assetUrl'] as String?,
-      mimeType: json['mimeType'] as String?,
+      sortOrder: json['sort_order'] as int,
+      assetUrl: json['asset_url'] as String,
+      mimeType: json['mime_type'] as String,
       description: json['description'] as String,
       title: json['title'] as String,
       copyright: json['copyright'] as String,
-      assetSize: json['assetSize'] as int?,
-      assetDuration: json['assetDuration'] as int?,
+      assetSize: json['asset_size'] as int,
+      assetDuration: json['asset_duration'] as int,
       autoplay: json['autoplay'] as bool,
-      updatedAt: json['updatedAt'] as String?,
+      updatedAt: json['updated_at'] as String,
     );
 
-Map<String, dynamic> _$AssetsToJson(Asset instance) => <String, dynamic>{
+Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
       'id': instance.id,
-      'sortOrder': instance.sortOrder,
-      'assetUrl': instance.assetUrl,
-      'mimeType': instance.mimeType,
+      'sort_order': instance.sortOrder,
+      'asset_url': instance.assetUrl,
+      'mime_type': instance.mimeType,
       'description': instance.description,
       'title': instance.title,
       'copyright': instance.copyright,
-      'assetSize': instance.assetSize,
-      'assetDuration': instance.assetDuration,
+      'asset_size': instance.assetSize,
+      'asset_duration': instance.assetDuration,
       'autoplay': instance.autoplay,
-      'updatedAt': instance.updatedAt,
+      'updated_at': instance.updatedAt,
     };

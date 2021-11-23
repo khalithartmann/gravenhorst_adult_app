@@ -12,6 +12,3 @@ var logger = Logger(
       printTime: false // Should each log print contain a timestamp
       ),
 );
-
-
-

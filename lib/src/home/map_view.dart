@@ -23,7 +23,8 @@ class _MapViewState extends State<MapView> {
   void initState() {
     var exhibitionDataController = context.read<ExhibitoinDataController>();
     exhibitionDataController.addListener(() {
-      exhibitionDataController.exhibitionDataList.first.fold((l) => null, (r) {
+      exhibitionDataController.failureOrexhibitionDataList.first
+          .fold((l) => null, (r) {
         markers = r.tours.first.locations
             .map((loc) => Marker(
                 point: LatLng(
