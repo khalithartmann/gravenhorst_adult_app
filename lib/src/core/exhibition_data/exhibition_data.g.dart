@@ -33,8 +33,8 @@ Tours _$ToursFromJson(Map<String, dynamic> json) => Tours(
       name: json['name'] as String,
       sortOrder: json['sort_order'] as int,
       description: json['description'] as String,
-      locations: (json['locations'] as List<dynamic>)
-          .map((e) => Locations.fromJson(e as Map<String, dynamic>))
+      exhibits: (json['locations'] as List<dynamic>)
+          .map((e) => Exhibit.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -43,10 +43,10 @@ Map<String, dynamic> _$ToursToJson(Tours instance) => <String, dynamic>{
       'name': instance.name,
       'sort_order': instance.sortOrder,
       'description': instance.description,
-      'locations': instance.locations.map((e) => e.toJson()).toList(),
+      'locations': instance.exhibits.map((e) => e.toJson()).toList(),
     };
 
-Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(
+Exhibit _$ExhibitFromJson(Map<String, dynamic> json) => Exhibit(
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       name: json['name'] as String,
@@ -55,11 +55,11 @@ Locations _$LocationsFromJson(Map<String, dynamic> json) => Locations(
       markerColor: json['marker_color'] as String,
       textColor: json['text_color'] as String,
       entries: (json['entries'] as List<dynamic>)
-          .map((e) => Entries.fromJson(e as Map<String, dynamic>))
+          .map((e) => Entry.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$LocationsToJson(Locations instance) => <String, dynamic>{
+Map<String, dynamic> _$ExhibitToJson(Exhibit instance) => <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
       'name': instance.name,
@@ -70,7 +70,7 @@ Map<String, dynamic> _$LocationsToJson(Locations instance) => <String, dynamic>{
       'entries': instance.entries.map((e) => e.toJson()).toList(),
     };
 
-Entries _$EntriesFromJson(Map<String, dynamic> json) => Entries(
+Entry _$EntryFromJson(Map<String, dynamic> json) => Entry(
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       type: json['type'] as String,
@@ -83,7 +83,7 @@ Entries _$EntriesFromJson(Map<String, dynamic> json) => Entries(
           .toList(),
     );
 
-Map<String, dynamic> _$EntriesToJson(Entries instance) => <String, dynamic>{
+Map<String, dynamic> _$EntryToJson(Entry instance) => <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
       'type': instance.type,

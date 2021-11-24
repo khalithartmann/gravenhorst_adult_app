@@ -34,14 +34,14 @@ class Tours {
   String name;
   int sortOrder;
   String description;
-  List<Locations> locations;
+  List<Exhibit> exhibits;
 
   Tours(
       {required this.id,
       required this.name,
       required this.sortOrder,
       required this.description,
-      required this.locations});
+      required this.exhibits});
   factory Tours.fromJson(Map<String, dynamic> json) => _$ToursFromJson(json);
 
   Map<String, dynamic> toJson() => _$ToursToJson(this);
@@ -49,7 +49,7 @@ class Tours {
 
 @JsonSerializable(
     fieldRename: FieldRename.snake, createToJson: true, explicitToJson: true)
-class Locations {
+class Exhibit {
   int id;
   int sortOrder;
   String name;
@@ -57,9 +57,9 @@ class Locations {
   String longitude;
   String markerColor;
   String textColor;
-  List<Entries> entries;
+  List<Entry> entries;
 
-  Locations(
+  Exhibit(
       {required this.id,
       required this.sortOrder,
       required this.name,
@@ -69,14 +69,14 @@ class Locations {
       required this.textColor,
       required this.entries});
 
-  factory Locations.fromJson(Map<String, dynamic> json) =>
-      _$LocationsFromJson(json);
-  Map<String, dynamic> toJson() => _$LocationsToJson(this);
+  factory Exhibit.fromJson(Map<String, dynamic> json) =>
+      _$ExhibitFromJson(json);
+  Map<String, dynamic> toJson() => _$ExhibitToJson(this);
 }
 
 @JsonSerializable(
     fieldRename: FieldRename.snake, createToJson: true, explicitToJson: true)
-class Entries {
+class Entry {
   int id;
   int sortOrder;
   String type;
@@ -85,7 +85,7 @@ class Entries {
   Background background;
   List<Asset> assets;
 
-  Entries(
+  Entry(
       {required this.id,
       required this.sortOrder,
       required this.type,
@@ -94,9 +94,8 @@ class Entries {
       required this.background,
       required this.assets});
 
-  factory Entries.fromJson(Map<String, dynamic> json) =>
-      _$EntriesFromJson(json);
-  Map<String, dynamic> toJson() => _$EntriesToJson(this);
+  factory Entry.fromJson(Map<String, dynamic> json) => _$EntryFromJson(json);
+  Map<String, dynamic> toJson() => _$EntryToJson(this);
 }
 
 @JsonSerializable(

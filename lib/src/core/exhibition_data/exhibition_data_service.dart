@@ -86,7 +86,7 @@ class ExhibitionService {
       {required ExhibitionData exhibitionData}) async* {
     try {
       var assets = exhibitionData.tours
-          .map((tour) => tour.locations)
+          .map((tour) => tour.exhibits)
           .expand((element) => element)
           .map((loc) => loc.entries)
           .expand((element) => element)

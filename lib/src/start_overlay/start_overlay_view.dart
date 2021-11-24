@@ -77,9 +77,45 @@ class _StartOverlayViewState extends State<StartOverlayView>
       if (consumer.exhibitionDataForCurrentLocale != null) {
         return Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-                margin: EdgeInsets.only(bottom: 86),
-                child: Text('whats up habibi')));
+            child: AnimatedAlign(
+              duration: standardAnimationDuration,
+              alignment:
+                  isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
+              child: AnimatedPadding(
+                duration: standardAnimationDuration,
+                padding: isExpanded
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.only(right: 32, bottom: 16),
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  child: AnimatedPadding(
+                    duration: standardAnimationDuration,
+                    padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
+                    child: Text(
+                      AppLocalizations.of(context)!.startPageH1,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline2!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: Offset(
+                        MediaQuery.of(context).size.width /
+                            3.5 *
+                            _controller.value,
+                        30 * _controller.value,
+                      ),
+                      child: Transform.scale(
+                          scale: 1 - (_controller.value * 0.8), child: child),
+                    );
+                    // scale: 1 - (_controller.value * 0.8), child: child);
+                  },
+                ),
+              ),
+            ));
       }
 
       return consumer.failureOrSupportedLocales.fold(
@@ -117,41 +153,6 @@ class _StartOverlayViewState extends State<StartOverlayView>
                 ),
               ));
     });
-    return AnimatedAlign(
-      duration: standardAnimationDuration,
-      alignment: isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
-      child: AnimatedPadding(
-        duration: standardAnimationDuration,
-        padding: isExpanded
-            ? EdgeInsets.zero
-            : const EdgeInsets.only(right: 32, bottom: 16),
-        child: AnimatedBuilder(
-          animation: _controller,
-          child: AnimatedPadding(
-            duration: standardAnimationDuration,
-            padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
-            child: Text(
-              AppLocalizations.of(context)!.startPageH1,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline2!
-                  .copyWith(color: Colors.white),
-            ),
-          ),
-          builder: (context, child) {
-            return Transform.translate(
-              offset: Offset(
-                MediaQuery.of(context).size.width / 3.5 * _controller.value,
-                30 * _controller.value,
-              ),
-              child: Transform.scale(
-                  scale: 1 - (_controller.value * 0.8), child: child),
-            );
-            // scale: 1 - (_controller.value * 0.8), child: child);
-          },
-        ),
-      ),
-    );
   }
 
   SizedBox buildBackgroundWithHole(BuildContext context) {

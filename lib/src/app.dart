@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
         // preferred ThemeMode (light, dark, or system default) from the
         // SettingsController to display the correct theme.
         theme: ThemeData(
+          appBarTheme: const AppBarTheme(backgroundColor: deepOrange),
           fontFamily: 'DIN',
           primaryColor: deepOrange,
           textTheme: const TextTheme(
