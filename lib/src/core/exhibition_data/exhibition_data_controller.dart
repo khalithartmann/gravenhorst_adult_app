@@ -7,7 +7,12 @@ import 'package:gravenhorst_adults_app/src/core/failure.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:injectable/injectable.dart';
 
-enum ExhibitoinDataControllerState { intial, loadingSupportedLocales, ready }
+enum ExhibitoinDataControllerState {
+  intial,
+  loadingSupportedLocales,
+  downloadingExhibitionData,
+  ready
+}
 
 @singleton
 class ExhibitoinDataController extends ChangeNotifier {
@@ -25,6 +30,10 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get localeSelected => currentLocale != null;
 
   ExhibitionData? get exhibitionDataForCurrentLocale {
+    if (failureOrexhibitionDataList.isEmpty) {
+      return null;
+    }
+
     var res = failureOrexhibitionDataList.firstWhere((element) {
       return element.fold(
           (l) => false,
@@ -50,18 +59,31 @@ class ExhibitoinDataController extends ChangeNotifier {
         '[getSupportedLocales] supported Locales are: $_eitherFailureOrSupportedLocales ');
   }
 
-  List<Either<Failure, ExhibitionData>> _exhibitionDataList = [];
+  List<Either<Failure, ExhibitionData>> _failureOrExhibitionDataList = [];
   List<Either<Failure, ExhibitionData>> get failureOrexhibitionDataList =>
-      _exhibitionDataList;
+      _failureOrExhibitionDataList;
+  Stream<int>? downloadProgressStream;
 
   void getExhibitionDataForLocale({required String localeId}) async {
-    _state = ExhibitoinDataControllerState.loadingSupportedLocales;
+    _state = ExhibitoinDataControllerState.downloadingExhibitionData;
     notifyListeners();
 
-    var eitherFailureOrExhibitionData =
-        await _exhibitionService.fetchExhibitionData(localeId: localeId);
+    var eitherFailureOrTupleStream =
+        _exhibitionService.fetchExhibitionData(localeId: localeId);
 
-    _exhibitionDataList.add(eitherFailureOrExhibitionData);
+    downloadProgressStream =
+        eitherFailureOrTupleStream.map((eitherFailureOrTupelEvent) {
+      return eitherFailureOrTupelEvent.fold((l) => 0, (tupel) {
+        if (tupel.value2 == 100) {
+          failureOrexhibitionDataList.add(right(tupel.value1!));
+          downloadProgressStream = null;
+          notifyListeners();
+        }
+        return tupel.value2;
+      });
+    });
+
+    // _failureOrExhibitionDataList.add(eitherFailureOrExhibitionData);
     _state = ExhibitoinDataControllerState.ready;
     notifyListeners();
 

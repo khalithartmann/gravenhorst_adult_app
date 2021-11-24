@@ -2,10 +2,9 @@ import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_locale.dart';
-import 'package:gravenhorst_adults_app/src/core/failure.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'dart:math' as math;
 
 import 'package:provider/provider.dart';
@@ -26,6 +25,19 @@ class _StartOverlayViewState extends State<StartOverlayView>
   );
 
   @override
+  void initState() {
+    context.read<ExhibitoinDataController>().addListener(() {
+      var isLoaded = context
+          .read<ExhibitoinDataController>()
+          .exhibitionDataForCurrentLocale;
+
+      print('blaaaa');
+      print(isLoaded);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
@@ -36,7 +48,11 @@ class _StartOverlayViewState extends State<StartOverlayView>
           buildHeadline1(context),
           buildLogo(),
           buildArrowIconButton(context),
-          // const ExhibitionDataDownloadIndicator(),
+          if (context
+                  .watch<ExhibitoinDataController>()
+                  .downloadProgressStream !=
+              null)
+            const ExhibitionDataDownloadIndicator(),
         ],
       ),
       builder: (BuildContext context, Widget? child) {
@@ -249,28 +265,7 @@ class ExhibitionDataDownloadIndicator extends StatefulWidget {
 }
 
 class _ExhibitionDataDownloadIndicatorState
-    extends State<ExhibitionDataDownloadIndicator>
-    with TickerProviderStateMixin {
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    )..addListener(() {
-        setState(() {});
-      });
-    controller.repeat(reverse: true);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
+    extends State<ExhibitionDataDownloadIndicator> {
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -300,13 +295,25 @@ class _ExhibitionDataDownloadIndicatorState
               ),
               Column(
                 children: [
-                  LinearProgressIndicator(
-                    value: controller.value,
-                    color: deepOrange,
-                    backgroundColor: Colors.transparent,
-                    minHeight: 22,
-                    semanticsLabel: 'Linear progress indicator',
-                  ),
+                  StreamBuilder(
+                      stream: context
+                          .read<ExhibitoinDataController>()
+                          .downloadProgressStream,
+                      builder: (context, AsyncSnapshot<int> snapshot) {
+                        var percent = 0.0;
+                        if (snapshot.data != null && snapshot.hasData) {
+                          percent = snapshot.data! / 100;
+                        }
+                        return LinearPercentIndicator(
+                          width: MediaQuery.of(context).size.width,
+                          lineHeight: 14.0,
+                          percent: percent,
+                          linearStrokeCap: LinearStrokeCap.butt,
+                          backgroundColor: Colors.transparent,
+                          padding: EdgeInsets.zero,
+                          progressColor: deepOrange,
+                        );
+                      }),
                   Expanded(
                       child: Container(
                     alignment: Alignment.center,

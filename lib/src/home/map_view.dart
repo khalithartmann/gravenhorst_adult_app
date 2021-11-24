@@ -23,19 +23,20 @@ class _MapViewState extends State<MapView> {
   void initState() {
     var exhibitionDataController = context.read<ExhibitoinDataController>();
     exhibitionDataController.addListener(() {
-      exhibitionDataController.failureOrexhibitionDataList.first
-          .fold((l) => null, (r) {
-        markers = r.tours.first.locations
-            .map((loc) => Marker(
-                point: LatLng(
-                    double.parse(loc.latitude), double.parse(loc.longitude)),
-                builder: (context) => Container(
-                      height: 50,
-                      width: 50,
-                      color: deepOrange,
-                    )))
-            .toList();
-        setState(() {});
+      exhibitionDataController.exhibitionDataForCurrentLocale?.tours
+          .map((tour) {
+        for (var location in tour.locations) {
+          markers.add(Marker(
+              point: LatLng(
+                double.parse(location.latitude),
+                double.parse(location.latitude),
+              ),
+              builder: (context) => Container(
+                    height: 10,
+                    width: 10,
+                    color: Colors.red,
+                  )));
+        }
       });
     });
     super.initState();

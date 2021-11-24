@@ -52,8 +52,9 @@ class ExhibitionService {
     }
   }
 
-  Future<Either<Failure, ExhibitionData>> fetchExhibitionData(
-      {required String localeId}) async {
+  Stream<Either<Failure, Tuple2<ExhibitionData?, int>>> fetchExhibitionData(
+      {required String localeId}) async* {
+    yield right(const Tuple2<ExhibitionData?, int>(null, 0));
     var uri = _apiConfig.getTourDataForLocale(localeId: localeId);
 
     try {
@@ -62,19 +63,20 @@ class ExhibitionService {
       if (res.statusCode != 200) {
         logger.w(
             '[fetchExhibitionData] returned StatusCode ${res.statusCode}, body: ${res.body}');
-        return left(Failure(
+        yield left(Failure(
             msg: 'Failed to get exhibition data for locale',
             code: getFailureCodeFromResponse(response: res)));
       }
 
       var exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
-      await persistExhibitionDataToLocalStorage(exhibitionData: exhibitionData);
+      yield* persistExhibitionDataToLocalStorage(
+          exhibitionData: exhibitionData);
       await persistExhibitonDataObject(exhibitionData: exhibitionData);
 
-      return right(exhibitionData);
+      yield right(Tuple2(exhibitionData, 100));
     } catch (e, s) {
       logger.w('exception: $e , $s');
-      return left(Failure(
+      yield left(Failure(
         msg: '[fetchExhibitionData] unexpected Failure',
         e: e,
         s: s,
@@ -83,8 +85,9 @@ class ExhibitionService {
     }
   }
 
-  Future<void> persistExhibitionDataToLocalStorage(
-      {required ExhibitionData exhibitionData}) async {
+  Stream<Either<Failure, Tuple2<Null, int>>>
+      persistExhibitionDataToLocalStorage(
+          {required ExhibitionData exhibitionData}) async* {
     try {
       var assets = exhibitionData.tours
           .map((tour) => tour.locations)
@@ -95,12 +98,18 @@ class ExhibitionService {
           .expand((element) => element)
           .toList();
 
-      await Future.wait(
-        List.generate(
-          assets.length,
-          (index) => tryDownloadFileToDocumentDirectory(asset: assets[index]),
-        ),
-      );
+      // delay the percent becuase we dont want to reach 100% in this function
+      int downloadedCount = -1;
+
+      for (var asset in assets) {
+        yield await tryDownloadFileToDocumentDirectory(asset: asset)
+            .then((value) {
+          downloadedCount++;
+          var progressInPercentRounded =
+              ((downloadedCount / assets.length) * 100).round();
+          return right(Tuple2(null, progressInPercentRounded));
+        });
+      }
     } catch (e, s) {
       logger.w('[persistExhibitionDataToLocalStorage]: exeption caught $e, $s');
       return;
