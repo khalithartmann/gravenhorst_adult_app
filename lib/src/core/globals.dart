@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:logger/logger.dart';
 
 const standardAnimationDuration = Duration(milliseconds: 400);
@@ -12,3 +14,7 @@ var logger = Logger(
       printTime: false // Should each log print contain a timestamp
       ),
 );
+
+Color hexToColor(String code) {
+  return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}

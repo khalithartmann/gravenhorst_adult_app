@@ -30,18 +30,11 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get localeSelected => currentLocale != null;
 
   ExhibitionData? get exhibitionDataForCurrentLocale {
-    if (failureOrexhibitionDataList.isEmpty) {
+    if (exhibitionDataList.isEmpty) {
       return null;
     }
-
-    var res = failureOrexhibitionDataList.firstWhere((element) {
-      return element.fold(
-          (l) => false,
-          (exhibitionData) =>
-              exhibitionData.localeName == _currentLocale?.name);
-    });
-
-    return res as ExhibitionData?;
+    return exhibitionDataList
+        .firstWhere((element) => element.localeName == _currentLocale?.name);
   }
 
   bool get exhibitionDataIsLoadedForLocale =>
@@ -59,28 +52,26 @@ class ExhibitoinDataController extends ChangeNotifier {
         '[getSupportedLocales] supported Locales are: $_eitherFailureOrSupportedLocales ');
   }
 
-  List<Either<Failure, ExhibitionData>> _failureOrExhibitionDataList = [];
-  List<Either<Failure, ExhibitionData>> get failureOrexhibitionDataList =>
-      _failureOrExhibitionDataList;
+  final List<ExhibitionData> _exhibitionDataList = [];
+  List<ExhibitionData> get exhibitionDataList => _exhibitionDataList;
   Stream<int>? downloadProgressStream;
 
-  void getExhibitionDataForLocale({required String localeId}) async {
+  void onLanguageSelected({required ExhibitionLocale locale}) async {
     _state = ExhibitoinDataControllerState.downloadingExhibitionData;
+    _currentLocale = locale;
     notifyListeners();
 
-    var eitherFailureOrTupleStream =
-        _exhibitionService.fetchExhibitionData(localeId: localeId);
+    var exhibitionDataProgressTupelStream =
+        _exhibitionService.fetchExhibitionData(localeId: locale.id);
 
     downloadProgressStream =
-        eitherFailureOrTupleStream.map((eitherFailureOrTupelEvent) {
-      return eitherFailureOrTupelEvent.fold((l) => 0, (tupel) {
-        if (tupel.value2 == 100) {
-          failureOrexhibitionDataList.add(right(tupel.value1!));
-          downloadProgressStream = null;
-          notifyListeners();
-        }
-        return tupel.value2;
-      });
+        exhibitionDataProgressTupelStream.map((exhibitoinDataProgressTupel) {
+      if (exhibitoinDataProgressTupel.value2 == 100) {
+        exhibitionDataList.add(exhibitoinDataProgressTupel.value1!);
+        downloadProgressStream = null;
+        notifyListeners();
+      }
+      return exhibitoinDataProgressTupel.value2;
     });
 
     // _failureOrExhibitionDataList.add(eitherFailureOrExhibitionData);
@@ -88,6 +79,6 @@ class ExhibitoinDataController extends ChangeNotifier {
     notifyListeners();
 
     logger.v(
-        '[getExhibitionDataForLocale]: loaded exhibition data  $failureOrexhibitionDataList');
+        '[getExhibitionDataForLocale]: loaded exhibition data  $exhibitionDataList');
   }
 }

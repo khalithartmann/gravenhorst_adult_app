@@ -68,11 +68,20 @@ class _StartOverlayViewState extends State<StartOverlayView>
   Widget buildHeadline1(BuildContext context) {
     return Consumer<ExhibitoinDataController>(builder: (context, consumer, _) {
       if (consumer.state != ExhibitoinDataControllerState.ready) {
-        return Center(
-            child: const CircularProgressIndicator(
+        return const Center(
+            child: CircularProgressIndicator(
           color: deepOrange,
         ));
       }
+
+      if (consumer.exhibitionDataForCurrentLocale != null) {
+        return Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+                margin: EdgeInsets.only(bottom: 86),
+                child: Text('whats up habibi')));
+      }
+
       return consumer.failureOrSupportedLocales.fold(
           (l) => Container(),
           (supportedLocales) => Align(
@@ -88,8 +97,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
                           onTap: () {
                             context
                                 .read<ExhibitoinDataController>()
-                                .getExhibitionDataForLocale(
-                                    localeId: locale.id);
+                                .onLanguageSelected(locale: locale);
                           },
                           child: Container(
                               margin: const EdgeInsets.only(
@@ -306,7 +314,7 @@ class _ExhibitionDataDownloadIndicatorState
                         }
                         return LinearPercentIndicator(
                           width: MediaQuery.of(context).size.width,
-                          lineHeight: 14.0,
+                          lineHeight: 11,
                           percent: percent,
                           linearStrokeCap: LinearStrokeCap.butt,
                           backgroundColor: Colors.transparent,

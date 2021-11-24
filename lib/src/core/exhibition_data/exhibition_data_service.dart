@@ -52,9 +52,9 @@ class ExhibitionService {
     }
   }
 
-  Stream<Either<Failure, Tuple2<ExhibitionData?, int>>> fetchExhibitionData(
+  Stream<Tuple2<ExhibitionData?, int>> fetchExhibitionData(
       {required String localeId}) async* {
-    yield right(const Tuple2<ExhibitionData?, int>(null, 0));
+    yield const Tuple2<ExhibitionData?, int>(null, 0);
     var uri = _apiConfig.getTourDataForLocale(localeId: localeId);
 
     try {
@@ -63,31 +63,27 @@ class ExhibitionService {
       if (res.statusCode != 200) {
         logger.w(
             '[fetchExhibitionData] returned StatusCode ${res.statusCode}, body: ${res.body}');
-        yield left(Failure(
-            msg: 'Failed to get exhibition data for locale',
-            code: getFailureCodeFromResponse(response: res)));
+        throw Exception(
+          '[fetchExhibitionData] Failed to get exhibition data for locale. Failure Code ${getFailureCodeFromResponse(response: res)}',
+        );
       }
 
       var exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
       yield* persistExhibitionDataToLocalStorage(
           exhibitionData: exhibitionData);
+
       await persistExhibitonDataObject(exhibitionData: exhibitionData);
 
-      yield right(Tuple2(exhibitionData, 100));
+      yield Tuple2(exhibitionData, 100);
     } catch (e, s) {
       logger.w('exception: $e , $s');
-      yield left(Failure(
-        msg: '[fetchExhibitionData] unexpected Failure',
-        e: e,
-        s: s,
-        code: FailureCode.clientError,
-      ));
+      throw Exception(
+          '[fetchExhibitionData] Failed to get exhibition data for locale. \n Exception: $s, \stacktrace: $s');
     }
   }
 
-  Stream<Either<Failure, Tuple2<Null, int>>>
-      persistExhibitionDataToLocalStorage(
-          {required ExhibitionData exhibitionData}) async* {
+  Stream<Tuple2<Null, int>> persistExhibitionDataToLocalStorage(
+      {required ExhibitionData exhibitionData}) async* {
     try {
       var assets = exhibitionData.tours
           .map((tour) => tour.locations)
@@ -107,7 +103,7 @@ class ExhibitionService {
           downloadedCount++;
           var progressInPercentRounded =
               ((downloadedCount / assets.length) * 100).round();
-          return right(Tuple2(null, progressInPercentRounded));
+          return Tuple2(null, progressInPercentRounded);
         });
       }
     } catch (e, s) {
@@ -153,6 +149,7 @@ class ExhibitionService {
 
   Future<void> persistExhibitonDataObject(
       {required ExhibitionData exhibitionData}) async {
+    print('persisting ... ');
     var didPersist = await _sharedPreferences.setString(
         _exhibitionDataSharedPrefsKey, jsonEncode(exhibitionData.toJson()));
 
