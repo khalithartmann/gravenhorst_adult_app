@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class MapView extends StatefulWidget {
   MapView({Key? key}) : super(key: key);
-  static const _mapZoom = 18.0;
+  static const _mapZoom = 16.0;
 
   @override
   State<MapView> createState() => _MapViewState();
@@ -58,8 +58,8 @@ class _MapViewState extends State<MapView> {
         .expand((element) => element)
         .map(
           (exhibit) => Marker(
-              width: 65,
               height: 88,
+              width: 66,
               point: LatLng(double.parse(exhibit.latitude),
                   double.parse(exhibit.longitude)),
               builder: (context) => InkWell(
@@ -70,9 +70,13 @@ class _MapViewState extends State<MapView> {
                               )));
                     },
                     child: Container(
-                      width: 65,
+                      decoration: BoxDecoration(
+                          color: hexToColor(exhibit.markerColor),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 10, color: Colors.black)
+                          ]),
                       height: 88,
-                      color: hexToColor(exhibit.markerColor),
+                      width: 66,
                       alignment: Alignment.bottomRight,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 14, bottom: 8),

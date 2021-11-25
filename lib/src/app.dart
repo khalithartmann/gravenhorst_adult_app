@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           primaryColor: deepOrange,
           textTheme: const TextTheme(
             headline1: TextStyle(fontSize: 61.5),
-            headline2: TextStyle(fontSize: 39.0),
+            headline2: TextStyle(fontSize: 35.0),
             headline3: TextStyle(fontSize: 27.0),
             headline4: TextStyle(fontSize: 18.75),
             headline5: TextStyle(fontSize: 15.75),

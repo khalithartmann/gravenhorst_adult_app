@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 
 const standardAnimationDuration = Duration(milliseconds: 400);
 
@@ -17,4 +18,10 @@ var logger = Logger(
 
 Color hexToColor(String code) {
   return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}
+
+Future<String> get documentDirectoryPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
 }

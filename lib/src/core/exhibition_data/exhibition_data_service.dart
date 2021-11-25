@@ -56,6 +56,16 @@ class ExhibitionService {
       {required String localeId}) async* {
     yield const Tuple2<ExhibitionData?, int>(null, 0);
     var uri = _apiConfig.getTourDataForLocale(localeId: localeId);
+    var exhibitionData = tryGetExhibitionDataObject();
+
+    // todo implemented more sufficticated logic.
+    //  - check update date etc.
+    //  - check if assets are available
+    if (exhibitionData != null) {
+      yield Tuple2(exhibitionData, 100);
+      return;
+    }
+    print('still here habib');
 
     try {
       var res = await _client.get(uri);
@@ -68,7 +78,7 @@ class ExhibitionService {
         );
       }
 
-      var exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
+      exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
       yield* persistExhibitionDataToLocalStorage(
           exhibitionData: exhibitionData);
 
@@ -132,19 +142,8 @@ class ExhibitionService {
 
   Future<void> writeBytesToLocalFile(
       Asset currentAsset, Uint8List bytes) async {
-    final file = await _localFile(currentAsset.assetUrlLocalPath);
+    final file = await currentAsset.localFile();
     file.writeAsBytesSync(bytes);
-  }
-
-  Future<String> get _documentDirectoryPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> _localFile(String filePath) async {
-    final path = await _documentDirectoryPath;
-    return File('$path/$filePath').create(recursive: true);
   }
 
   Future<void> persistExhibitonDataObject(
@@ -155,5 +154,15 @@ class ExhibitionService {
 
     logger.i(
         '[persistExhibitonDataObject]: Successfully persisted ExhibitionDataObject result: $didPersist');
+  }
+
+  ExhibitionData? tryGetExhibitionDataObject() {
+    var stringObj = _sharedPreferences.getString(_exhibitionDataSharedPrefsKey);
+
+    if (stringObj == null) {
+      return null;
+    }
+
+    return ExhibitionData.fromJson(jsonDecode(stringObj));
   }
 }

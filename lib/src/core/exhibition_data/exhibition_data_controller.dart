@@ -6,6 +6,7 @@ import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_local
 import 'package:gravenhorst_adults_app/src/core/failure.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:injectable/injectable.dart';
+import 'package:collection/collection.dart';
 
 enum ExhibitoinDataControllerState {
   intial,
@@ -30,11 +31,8 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get localeSelected => currentLocale != null;
 
   ExhibitionData? get exhibitionDataForCurrentLocale {
-    if (exhibitionDataList.isEmpty) {
-      return null;
-    }
-    return exhibitionDataList
-        .firstWhere((element) => element.localeName == _currentLocale?.name);
+    return exhibitionDataList.firstWhereOrNull(
+        (element) => element.localeName == _currentLocale?.name);
   }
 
   bool get exhibitionDataIsLoadedForLocale =>

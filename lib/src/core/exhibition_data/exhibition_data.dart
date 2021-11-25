@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:gravenhorst_adults_app/src/core/failure.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'exhibition_data.g.dart';
@@ -116,6 +120,8 @@ class Background {
   Map<String, dynamic> toJson() => _$BackgroundToJson(this);
 }
 
+enum AssetType { image, audio, video }
+
 @JsonSerializable(
     fieldRename: FieldRename.snake, createToJson: true, explicitToJson: true)
 class Asset {
@@ -150,4 +156,22 @@ class Asset {
   Map<String, dynamic> toJson() => _$AssetToJson(this);
 
   String get assetUrlLocalPath => assetUrl.replaceFirst('https://', '');
+
+  AssetType get assetType {
+    if (mimeType.contains('image')) {
+      return AssetType.image;
+    } else if (mimeType.contains('video')) {
+      return AssetType.video;
+    } else if (mimeType.contains('audio')) {
+      return AssetType.audio;
+    } else {
+      throw Failure(msg: 'Unsupported Asset Type $mimeType');
+    }
+  }
+
+  // todo check if .creat(recursive:true) causes problems when you call this function for the sole purpose of retrieveing the file
+  Future<File> localFile() async {
+    final path = await documentDirectoryPath;
+    return File('$path/$assetUrlLocalPath').create(recursive: true);
+  }
 }
