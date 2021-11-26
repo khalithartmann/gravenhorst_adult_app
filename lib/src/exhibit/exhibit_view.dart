@@ -3,6 +3,7 @@ import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/exhibit_entry_point_page.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/selectable_galary_exhibit_page.dart';
+import 'package:gravenhorst_adults_app/src/exhibit/swipeable_galary_exhibit_page.dart';
 
 import 'exhibit_app_bar.dart';
 import 'regular_exhibit_page.dart';
@@ -38,7 +39,11 @@ class ExhibitView extends StatelessWidget {
 
                       case SelectableGalleryExhibitPage.type:
                         return SelectableGalleryExhibitPage(
-                            entry: currentEntry);
+                          entry: currentEntry,
+                        );
+
+                      case SwipeableGalleryExhibit.type:
+                        return SwipeableGalleryExhibit(entry: currentEntry);
 
                       default:
                         return Center(
