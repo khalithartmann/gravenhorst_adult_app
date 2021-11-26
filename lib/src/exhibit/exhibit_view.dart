@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/exhibit_entry_point_page.dart';
+import 'package:gravenhorst_adults_app/src/exhibit/selectable_galary_exhibit_page.dart';
 
 import 'exhibit_app_bar.dart';
 import 'regular_exhibit_page.dart';
@@ -13,11 +14,11 @@ class ExhibitView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: exhibit.entries.length,
       child: Scaffold(
         backgroundColor: lightGrey,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(100),
+          preferredSize: const Size.fromHeight(80),
           child: ExhibitAppBar(exhibit: exhibit),
         ),
         body: SizedBox(
@@ -34,6 +35,10 @@ class ExhibitView extends StatelessWidget {
 
                       case RegularExhibitPage.type:
                         return RegularExhibitPage(entry: currentEntry);
+
+                      case SelectableGalleryExhibitPage.type:
+                        return SelectableGalleryExhibitPage(
+                            entry: currentEntry);
 
                       default:
                         return Center(

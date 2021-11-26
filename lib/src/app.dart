@@ -61,14 +61,14 @@ class MyApp extends StatelessWidget {
           fontFamily: 'DIN',
           primaryColor: deepOrange,
           textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 61.5),
-            headline2: TextStyle(fontSize: 35.0),
-            headline3: TextStyle(fontSize: 27.0),
-            headline4: TextStyle(fontSize: 18.75),
-            headline5: TextStyle(fontSize: 15.75),
-            headline6: TextStyle(fontSize: 12.0),
-            button: TextStyle(fontSize: 42.0, letterSpacing: 0),
-          ),
+              headline1: TextStyle(fontSize: 61.5),
+              headline2: TextStyle(fontSize: 35.0),
+              headline3: TextStyle(fontSize: 27.0),
+              headline4: TextStyle(fontSize: 18.75),
+              headline5: TextStyle(fontSize: 15.75),
+              headline6: TextStyle(fontSize: 12.0),
+              button: TextStyle(fontSize: 42.0, letterSpacing: 0),
+              bodyText1: TextStyle(fontSize: 32)),
         ),
 
         // Define a function to handle named routes in order to support

@@ -12,7 +12,7 @@ class ExhibitAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 100,
+      toolbarHeight: 80,
       centerTitle: true,
       leadingWidth: 145,
       leading: Container(
