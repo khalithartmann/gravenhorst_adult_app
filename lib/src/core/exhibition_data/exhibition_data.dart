@@ -172,6 +172,11 @@ class Asset {
   // todo check if .creat(recursive:true) causes problems when you call this function for the sole purpose of retrieveing the file
   Future<File> localFile() async {
     final path = await documentDirectoryPath;
-    return File('$path/$assetUrlLocalPath').create(recursive: true);
+    return File('$path/$assetUrlLocalPath');
+  }
+
+  Future<bool> existsInLocalStorage() async {
+    final file = await localFile();
+    return await file.exists();
   }
 }

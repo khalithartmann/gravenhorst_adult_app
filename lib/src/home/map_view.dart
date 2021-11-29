@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 class MapView extends StatefulWidget {
   MapView({Key? key}) : super(key: key);
-  static const _mapZoom = 16.0;
+  static const _mapZoom = 18.0;
 
   @override
   State<MapView> createState() => _MapViewState();

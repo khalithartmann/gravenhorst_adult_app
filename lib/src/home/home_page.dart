@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
+import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/keyboard/keyboard_view.dart';
 import 'package:gravenhorst_adults_app/src/home/map_view.dart';
 import 'package:gravenhorst_adults_app/src/start_overlay/start_overlay_view.dart';
+import 'package:provider/provider.dart';
 
 /// Displays a list of SampleItems.
 class HomePage extends StatelessWidget {
@@ -19,7 +21,12 @@ class HomePage extends StatelessWidget {
       body: Stack(
         children: [
           MapView(),
-          const Keyboard(),
+          Consumer<ExhibitoinDataController>(builder: (context, controller, _) {
+            if (controller.state.index > 2) {
+              return const Keyboard();
+            }
+            return Container();
+          }),
           const StartOverlayView(),
         ],
       ),

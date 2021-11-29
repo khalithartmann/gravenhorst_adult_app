@@ -108,13 +108,20 @@ class ExhibitionService {
       int downloadedCount = -1;
 
       for (var asset in assets) {
-        yield await tryDownloadFileToDocumentDirectory(asset: asset)
-            .then((value) {
+        if (await asset.existsInLocalStorage()) {
           downloadedCount++;
-          var progressInPercentRounded =
-              ((downloadedCount / assets.length) * 100).round();
-          return Tuple2(null, progressInPercentRounded);
-        });
+          int progressInPercentRounded =
+              calculateProgressInPercent(downloadedCount, assets);
+          yield Tuple2(null, progressInPercentRounded);
+        } else {
+          yield await tryDownloadFileToDocumentDirectory(asset: asset)
+              .then((value) {
+            downloadedCount++;
+            int progressInPercentRounded =
+                calculateProgressInPercent(downloadedCount, assets);
+            return Tuple2(null, progressInPercentRounded);
+          });
+        }
       }
     } catch (e, s) {
       logger.w('[persistExhibitionDataToLocalStorage]: exeption caught $e, $s');
@@ -122,13 +129,25 @@ class ExhibitionService {
     }
   }
 
+  int calculateProgressInPercent(int downloadedCount, List<Asset> assets) {
+    var progressInPercentRounded =
+        ((downloadedCount / assets.length) * 100).round();
+    return progressInPercentRounded;
+  }
+
   Future<void> tryDownloadFileToDocumentDirectory(
       {required Asset asset}) async {
     try {
       final uri = Uri.parse(asset.assetUrl);
       final response = await retry(
-        () => _client.get(uri).timeout(const Duration(seconds: 5)),
-        retryIf: (e) => e is SocketException || e is TimeoutException,
+        () {
+          logger.i('Retrying request because previous request failed');
+          return _client.get(uri).timeout(const Duration(seconds: 5));
+        },
+        retryIf: (e) {
+          logger.i('Exeption caught $e');
+          return e is SocketException || e is TimeoutException;
+        },
       );
 
       await writeBytesToLocalFile(asset, response.bodyBytes);
@@ -142,7 +161,8 @@ class ExhibitionService {
 
   Future<void> writeBytesToLocalFile(
       Asset currentAsset, Uint8List bytes) async {
-    final file = await currentAsset.localFile();
+    final file = await currentAsset.localFile()
+      ..create(recursive: true);
     file.writeAsBytesSync(bytes);
   }
 

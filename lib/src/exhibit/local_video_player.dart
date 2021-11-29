@@ -18,6 +18,8 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   @override
   void initState() {
     super.initState();
+    print('this is my local file ');
+    print(widget.localFile);
     _controller = VideoPlayerController.file(widget.localFile)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
