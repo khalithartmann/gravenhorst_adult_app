@@ -20,8 +20,8 @@ class LocaleSelector extends StatelessWidget {
         duration: standardAnimationDuration,
         left: 0,
         bottom: isOpen
-            ? -1 * (exhibitionDataController.supportedLocales.length * 56)
-            : 56,
+            ? 56
+            : -1 * (exhibitionDataController.supportedLocales.length * 56),
         child: Column(
           children: [
             ...exhibitionDataController.supportedLocales
