@@ -142,7 +142,7 @@ class ExhibitionService {
       final response = await retry(
         () {
           logger.i('Retrying request because previous request failed');
-          return _client.get(uri).timeout(const Duration(seconds: 5));
+          return _client.get(uri).timeout(const Duration(seconds: 10));
         },
         retryIf: (e) {
           logger.i('Exeption caught $e');
