@@ -15,6 +15,7 @@ class KeyboardMenuButton extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: ElevatedButton(
         style: ButtonStyle(
+            elevation: MaterialStateProperty.all(10),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 const RoundedRectangleBorder(
               borderRadius: BorderRadius.zero,

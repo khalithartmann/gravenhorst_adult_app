@@ -41,20 +41,16 @@ class _StartOverlayViewState extends State<StartOverlayView>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      child: Stack(
-        children: [
-          buildBackgroundWithHole(context),
-          buildHeadline2(context),
-          buildHeadline1(context),
-          buildLogo(),
-          buildArrowIconButton(context),
-          if (context
-                  .watch<ExhibitoinDataController>()
-                  .downloadProgressStream !=
-              null)
-            const ExhibitionDataDownloadIndicator(),
-        ],
-      ),
+      child: Stack(children: [
+        buildBackgroundWithHole(context),
+        buildHeadline2(context),
+        buildHeadline1(context),
+        buildLogo(),
+        buildArrowIconButton(context),
+        context.watch<ExhibitoinDataController>().downloadProgressStream != null
+            ? const ExhibitionDataDownloadIndicator()
+            : Container()
+      ]),
       builder: (BuildContext context, Widget? child) {
         return Transform.translate(
           offset: Offset(
@@ -66,93 +62,24 @@ class _StartOverlayViewState extends State<StartOverlayView>
   }
 
   Widget buildHeadline1(BuildContext context) {
-    return Consumer<ExhibitoinDataController>(builder: (context, consumer, _) {
-      if (consumer.state != ExhibitoinDataControllerState.ready) {
-        return const Center(
-            child: CircularProgressIndicator(
-          color: deepOrange,
-        ));
-      }
+    var exhibitionController = context.watch<ExhibitoinDataController>();
+    var isReady =
+        exhibitionController.state == ExhibitoinDataControllerState.ready;
+    var exhibitionDataForCurrentLocaleLoaded =
+        exhibitionController.exhibitionDataIsLoadedForLocale;
 
-      if (consumer.exhibitionDataForCurrentLocale != null) {
-        return Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedAlign(
-              duration: standardAnimationDuration,
-              alignment:
-                  isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
-              child: AnimatedPadding(
-                duration: standardAnimationDuration,
-                padding: isExpanded
-                    ? EdgeInsets.zero
-                    : const EdgeInsets.only(right: 32, bottom: 16),
-                child: AnimatedBuilder(
-                  animation: _controller,
-                  child: AnimatedPadding(
-                    duration: standardAnimationDuration,
-                    padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
-                    child: Text(
-                      AppLocalizations.of(context)!.startPageH1,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline2!
-                          .copyWith(color: Colors.white),
-                    ),
-                  ),
-                  builder: (context, child) {
-                    return Transform.translate(
-                      offset: Offset(
-                        MediaQuery.of(context).size.width /
-                            3.5 *
-                            _controller.value,
-                        30 * _controller.value,
-                      ),
-                      child: Transform.scale(
-                          scale: 1 - (_controller.value * 0.8), child: child),
-                    );
-                    // scale: 1 - (_controller.value * 0.8), child: child);
-                  },
-                ),
-              ),
-            ));
-      }
-
-      return consumer.failureOrSupportedLocales.fold(
-          (l) => Container(),
-          (supportedLocales) => Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: double.infinity,
-                  margin:
-                      const EdgeInsets.only(bottom: 86.0, left: 40, right: 40),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      ...supportedLocales.map((locale) => InkWell(
-                          onTap: () {
-                            context
-                                .read<ExhibitoinDataController>()
-                                .onLanguageSelected(locale: locale);
-                          },
-                          child: Container(
-                              margin: const EdgeInsets.only(
-                                left: 10,
-                                right: 10,
-                                top: 10,
-                              ),
-                              child: Text(
-                                locale.id.toUpperCase(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .button!
-                                    .copyWith(color: Colors.white),
-                              ))))
-                    ],
-                  ),
-                ),
-              ));
-    });
+    if (!isReady) {
+      return const Center(
+          child: CircularProgressIndicator(
+        color: deepOrange,
+      ));
+    }
+    return AnimatedSwitcher(
+      duration: Duration(seconds: 1),
+      child: exhibitionDataForCurrentLocaleLoaded
+          ? _AnimatedSlogan(isExpanded: isExpanded, controller: _controller)
+          : _SupportedLocalesList(),
+    );
   }
 
   SizedBox buildBackgroundWithHole(BuildContext context) {
@@ -240,6 +167,99 @@ class _StartOverlayViewState extends State<StartOverlayView>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+}
+
+class _AnimatedSlogan extends StatelessWidget {
+  const _AnimatedSlogan({
+    Key? key,
+    required this.isExpanded,
+    required AnimationController controller,
+  })  : _controller = controller,
+        super(key: key);
+
+  final bool isExpanded;
+  final AnimationController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+        alignment: Alignment.bottomCenter,
+        child: AnimatedAlign(
+          duration: standardAnimationDuration,
+          alignment:
+              isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
+          child: AnimatedPadding(
+            duration: standardAnimationDuration,
+            padding: isExpanded
+                ? EdgeInsets.zero
+                : const EdgeInsets.only(right: 32, bottom: 16),
+            child: AnimatedBuilder(
+              animation: _controller,
+              child: AnimatedPadding(
+                duration: standardAnimationDuration,
+                padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
+                child: Text(
+                  AppLocalizations.of(context)!.startPageH1,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline2!
+                      .copyWith(color: Colors.white),
+                ),
+              ),
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(
+                    MediaQuery.of(context).size.width / 3.5 * _controller.value,
+                    30 * _controller.value,
+                  ),
+                  child: Transform.scale(
+                      scale: 1 - (_controller.value * 0.8), child: child),
+                );
+                // scale: 1 - (_controller.value * 0.8), child: child);
+              },
+            ),
+          ),
+        ));
+  }
+}
+
+class _SupportedLocalesList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final exhibitionController = context.read<ExhibitoinDataController>();
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 86.0, left: 40, right: 40),
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            ...exhibitionController.supportedLocales.map((locale) => InkWell(
+                onTap: () {
+                  context
+                      .read<ExhibitoinDataController>()
+                      .onLanguageSelected(locale: locale);
+                },
+                child: Container(
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                    ),
+                    child: Text(
+                      locale.id.toUpperCase(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .button!
+                          .copyWith(color: Colors.white),
+                    ))))
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -48,11 +48,11 @@ class _KeyboardState extends State<Keyboard> {
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Container(
-              color: dullOrange,
               width: 375,
               height: 279,
+              color: dullOrange,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Container(
                     height: 56,
@@ -63,56 +63,110 @@ class _KeyboardState extends State<Keyboard> {
                         left: BorderSide(color: dullOrange, width: 0.5),
                       ),
                     ),
-                    child: Center(
-                        child: Text(
-                      'Inhalte verwalten',
-                      style: Theme.of(context).textTheme.headline2!.copyWith(
-                          color: deepOrange, fontWeight: FontWeight.w400),
-                    )),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(
+                                        width: 0.5, color: dullOrange))),
+                            width: 66,
+                            height: 56,
+                            child: Icon(
+                              Icons.copy,
+                              color: dullOrange,
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 24),
+                          child: Text('Inhalte verwalten',
+                              style:
+                                  TextStyle(fontSize: 24, color: deepOrange)),
+                        ),
+                      ],
+                    ),
                   ),
                   ...exhibitionDataController.exhibitionDataList
-                      .map((exhibition) => Padding(
-                            padding: const EdgeInsets.all(25),
+                      .map((exhibition) => SizedBox(
+                            height: 56,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(exhibition.localeName.toUpperCase(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w300,
-                                      color: deepOrange,
-                                    )),
-                                Text(
-                                    "${(exhibition.contentSize ~/ 1024)} MB"
-                                        .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w300,
-                                      color: deepOrange,
-                                    )),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    height: 56,
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                width: 0,
+                                                color: Colors.white))),
+                                    width: 66,
+                                    child: const Icon(Icons.delete,
+                                        color: deepOrange),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 24.0),
+                                  child:
+                                      Text(exhibition.localeName.toUpperCase(),
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w300,
+                                            color: deepOrange,
+                                          )),
+                                ),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 24.0),
+                                  child: Text(
+                                      "${(exhibition.contentSize ~/ 1024)} MB"
+                                          .toString(),
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w300,
+                                        color: deepOrange,
+                                      )),
+                                ),
                               ],
                             ),
                           ))
                       .toList(),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        )),
-                        padding: MaterialStateProperty.resolveWith(
-                            (states) => EdgeInsets.zero),
-                        fixedSize: MaterialStateProperty.resolveWith(
-                            (states) => const Size(309, 56)),
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) => deepOrange)),
-                    child: const Center(
-                      child: Text(
-                        'Auf Aktualisierung prüfen',
-                        style: TextStyle(
-                          fontSize: 22,
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                          width: 66,
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  right: BorderSide(
+                                      color: Colors.white, width: 0.5)))),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          )),
+                          padding: MaterialStateProperty.resolveWith(
+                              (states) => EdgeInsets.zero),
+                          fixedSize: MaterialStateProperty.resolveWith(
+                              (states) => const Size(309, 56)),
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => deepOrange)),
+                      child: const Center(
+                        child: Text(
+                          'Auf Aktualisierung prüfen',
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
                         ),
                       ),
                     ),
@@ -124,9 +178,15 @@ class _KeyboardState extends State<Keyboard> {
         ),
         KeyboardMenuButton(
           onPressed: () {
-            setState(() {
-              isOpen = !isOpen;
-            });
+            if (showLocaleAdminestrationPanel) {
+              setState(() {
+                showLocaleAdminestrationPanel = false;
+              });
+            } else {
+              setState(() {
+                isOpen = !isOpen;
+              });
+            }
           },
         ),
       ],
