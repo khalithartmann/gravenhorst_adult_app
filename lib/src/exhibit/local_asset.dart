@@ -22,7 +22,7 @@ class LocalAsset extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
-      height: height,
+      width: MediaQuery.of(context).size.height * 0.3,
       child: FutureBuilder<File>(
         future: asset.localFile(),
         builder: (context, snapshot) {

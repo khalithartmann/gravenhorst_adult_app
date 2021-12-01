@@ -39,7 +39,7 @@ class SwipeableGalleryExhibit extends StatelessWidget {
               }),
         ),
         Positioned(
-          top: 260,
+          top: MediaQuery.of(context).size.height * 0.45,
           left: 5,
           child: buildNavigationButton(
               iconData: Icons.arrow_back,
@@ -49,7 +49,7 @@ class SwipeableGalleryExhibit extends StatelessWidget {
               }),
         ),
         Positioned(
-          top: 260,
+          top: MediaQuery.of(context).size.height * 0.45,
           right: 5,
           child: buildNavigationButton(
               iconData: Icons.arrow_forward,

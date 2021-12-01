@@ -94,62 +94,70 @@ class _SpeedDialState extends State<SpeedDial> {
   String inputValue = '';
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 309,
-      height: 330,
-      alignment: Alignment.bottomLeft,
-      child: GridView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 0,
-            mainAxisExtent: 56,
-          ),
-          itemCount: speedDialButtons.length,
-          itemBuilder: (BuildContext context, int index) {
-            var currentButtonData = speedDialButtons[index];
-            if (currentButtonData.type == SpeedDialItemType.display) {
-              return InputDisplay(
-                  currentButtonData: currentButtonData, inputValue: inputValue);
-            }
+    return AnimatedPositioned(
+      duration: standardAnimationDuration,
+      left: widget.isOpen ? 66 : -243,
+      bottom: widget.isOpen ? 0 : -224,
+      child: Container(
+        width: 309,
+        height: 330,
+        alignment: Alignment.bottomLeft,
+        child: GridView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
+              mainAxisExtent: 56,
+            ),
+            itemCount: speedDialButtons.length,
+            itemBuilder: (BuildContext context, int index) {
+              var currentButtonData = speedDialButtons[index];
+              if (currentButtonData.type == SpeedDialItemType.display) {
+                return InputDisplay(
+                    currentButtonData: currentButtonData,
+                    inputValue: inputValue);
+              }
 
-            return SpeedDialButton(
-              speedDialItem: currentButtonData,
-              onPressed: () {
-                if (currentButtonData.type == SpeedDialItemType.number &&
-                    inputValue.length < 3) {
-                  setState(() {
-                    inputValue += currentButtonData.text!;
-                  });
-                } else if (currentButtonData.type == SpeedDialItemType.submit) {
-                  var exhibitionDataController =
-                      context.read<ExhibitoinDataController>();
-                  var match = exhibitionDataController
-                      .exhibitionDataForCurrentLocale!.tours.first.exhibits
-                      .firstWhereOrNull(
-                          (element) => element.name == inputValue);
+              return SpeedDialButton(
+                speedDialItem: currentButtonData,
+                onPressed: () {
+                  if (currentButtonData.type == SpeedDialItemType.number &&
+                      inputValue.length < 3) {
+                    setState(() {
+                      inputValue += currentButtonData.text!;
+                    });
+                  } else if (currentButtonData.type ==
+                      SpeedDialItemType.submit) {
+                    var exhibitionDataController =
+                        context.read<ExhibitoinDataController>();
+                    var match = exhibitionDataController
+                        .exhibitionDataForCurrentLocale!.tours.first.exhibits
+                        .firstWhereOrNull(
+                            (element) => element.name == inputValue);
 
-                  if (match == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('no match found')));
-                  } else {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ExhibitView(exhibit: match)));
+                    if (match == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('no match found')));
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ExhibitView(exhibit: match)));
+                    }
+                  } else if (currentButtonData.type ==
+                      SpeedDialItemType.clear) {
+                    setState(() {
+                      inputValue = '';
+                    });
+                  } else if (currentButtonData.type ==
+                      SpeedDialItemType.localeAdminPanel) {
+                    widget.onShowAdminPanelButtonPressed();
                   }
-                } else if (currentButtonData.type == SpeedDialItemType.clear) {
-                  setState(() {
-                    inputValue = '';
-                  });
-                } else if (currentButtonData.type ==
-                    SpeedDialItemType.localeAdminPanel) {
-                  widget.onShowAdminPanelButtonPressed();
-                }
-              },
-            );
-          }),
+                },
+              );
+            }),
+      ),
     );
   }
 }

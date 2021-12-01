@@ -11,8 +11,8 @@ class DescriptionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Text(
         description,
         style: Theme.of(context)

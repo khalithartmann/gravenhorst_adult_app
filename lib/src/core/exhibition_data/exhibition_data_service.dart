@@ -95,6 +95,8 @@ class ExhibitionService {
   Stream<Tuple2<Null, int>> persistExhibitionDataToLocalStorage(
       {required ExhibitionData exhibitionData}) async* {
     try {
+      print('trying ');
+
       var assets = exhibitionData.tours
           .map((tour) => tour.exhibits)
           .expand((element) => element)

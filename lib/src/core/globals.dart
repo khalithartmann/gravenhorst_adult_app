@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
-const standardAnimationDuration = Duration(milliseconds: 400);
+const standardAnimationDuration = Duration(milliseconds: 300);
 
 var logger = Logger(
   printer: PrettyPrinter(

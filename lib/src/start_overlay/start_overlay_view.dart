@@ -75,7 +75,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
       ));
     }
     return AnimatedSwitcher(
-      duration: Duration(seconds: 1),
+      duration: standardAnimationDuration,
       child: exhibitionDataForCurrentLocaleLoaded
           ? _AnimatedSlogan(isExpanded: isExpanded, controller: _controller)
           : _SupportedLocalesList(),

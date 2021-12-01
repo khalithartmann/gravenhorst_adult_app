@@ -155,7 +155,11 @@ class Asset {
 
   Map<String, dynamic> toJson() => _$AssetToJson(this);
 
-  String get assetUrlLocalPath => assetUrl.replaceFirst('https://', '');
+  final assetFolderPath = 'nordleu.de/assets/';
+
+  String get assetUrlLocalPath {
+    return assetUrl.replaceFirst('https://', '');
+  }
 
   AssetType get assetType {
     if (mimeType.contains('image')) {
@@ -172,6 +176,9 @@ class Asset {
   // todo check if .creat(recursive:true) causes problems when you call this function for the sole purpose of retrieveing the file
   Future<File> localFile() async {
     final path = await documentDirectoryPath;
+
+    print('$path/$assetUrlLocalPath');
+
     return File('$path/$assetUrlLocalPath');
   }
 

@@ -13,7 +13,7 @@ class ImageDescriptionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Text(
         text,
         style: Theme.of(context)
