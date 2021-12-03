@@ -38,6 +38,9 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get localeSelected => currentLocale != null;
 
   ExhibitionData? get exhibitionDataForCurrentLocale {
+    print('searching ');
+    print(exhibitionDataList.map((e) => e.localeName));
+    print(currentLocale?.name);
     return exhibitionDataList.firstWhereOrNull(
         (element) => element.localeName == _currentLocale?.name);
   }
@@ -62,12 +65,15 @@ class ExhibitoinDataController extends ChangeNotifier {
   Stream<int>? downloadProgressStream;
 
   void onLanguageSelected({required ExhibitionLocale locale}) async {
+    print('locale is $locale');
     _state = ExhibitoinDataControllerState.downloadingExhibitionData;
     _currentLocale = locale;
     notifyListeners();
 
+    print('fetching exhibition data');
+
     var exhibitionDataProgressTupelStream =
-        _exhibitionService.fetchExhibitionData(localeId: locale.id);
+        _exhibitionService.fetchExhibitionData(locale: locale);
 
     downloadProgressStream =
         exhibitionDataProgressTupelStream.map((exhibitoinDataProgressTupel) {

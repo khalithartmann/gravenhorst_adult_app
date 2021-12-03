@@ -29,6 +29,11 @@ class LocaleSelector extends StatelessWidget {
                         builder: (context, consumer, _) {
                       var isSelected = consumer.currentLocale?.id == locale.id;
                       return ElevatedButton(
+                        onPressed: () {
+                          print('locale ${locale.id}');
+                          exhibitionDataController.onLanguageSelected(
+                              locale: locale);
+                        },
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
@@ -47,7 +52,6 @@ class LocaleSelector extends StatelessWidget {
                               }
                               return dullOrange;
                             })),
-                        onPressed: () {},
                         child: Text(
                           locale.id.toUpperCase().split('_').last,
                           style: Theme.of(context)

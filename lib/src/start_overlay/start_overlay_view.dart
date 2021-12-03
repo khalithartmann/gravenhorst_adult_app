@@ -28,11 +28,17 @@ class _StartOverlayViewState extends State<StartOverlayView>
   void initState() {
     context.read<ExhibitoinDataController>().addListener(() {
       var isLoaded = context
-          .read<ExhibitoinDataController>()
-          .exhibitionDataForCurrentLocale;
+              .read<ExhibitoinDataController>()
+              .exhibitionDataForCurrentLocale !=
+          null;
 
       print('blaaaa');
       print(isLoaded);
+      if (!isLoaded && isLoaded == isExpanded) {
+        setState(() {
+          isExpanded != isExpanded;
+        });
+      }
     });
     super.initState();
   }

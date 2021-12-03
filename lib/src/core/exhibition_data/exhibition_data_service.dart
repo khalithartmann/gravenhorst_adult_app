@@ -23,7 +23,8 @@ class ExhibitionService {
   final ApiConfig _apiConfig;
   final Client _client;
   final SharedPreferences _sharedPreferences;
-  final _exhibitionDataSharedPrefsKey = 'exhibitionData';
+  String _getexhibitionDataSharedPrefsKey(String localeName) =>
+      'exhibitionData_$localeName';
 
   Future<Either<Failure, List<ExhibitionLocale>>>
       fetchSupportedLocales() async {
@@ -53,10 +54,14 @@ class ExhibitionService {
   }
 
   Stream<Tuple2<ExhibitionData?, int>> fetchExhibitionData(
-      {required String localeId}) async* {
+      {required ExhibitionLocale locale}) async* {
     yield const Tuple2<ExhibitionData?, int>(null, 0);
-    var uri = _apiConfig.getTourDataForLocale(localeId: localeId);
-    var exhibitionData = tryGetExhibitionDataObject();
+    var uri = _apiConfig.getTourDataForLocaleUri(localeId: locale.id);
+    print('uri is $uri');
+
+    var exhibitionData =
+        tryGetExhibitionDataObjectFromLocalStorage(localeName: locale.name);
+    print('exihition data object here is ${exhibitionData}');
 
     // todo implemented more sufficticated logic.
     //  - check update date etc.
@@ -68,7 +73,10 @@ class ExhibitionService {
     print('still here habib');
 
     try {
+      print('lol');
       var res = await _client.get(uri);
+      print('uri is $uri');
+      print('res is  ${res.body}');
 
       if (res.statusCode != 200) {
         logger.w(
@@ -83,6 +91,8 @@ class ExhibitionService {
           exhibitionData: exhibitionData);
 
       await persistExhibitonDataObject(exhibitionData: exhibitionData);
+
+      print('exhibition data is ${exhibitionData.localeName}');
 
       yield Tuple2(exhibitionData, 100);
     } catch (e, s) {
@@ -172,14 +182,17 @@ class ExhibitionService {
       {required ExhibitionData exhibitionData}) async {
     print('persisting ... ');
     var didPersist = await _sharedPreferences.setString(
-        _exhibitionDataSharedPrefsKey, jsonEncode(exhibitionData.toJson()));
+        _getexhibitionDataSharedPrefsKey(exhibitionData.localeName),
+        jsonEncode(exhibitionData.toJson()));
 
     logger.i(
         '[persistExhibitonDataObject]: Successfully persisted ExhibitionDataObject result: $didPersist');
   }
 
-  ExhibitionData? tryGetExhibitionDataObject() {
-    var stringObj = _sharedPreferences.getString(_exhibitionDataSharedPrefsKey);
+  ExhibitionData? tryGetExhibitionDataObjectFromLocalStorage(
+      {required String localeName}) {
+    var stringObj = _sharedPreferences
+        .getString(_getexhibitionDataSharedPrefsKey(localeName));
 
     if (stringObj == null) {
       return null;

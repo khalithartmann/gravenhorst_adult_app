@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 abstract class ApiConfig {
   String get baseUrl;
   Uri getSupportedLocalesUri();
-  Uri getTourDataForLocale({required String localeId});
+  Uri getTourDataForLocaleUri({required String localeId});
 }
 
 @Singleton(as: ApiConfig, env: [Environment.dev])
@@ -17,7 +17,9 @@ class DevApiConfig implements ApiConfig {
   }
 
   @override
-  Uri getTourDataForLocale({required String localeId}) {
-    return Uri.https(baseUrl, '/gravenhorst_cms/api/v1/locales/$localeId.json');
+  Uri getTourDataForLocaleUri({required String localeId}) {
+    print('im here');
+    return Uri.parse(
+        'https://raw.githubusercontent.com/fg-hh/gh_test-data/main/api/v1/locales/$localeId.json');
   }
 }
