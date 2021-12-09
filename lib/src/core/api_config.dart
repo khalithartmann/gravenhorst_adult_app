@@ -18,7 +18,6 @@ class DevApiConfig implements ApiConfig {
 
   @override
   Uri getTourDataForLocaleUri({required String localeId}) {
-    print('im here');
     return Uri.parse(
         'https://raw.githubusercontent.com/fg-hh/gh_test-data/main/api/v1/locales/$localeId.json');
   }

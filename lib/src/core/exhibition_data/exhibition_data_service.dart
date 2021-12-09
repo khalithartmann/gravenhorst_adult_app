@@ -57,11 +57,9 @@ class ExhibitionService {
       {required ExhibitionLocale locale}) async* {
     yield const Tuple2<ExhibitionData?, int>(null, 0);
     var uri = _apiConfig.getTourDataForLocaleUri(localeId: locale.id);
-    print('uri is $uri');
 
     var exhibitionData =
         tryGetExhibitionDataObjectFromLocalStorage(localeName: locale.name);
-    print('exihition data object here is ${exhibitionData}');
 
     // todo implemented more sufficticated logic.
     //  - check update date etc.
@@ -70,13 +68,9 @@ class ExhibitionService {
       yield Tuple2(exhibitionData, 100);
       return;
     }
-    print('still here habib');
 
     try {
-      print('lol');
       var res = await _client.get(uri);
-      print('uri is $uri');
-      print('res is  ${res.body}');
 
       if (res.statusCode != 200) {
         logger.w(
@@ -92,8 +86,6 @@ class ExhibitionService {
 
       await persistExhibitonDataObject(exhibitionData: exhibitionData);
 
-      print('exhibition data is ${exhibitionData.localeName}');
-
       yield Tuple2(exhibitionData, 100);
     } catch (e, s) {
       logger.w('exception: $e , $s');
@@ -105,8 +97,6 @@ class ExhibitionService {
   Stream<Tuple2<Null, int>> persistExhibitionDataToLocalStorage(
       {required ExhibitionData exhibitionData}) async* {
     try {
-      print('trying ');
-
       var assets = exhibitionData.tours
           .map((tour) => tour.exhibits)
           .expand((element) => element)
@@ -180,13 +170,26 @@ class ExhibitionService {
 
   Future<void> persistExhibitonDataObject(
       {required ExhibitionData exhibitionData}) async {
-    print('persisting ... ');
     var didPersist = await _sharedPreferences.setString(
         _getexhibitionDataSharedPrefsKey(exhibitionData.localeName),
         jsonEncode(exhibitionData.toJson()));
 
     logger.i(
         '[persistExhibitonDataObject]: Successfully persisted ExhibitionDataObject result: $didPersist');
+  }
+
+  Future<void> deletePersistedExhibitionDataFromLocalStorage(
+      {required ExhibitionData exhibitionData}) async {
+    var didDelete = await _sharedPreferences
+        .remove(_getexhibitionDataSharedPrefsKey(exhibitionData.localeName));
+
+    if (didDelete) {
+      logger.i(
+          'Deleted Exhibition data for locale ${exhibitionData.localeName} ');
+    } else {
+      logger.i(
+          'Failed to delete Exhibition data for locale ${exhibitionData.localeName} ');
+    }
   }
 
   ExhibitionData? tryGetExhibitionDataObjectFromLocalStorage(

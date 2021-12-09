@@ -6,19 +6,19 @@ part of 'exhibition_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ExhibitionData _$ExhibitionDataFromJson(Map<String, dynamic> json) =>
-    ExhibitionData(
+_$_ExhibitionData _$$_ExhibitionDataFromJson(Map<String, dynamic> json) =>
+    _$_ExhibitionData(
       id: json['id'] as String,
       localeName: json['locale_name'] as String,
       contentSize: json['content_size'] as int,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
       tours: (json['tours'] as List<dynamic>)
-          .map((e) => Tours.fromJson(e as Map<String, dynamic>))
+          .map((e) => Tour.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$ExhibitionDataToJson(ExhibitionData instance) =>
+Map<String, dynamic> _$$_ExhibitionDataToJson(_$_ExhibitionData instance) =>
     <String, dynamic>{
       'id': instance.id,
       'locale_name': instance.localeName,
@@ -28,7 +28,7 @@ Map<String, dynamic> _$ExhibitionDataToJson(ExhibitionData instance) =>
       'tours': instance.tours.map((e) => e.toJson()).toList(),
     };
 
-Tours _$ToursFromJson(Map<String, dynamic> json) => Tours(
+_$_Tour _$$_TourFromJson(Map<String, dynamic> json) => _$_Tour(
       id: json['id'] as int,
       name: json['name'] as String,
       sortOrder: json['sort_order'] as int,
@@ -38,7 +38,7 @@ Tours _$ToursFromJson(Map<String, dynamic> json) => Tours(
           .toList(),
     );
 
-Map<String, dynamic> _$ToursToJson(Tours instance) => <String, dynamic>{
+Map<String, dynamic> _$$_TourToJson(_$_Tour instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'sort_order': instance.sortOrder,
@@ -46,7 +46,7 @@ Map<String, dynamic> _$ToursToJson(Tours instance) => <String, dynamic>{
       'locations': instance.exhibits.map((e) => e.toJson()).toList(),
     };
 
-Exhibit _$ExhibitFromJson(Map<String, dynamic> json) => Exhibit(
+_$_Exhibit _$$_ExhibitFromJson(Map<String, dynamic> json) => _$_Exhibit(
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       name: json['name'] as String,
@@ -59,7 +59,8 @@ Exhibit _$ExhibitFromJson(Map<String, dynamic> json) => Exhibit(
           .toList(),
     );
 
-Map<String, dynamic> _$ExhibitToJson(Exhibit instance) => <String, dynamic>{
+Map<String, dynamic> _$$_ExhibitToJson(_$_Exhibit instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
       'name': instance.name,
@@ -70,7 +71,7 @@ Map<String, dynamic> _$ExhibitToJson(Exhibit instance) => <String, dynamic>{
       'entries': instance.entries.map((e) => e.toJson()).toList(),
     };
 
-Entry _$EntryFromJson(Map<String, dynamic> json) => Entry(
+_$_Entry _$$_EntryFromJson(Map<String, dynamic> json) => _$_Entry(
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       type: json['type'] as String,
@@ -83,7 +84,7 @@ Entry _$EntryFromJson(Map<String, dynamic> json) => Entry(
           .toList(),
     );
 
-Map<String, dynamic> _$EntryToJson(Entry instance) => <String, dynamic>{
+Map<String, dynamic> _$$_EntryToJson(_$_Entry instance) => <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
       'type': instance.type,
@@ -93,14 +94,15 @@ Map<String, dynamic> _$EntryToJson(Entry instance) => <String, dynamic>{
       'assets': instance.assets.map((e) => e.toJson()).toList(),
     };
 
-Background _$BackgroundFromJson(Map<String, dynamic> json) => Background(
+_$_Background _$$_BackgroundFromJson(Map<String, dynamic> json) =>
+    _$_Background(
       imageAssetId: json['image_asset_id'] as int?,
       color: json['color'] as String,
       size: json['size'] as String,
       position: json['position'] as String,
     );
 
-Map<String, dynamic> _$BackgroundToJson(Background instance) =>
+Map<String, dynamic> _$$_BackgroundToJson(_$_Background instance) =>
     <String, dynamic>{
       'image_asset_id': instance.imageAssetId,
       'color': instance.color,
@@ -108,7 +110,7 @@ Map<String, dynamic> _$BackgroundToJson(Background instance) =>
       'position': instance.position,
     };
 
-Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
+_$_Asset _$$_AssetFromJson(Map<String, dynamic> json) => _$_Asset(
       id: json['id'] as int,
       sortOrder: json['sort_order'] as int,
       assetUrl: json['asset_url'] as String,
@@ -122,7 +124,7 @@ Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
       updatedAt: json['updated_at'] as String,
     );
 
-Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
+Map<String, dynamic> _$$_AssetToJson(_$_Asset instance) => <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
       'asset_url': instance.assetUrl,
