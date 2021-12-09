@@ -27,17 +27,34 @@ class _StartOverlayViewState extends State<StartOverlayView>
   @override
   void initState() {
     context.read<ExhibitoinDataController>().addListener(() {
-      var isLoaded = context
-              .read<ExhibitoinDataController>()
-              .exhibitionDataForCurrentLocale !=
-          null;
+      final exhibitionDataController = context.read<ExhibitoinDataController>();
+      var isLoaded =
+          exhibitionDataController.exhibitionDataForCurrentLocale != null;
 
-      print('blaaaa');
-      print(isLoaded);
-      if (!isLoaded && isLoaded == isExpanded) {
+      logger.i("this is it ${exhibitionDataController.state}");
+      if (exhibitionDataController.state ==
+          ExhibitoinDataControllerState.downloadingExhibitionData) {
+        print('closing overlay');
         setState(() {
-          isExpanded != isExpanded;
+          isExpanded = true;
         });
+      }
+
+      // if (!isLoaded &&
+      //     !isExpanded &&
+      //     exhibitionDataController.state ==
+      //         ExhibitoinDataControllerState.downloadingExhibitionData) {
+      //   setState(() {
+      //     isExpanded = true;
+      //   });
+      // }
+
+      print('isExpanded $isExpanded');
+      if (!isExpanded) {
+        _controller.animateTo((MediaQuery.of(context).size.height - 100) /
+            MediaQuery.of(context).size.height);
+      } else {
+        _controller.animateTo(0);
       }
     });
     super.initState();

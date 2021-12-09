@@ -28,9 +28,6 @@ class ExhibitoinDataController extends ChangeNotifier {
   Either<Failure, List<ExhibitionLocale>> get failureOrSupportedLocales =>
       _eitherFailureOrSupportedLocales;
   List<ExhibitionLocale> get supportedLocales {
-    if (_eitherFailureOrSupportedLocales == null) {
-      return [];
-    }
     return failureOrSupportedLocales.fold((l) => [], (r) => r);
   }
 

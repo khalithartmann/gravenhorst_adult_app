@@ -12,7 +12,6 @@ import 'package:gravenhorst_adults_app/src/core/globals.dart';
 
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:retry/retry.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

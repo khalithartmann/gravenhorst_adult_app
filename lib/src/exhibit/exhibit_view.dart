@@ -19,7 +19,7 @@ class ExhibitView extends StatelessWidget {
       child: Scaffold(
         backgroundColor: lightGrey,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
+          preferredSize: const Size.fromHeight(100),
           child: ExhibitAppBar(exhibit: exhibit),
         ),
         body: SizedBox(

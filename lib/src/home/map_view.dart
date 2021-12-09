@@ -72,7 +72,7 @@ class _MapViewState extends State<MapView> {
                     child: Container(
                       decoration: BoxDecoration(
                           color: hexToColor(exhibit.markerColor),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(blurRadius: 10, color: Colors.black)
                           ]),
                       height: 88,

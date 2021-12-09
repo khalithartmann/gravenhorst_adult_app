@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gravenhorst_adults_app/src/core/failure.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
