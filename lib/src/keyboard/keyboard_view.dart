@@ -30,6 +30,11 @@ class _KeyboardState extends State<Keyboard> {
               showLocaleAdminestrationPanel = true;
             });
           },
+          onHomeButtonPressed: () {
+            setState(() {
+              isOpen = false;
+            });
+          },
         ),
         LocaleSelector(
           isOpen: isOpen,

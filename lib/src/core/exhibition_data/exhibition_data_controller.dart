@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
@@ -58,6 +60,7 @@ class ExhibitoinDataController extends ChangeNotifier {
   List<ExhibitionData> _exhibitionDataList = [];
   List<ExhibitionData> get exhibitionDataList => _exhibitionDataList;
   Stream<int>? downloadProgressStream;
+  StreamSubscription<int>? downloadProgressStreamSubscription;
 
   /// This function loads the [ExhibitionData] for the given [locale]
   ///
@@ -92,12 +95,17 @@ class ExhibitoinDataController extends ChangeNotifier {
         if (!exhibitionDataAlreadyExistsInList) {
           exhibitionDataList.add(exhibitionData!);
           downloadProgressStream = null;
+          downloadProgressStreamSubscription?.cancel();
         }
         _state = ExhibitoinDataControllerState.ready;
         notifyListeners();
       }
       return exhibitoinDataProgressTupel.value2;
-    });
+    }).asBroadcastStream();
+
+    downloadProgressStreamSubscription =
+        downloadProgressStream!.listen((event) {});
+
     _state = ExhibitoinDataControllerState.ready;
     notifyListeners();
 
@@ -114,6 +122,15 @@ class ExhibitoinDataController extends ChangeNotifier {
     /// workaround because [Selector] does not acknowledge change of list if new list wasnt created
     _exhibitionDataList = [...exhibitionDataList];
 
+    /// if exhibition data of the [_currentLocale] was changed then [_currentLocale]
+    final exhibitionDataForCurrentLocaleDeleted =
+        exhibitionDataForCurrentLocale == null;
+
+    if (exhibitionDataForCurrentLocaleDeleted &&
+        exhibitionDataList.isNotEmpty) {
+      _currentLocale = supportedLocales.firstWhereOrNull(
+          (element) => element.name == exhibitionDataList.first.localeName);
+    }
     notifyListeners();
   }
 }

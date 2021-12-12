@@ -62,11 +62,8 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                   ],
                 ),
               ),
-              Selector<ExhibitoinDataController, List<ExhibitionData>>(
-                selector: (context, controller) =>
-                    controller.exhibitionDataList,
-                shouldRebuild: (previous, next) => previous != next,
-                builder: (context, exhibitionDataList, _) {
+              Consumer<ExhibitoinDataController>(
+                builder: (context, controller, _) {
                   return SizedBox(
                     height: 168,
                     child: Stack(
@@ -74,7 +71,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                         ListView(
                           shrinkWrap: true,
                           children: [
-                            ...exhibitionDataList
+                            ...controller.exhibitionDataList
                                 .map((exhibition) => SizedBox(
                                       height: 56,
                                       child: Row(

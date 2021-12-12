@@ -1,13 +1,16 @@
-import 'package:dartz/dartz.dart' as dz;
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import 'dart:math' as math;
 
 import 'package:provider/provider.dart';
+
+import 'animated_slogan.dart';
+import 'exhibition_data_download_indicator.dart';
+import 'supported_locales_list.dart';
 
 class StartOverlayView extends StatefulWidget {
   const StartOverlayView({Key? key}) : super(key: key);
@@ -38,16 +41,11 @@ class _StartOverlayViewState extends State<StartOverlayView>
         setState(() {
           isExpanded = true;
         });
+      } else if (exhibitionDataController.exhibitionDataList.isEmpty) {
+        setState(() {
+          isExpanded = true;
+        });
       }
-
-      // if (!isLoaded &&
-      //     !isExpanded &&
-      //     exhibitionDataController.state ==
-      //         ExhibitoinDataControllerState.downloadingExhibitionData) {
-      //   setState(() {
-      //     isExpanded = true;
-      //   });
-      // }
 
       print('isExpanded $isExpanded');
       if (!isExpanded) {
@@ -70,7 +68,8 @@ class _StartOverlayViewState extends State<StartOverlayView>
         buildHeadline1(context),
         buildLogo(),
         buildArrowIconButton(context),
-        context.watch<ExhibitoinDataController>().downloadProgressStream != null
+        context.watch<ExhibitoinDataController>().state ==
+                ExhibitoinDataControllerState.downloadingExhibitionData
             ? const ExhibitionDataDownloadIndicator()
             : Container()
       ]),
@@ -97,11 +96,12 @@ class _StartOverlayViewState extends State<StartOverlayView>
         color: deepOrange,
       ));
     }
+
     return AnimatedSwitcher(
       duration: standardAnimationDuration,
-      child: exhibitionDataForCurrentLocaleLoaded
-          ? _AnimatedSlogan(isExpanded: isExpanded, controller: _controller)
-          : _SupportedLocalesList(),
+      child: exhibitionDataForCurrentLocaleLoaded || !isExpanded
+          ? AnimatedSlogan(isExpanded: isExpanded, controller: _controller)
+          : SupportedLocalesList(),
     );
   }
 
@@ -127,7 +127,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
               AppLocalizations.of(context)!.startPageH2,
               style: Theme.of(context)
                   .textTheme
-                  .headline4!
+                  .headline5!
                   .copyWith(color: Colors.white),
             ),
           ),
@@ -148,7 +148,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
             onPressed: () {
               if (isExpanded) {
                 _controller.animateTo(
-                    (MediaQuery.of(context).size.height - 137) /
+                    (MediaQuery.of(context).size.height - 100) /
                         MediaQuery.of(context).size.height);
               } else {
                 _controller.animateTo(0);
@@ -193,99 +193,6 @@ class _StartOverlayViewState extends State<StartOverlayView>
   }
 }
 
-class _AnimatedSlogan extends StatelessWidget {
-  const _AnimatedSlogan({
-    Key? key,
-    required this.isExpanded,
-    required AnimationController controller,
-  })  : _controller = controller,
-        super(key: key);
-
-  final bool isExpanded;
-  final AnimationController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-        alignment: Alignment.bottomCenter,
-        child: AnimatedAlign(
-          duration: standardAnimationDuration,
-          alignment:
-              isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
-          child: AnimatedPadding(
-            duration: standardAnimationDuration,
-            padding: isExpanded
-                ? EdgeInsets.zero
-                : const EdgeInsets.only(right: 32, bottom: 16),
-            child: AnimatedBuilder(
-              animation: _controller,
-              child: AnimatedPadding(
-                duration: standardAnimationDuration,
-                padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
-                child: Text(
-                  AppLocalizations.of(context)!.startPageH1,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2!
-                      .copyWith(color: Colors.white),
-                ),
-              ),
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(
-                    MediaQuery.of(context).size.width / 3.5 * _controller.value,
-                    30 * _controller.value,
-                  ),
-                  child: Transform.scale(
-                      scale: 1 - (_controller.value * 0.8), child: child),
-                );
-                // scale: 1 - (_controller.value * 0.8), child: child);
-              },
-            ),
-          ),
-        ));
-  }
-}
-
-class _SupportedLocalesList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final exhibitionController = context.read<ExhibitoinDataController>();
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(bottom: 86.0, left: 40, right: 40),
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          children: [
-            ...exhibitionController.supportedLocales.map((locale) => InkWell(
-                onTap: () {
-                  context
-                      .read<ExhibitoinDataController>()
-                      .onLanguageSelected(locale: locale);
-                },
-                child: Container(
-                    margin: const EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                      top: 10,
-                    ),
-                    child: Text(
-                      locale.id.toUpperCase(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .button!
-                          .copyWith(color: Colors.white),
-                    ))))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class OverlayWithHolePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -305,102 +212,5 @@ class OverlayWithHolePainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
-  }
-}
-
-class ExhibitionDataDownloadIndicator extends StatefulWidget {
-  const ExhibitionDataDownloadIndicator({Key? key}) : super(key: key);
-
-  @override
-  State<ExhibitionDataDownloadIndicator> createState() =>
-      _ExhibitionDataDownloadIndicatorState();
-}
-
-class _ExhibitionDataDownloadIndicatorState
-    extends State<ExhibitionDataDownloadIndicator> {
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: 180,
-        decoration: BoxDecoration(color: deepOrange, boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(0, -5),
-          ),
-        ]),
-        // color: Colors.blue,
-        child: Container(
-          color: lightGrey,
-          child: Stack(
-            children: [
-              Material(
-                color: Colors.transparent,
-                elevation: 5,
-                child: Container(
-                  height: 11,
-                  color: Colors.white,
-                ),
-              ),
-              Column(
-                children: [
-                  StreamBuilder(
-                      stream: context
-                          .read<ExhibitoinDataController>()
-                          .downloadProgressStream,
-                      builder: (context, AsyncSnapshot<int> snapshot) {
-                        var percent = 0.0;
-                        if (snapshot.data != null && snapshot.hasData) {
-                          percent = snapshot.data! / 100;
-                        }
-                        return LinearPercentIndicator(
-                          width: MediaQuery.of(context).size.width,
-                          lineHeight: 11,
-                          percent: percent,
-                          linearStrokeCap: LinearStrokeCap.butt,
-                          backgroundColor: Colors.transparent,
-                          padding: EdgeInsets.zero,
-                          progressColor: deepOrange,
-                        );
-                      }),
-                  Expanded(
-                      child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.downloading,
-                          color: darkGrey,
-                          size: 30,
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              AppLocalizations.of(context)!.downloadingHint,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 32,
-                                  color: darkGrey,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ))
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

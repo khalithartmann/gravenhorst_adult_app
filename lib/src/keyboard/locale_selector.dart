@@ -26,14 +26,18 @@ class LocaleSelector extends StatelessWidget {
           children: [
             ...exhibitionDataController.supportedLocales
                 .map((locale) => Consumer<ExhibitoinDataController>(
-                        builder: (context, consumer, _) {
-                      var isSelected = consumer.currentLocale?.id == locale.id;
+                        builder: (context, controller, _) {
+                      var isSelected =
+                          controller.currentLocale?.id == locale.id;
+
                       return ElevatedButton(
-                        onPressed: () {
-                          print('locale ${locale.id}');
-                          exhibitionDataController.onLanguageSelected(
-                              locale: locale);
-                        },
+                        onPressed: controller.state !=
+                                    ExhibitoinDataControllerState.ready ||
+                                isSelected
+                            ? null
+                            : () {
+                                controller.onLanguageSelected(locale: locale);
+                              },
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
@@ -47,9 +51,10 @@ class LocaleSelector extends StatelessWidget {
                                 (states) => const Size(66, 56)),
                             backgroundColor:
                                 MaterialStateProperty.resolveWith((states) {
-                              if (isSelected) {
+                              if (states.contains(MaterialState.disabled)) {
                                 return Colors.white;
                               }
+
                               return dullOrange;
                             })),
                         child: Text(

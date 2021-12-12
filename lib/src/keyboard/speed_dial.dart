@@ -6,7 +6,14 @@ import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/exhibit_view.dart';
 import 'package:provider/provider.dart';
 
-enum SpeedDialItemType { number, submit, display, clear, localeAdminPanel }
+enum SpeedDialItemType {
+  number,
+  submit,
+  display,
+  clear,
+  localeAdminPanel,
+  home
+}
 
 class SpeedDialItem {
   SpeedDialItem({
@@ -38,10 +45,11 @@ class SpeedDialItem {
 
 List<SpeedDialItem> speedDialButtons = [
   SpeedDialItem(
-    iconData: Icons.ac_unit,
+    iconData: Icons.home,
     backgroundColor: Colors.white,
     contentColor: dullOrange,
     borderColor: dullOrange,
+    type: SpeedDialItemType.home,
   ),
   SpeedDialItem(
     type: SpeedDialItemType.display,
@@ -81,10 +89,12 @@ class SpeedDial extends StatefulWidget {
   const SpeedDial(
       {Key? key,
       required this.isOpen,
-      required this.onShowAdminPanelButtonPressed})
+      required this.onShowAdminPanelButtonPressed,
+      required this.onHomeButtonPressed})
       : super(key: key);
   final bool isOpen;
   final Function() onShowAdminPanelButtonPressed;
+  final Function() onHomeButtonPressed;
 
   @override
   State<SpeedDial> createState() => _SpeedDialState();
@@ -153,6 +163,8 @@ class _SpeedDialState extends State<SpeedDial> {
                   } else if (currentButtonData.type ==
                       SpeedDialItemType.localeAdminPanel) {
                     widget.onShowAdminPanelButtonPressed();
+                  } else if (currentButtonData.type == SpeedDialItemType.home) {
+                    widget.onHomeButtonPressed();
                   }
                 },
               );
@@ -224,10 +236,9 @@ class SpeedDialButton extends StatelessWidget {
               )
             : Text(
                 speedDialItem.text!,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .copyWith(color: speedDialItem.contentColor),
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      color: speedDialItem.contentColor,
+                    ),
               ));
   }
 }

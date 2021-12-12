@@ -58,8 +58,8 @@ class _MapViewState extends State<MapView> {
         .expand((element) => element)
         .map(
           (exhibit) => Marker(
-              height: 88,
-              width: 66,
+              height: 80,
+              width: 60,
               point: LatLng(double.parse(exhibit.latitude),
                   double.parse(exhibit.longitude)),
               builder: (context) => InkWell(
@@ -84,7 +84,7 @@ class _MapViewState extends State<MapView> {
                           exhibit.name,
                           style: Theme.of(context)
                               .textTheme
-                              .headline3!
+                              .headline4!
                               .copyWith(color: Colors.white),
                         ),
                       ),
