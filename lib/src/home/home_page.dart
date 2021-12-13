@@ -22,6 +22,10 @@ class HomePage extends StatelessWidget {
         children: [
           MapView(),
           Consumer<ExhibitoinDataController>(builder: (context, controller, _) {
+            if (controller.exhibitionDataList.isEmpty &&
+                controller.supportedLocales.isNotEmpty) {
+              controller.loadExhibitionDataFromLocalStorage();
+            }
             if (controller.state.index > 2) {
               return const Keyboard();
             }

@@ -44,9 +44,12 @@ class _SelectableGalleryExhibitPageState
               child:
                   DescriptionContainer(description: widget.entry.description)),
         ),
-        LocalAsset(
-          asset: selectdAsset,
-          margin: const EdgeInsets.only(top: 30),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: LocalAsset(
+            asset: selectdAsset,
+            width: MediaQuery.of(context).size.width * 0.8,
+          ),
         ),
         Align(
           alignment: Alignment.topCenter,

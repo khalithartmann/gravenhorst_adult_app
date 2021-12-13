@@ -7,6 +7,7 @@ import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 
 import 'audio_player_controller.dart';
+import 'local_asset.dart';
 
 class ExhibitEntryPointPage extends StatefulWidget {
   const ExhibitEntryPointPage({Key? key, required this.entry})
@@ -61,24 +62,13 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
       return Container();
     }
     return Align(
-      alignment: Alignment.bottomCenter,
-      child: FutureBuilder(
-        future: backgroundImageAsset?.localFile(),
-        builder: (context, AsyncSnapshot<File> snapshot) {
-          if (snapshot.hasData) {
-            return Image.file(
-              snapshot.data!,
-              height: 628,
-              fit: BoxFit.cover,
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    );
+        alignment: Alignment.bottomCenter,
+        child: LocalAsset(
+          asset: backgroundImageAsset!,
+          height: double.infinity,
+          width: double.infinity,
+          imageFit: BoxFit.cover,
+        ));
   }
 
   bool get hasBackgroundImage => backgroundImageAsset != null;
@@ -86,8 +76,11 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        margin: EdgeInsets.only(top: 30),
-        width: 300,
+        margin: const EdgeInsets.only(
+          top: 30,
+          left: 60,
+          right: 30,
+        ),
         child: Text(
           widget.entry.title,
           style: Theme.of(context).textTheme.headline2!.copyWith(

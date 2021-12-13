@@ -28,7 +28,10 @@ class SwipeableGalleryExhibit extends StatelessWidget {
                 var currentAsset = entry.assets[index];
                 return Column(
                   children: [
-                    LocalAsset(asset: currentAsset),
+                    LocalAsset(
+                      asset: currentAsset,
+                      height: MediaQuery.of(context).size.height * 0.5,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 85.0),
                       child:

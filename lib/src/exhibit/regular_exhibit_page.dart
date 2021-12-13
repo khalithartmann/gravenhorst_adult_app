@@ -24,9 +24,12 @@ class RegularExhibitPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 54),
               child: DescriptionContainer(description: entry.description)),
         ),
-        LocalAsset(
-          asset: entry.assets.first,
-          margin: const EdgeInsets.only(top: 30),
+        Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: LocalAsset(
+            asset: entry.assets.first,
+            width: MediaQuery.of(context).size.width * 0.8,
+          ),
         ),
         Align(
           alignment: Alignment.topCenter,

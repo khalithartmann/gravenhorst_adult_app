@@ -15,8 +15,8 @@ class ExhibitAppBar extends StatelessWidget {
       toolbarHeight: double.infinity,
       centerTitle: true,
       leadingWidth: 145,
-      leading: Container(
-        color: Colors.white,
+      leading: Center(
+        child: Text("logo"),
       ),
       title: IconButton(
           onPressed: () {
@@ -27,14 +27,16 @@ class ExhibitAppBar extends StatelessWidget {
             size: 30,
           )),
       actions: [
-        Container(
-            margin: const EdgeInsets.only(bottom: 12),
-            width: 87,
-            height: 77,
-            child: Center(
-                child: Text(exhibit.name,
-                    style: Theme.of(context).textTheme.headline1!.copyWith(
-                        fontWeight: FontWeight.normal, color: Colors.white)))),
+        Padding(
+          padding: EdgeInsets.only(right: 30),
+          child: Text(
+            exhibit.name,
+            style: Theme.of(context)
+                .textTheme
+                .headline1!
+                .copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+          ),
+        ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
@@ -72,55 +73,58 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                           shrinkWrap: true,
                           children: [
                             ...controller.exhibitionDataList
-                                .map((exhibition) => SizedBox(
-                                      height: 56,
-                                      child: Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              exhibitionDataController
-                                                  .onDeleteExhibitionDataForLocale(
-                                                      exhibitionData:
-                                                          exhibition);
-                                            },
-                                            child: const SizedBox(
-                                              height: 56,
-                                              width: 66,
-                                              child: Icon(Icons.delete,
-                                                  color: deepOrange),
+                                .map((exhibition) => Align(
+                                      alignment: Alignment.topCenter,
+                                      child: Container(
+                                        height: 56,
+                                        child: Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                exhibitionDataController
+                                                    .onDeleteExhibitionDataForLocale(
+                                                        exhibitionData:
+                                                            exhibition);
+                                              },
+                                              child: const SizedBox(
+                                                height: 56,
+                                                width: 66,
+                                                child: Icon(Icons.delete,
+                                                    color: deepOrange),
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 24.0),
-                                            child: SizedBox(
-                                              width: 150,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 24.0),
+                                              child: SizedBox(
+                                                width: 150,
+                                                child: Text(
+                                                    exhibition.localeName
+                                                        .toUpperCase(),
+                                                    style: const TextStyle(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: deepOrange,
+                                                        overflow: TextOverflow
+                                                            .ellipsis)),
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 24.0),
                                               child: Text(
-                                                  exhibition.localeName
-                                                      .toUpperCase(),
+                                                  "${(exhibition.contentSize ~/ 1024)} MB"
+                                                      .toString(),
                                                   style: const TextStyle(
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: deepOrange,
-                                                      overflow: TextOverflow
-                                                          .ellipsis)),
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: deepOrange,
+                                                  )),
                                             ),
-                                          ),
-                                          const Spacer(),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 24.0),
-                                            child: Text(
-                                                "${(exhibition.contentSize ~/ 1024)} MB"
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.w300,
-                                                  color: deepOrange,
-                                                )),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ))
                                 .toList(),

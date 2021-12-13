@@ -49,7 +49,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
 
       print('isExpanded $isExpanded');
       if (!isExpanded) {
-        _controller.animateTo((MediaQuery.of(context).size.height - 100) /
+        _controller.animateTo((MediaQuery.of(context).size.height - 130) /
             MediaQuery.of(context).size.height);
       } else {
         _controller.animateTo(0);
@@ -137,7 +137,10 @@ class _StartOverlayViewState extends State<StartOverlayView>
   }
 
   Widget buildArrowIconButton(BuildContext context) {
-    if (!context.watch<ExhibitoinDataController>().localeSelected) {
+    var exhibitionController = context.watch<ExhibitoinDataController>();
+
+    if (!exhibitionController.localeSelected ||
+        (exhibitionController.exhibitionDataList.isEmpty && isExpanded)) {
       return Container();
     }
     return Align(
@@ -145,28 +148,36 @@ class _StartOverlayViewState extends State<StartOverlayView>
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
         child: IconButton(
-            onPressed: () {
-              if (isExpanded) {
-                _controller.animateTo(
-                    (MediaQuery.of(context).size.height - 100) /
-                        MediaQuery.of(context).size.height);
-              } else {
-                _controller.animateTo(0);
-              }
-              setState(() {
-                isExpanded = !isExpanded;
-              });
-            },
-            icon: AnimatedBuilder(
-              child: const Icon(Icons.arrow_upward, color: Colors.white),
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.rotate(
-                  angle: ((180 * 1.2) * _controller.value) * math.pi / 180,
-                  child: child,
-                );
-              },
-            )),
+          onPressed: () {
+            if (isExpanded) {
+              _controller.animateTo((MediaQuery.of(context).size.height - 130) /
+                  MediaQuery.of(context).size.height);
+            } else {
+              _controller.animateTo(0);
+            }
+            setState(() {
+              isExpanded = !isExpanded;
+            });
+          },
+          icon: AnimatedRotation(
+            turns: isExpanded ? 0 : (180 / 360),
+            duration: standardAnimationDuration,
+            child: Icon(
+              Icons.arrow_upward,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        // icon: AnimatedBuilder(
+        //   child: const Icon(Icons.arrow_upward, color: Colors.white),
+        //   animation: _controller,
+        //   builder: (context, child) {
+        //     return Transform.rotate(
+        //       angle: ((180 * 1.2) * _controller.value) * math.pi / 180,
+        //       child: child,
+        //     );
+        //   },
+        // )),
       ),
     );
   }

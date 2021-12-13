@@ -25,17 +25,26 @@ class AnimatedSlogan extends StatelessWidget {
             duration: standardAnimationDuration,
             padding: isExpanded
                 ? EdgeInsets.zero
-                : const EdgeInsets.only(right: 32, bottom: 16),
-            child: AnimatedPadding(
-              duration: standardAnimationDuration,
-              padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
-              child: Text(
-                AppLocalizations.of(context)!.startPageH1,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .button!
-                    .copyWith(color: Colors.white),
+                : const EdgeInsets.only(right: 0, bottom: 16),
+            child: Transform.scale(
+              scale: 0.5,
+              child: AnimatedPadding(
+                duration: standardAnimationDuration,
+                padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
+                child: AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, child) {
+                      return Text(
+                        AppLocalizations.of(context)!.startPageH1,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                            color: Colors.white,
+                            fontSize:
+                                Theme.of(context).textTheme.button!.fontSize! *
+                                        (1 - _controller.value) +
+                                    MediaQuery.of(context).size.height * 0.02),
+                      );
+                    }),
               ),
             ),
           ),

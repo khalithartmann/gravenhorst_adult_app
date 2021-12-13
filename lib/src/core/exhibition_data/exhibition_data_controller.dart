@@ -26,11 +26,11 @@ class ExhibitoinDataController extends ChangeNotifier {
   ExhibitoinDataControllerState get state => _state;
   final ExhibitionService _exhibitionService;
 
-  late Either<Failure, List<ExhibitionLocale>> _eitherFailureOrSupportedLocales;
-  Either<Failure, List<ExhibitionLocale>> get failureOrSupportedLocales =>
+  Either<Failure, List<ExhibitionLocale>>? _eitherFailureOrSupportedLocales;
+  Either<Failure, List<ExhibitionLocale>>? get failureOrSupportedLocales =>
       _eitherFailureOrSupportedLocales;
   List<ExhibitionLocale> get supportedLocales {
-    return failureOrSupportedLocales.fold((l) => [], (r) => r);
+    return failureOrSupportedLocales?.fold((l) => [], (r) => r) ?? [];
   }
 
   ExhibitionLocale? _currentLocale;
@@ -132,5 +132,16 @@ class ExhibitoinDataController extends ChangeNotifier {
           (element) => element.name == exhibitionDataList.first.localeName);
     }
     notifyListeners();
+  }
+
+  void loadExhibitionDataFromLocalStorage() {
+    for (var locale in supportedLocales) {
+      var exhibitionData = _exhibitionService
+          .tryGetExhibitionDataObjectFromLocalStorage(localeName: locale.name);
+
+      if (exhibitionData != null) {
+        exhibitionDataList.add(exhibitionData);
+      }
+    }
   }
 }
