@@ -22,8 +22,8 @@ class ExhibitionService {
   final ApiConfig _apiConfig;
   final Client _client;
   final SharedPreferences _sharedPreferences;
-  String _getexhibitionDataSharedPrefsKey(String localeName) =>
-      'exhibitionData_$localeName';
+  String _getexhibitionDataSharedPrefsKey(String localeId) =>
+      'exhibitionData_$localeId';
 
   Future<Either<Failure, List<ExhibitionLocale>>>
       fetchSupportedLocales() async {
@@ -109,6 +109,7 @@ class ExhibitionService {
       int downloadedCount = -1;
 
       for (var asset in assets) {
+        // todo uncomment when done testing
         if (await asset.existsInLocalStorage()) {
           downloadedCount++;
           int progressInPercentRounded =
@@ -139,15 +140,16 @@ class ExhibitionService {
   Future<void> tryDownloadFileToDocumentDirectory(
       {required Asset asset}) async {
     try {
-      final uri = Uri.parse(asset.assetUrl);
+      final uri = Uri.parse(asset.remoteUrl);
+
       final response = await retry(
         () {
-          logger.i('Retrying request because previous request failed');
           return _client.get(uri).timeout(const Duration(seconds: 10));
         },
         retryIf: (e) {
           logger.i('Exeption caught $e');
-          return e is SocketException || e is TimeoutException;
+          return true; // always retry
+          // return e is SocketException || e is TimeoutException;
         },
       );
 
@@ -162,15 +164,15 @@ class ExhibitionService {
 
   Future<void> writeBytesToLocalFile(
       Asset currentAsset, Uint8List bytes) async {
-    final file = await currentAsset.localFile()
-      ..create(recursive: true);
-    file.writeAsBytesSync(bytes);
+    final file = await currentAsset.localFile();
+    await file.create(recursive: true);
+    await file.writeAsBytes(bytes);
   }
 
   Future<void> persistExhibitonDataObject(
       {required ExhibitionData exhibitionData}) async {
     var didPersist = await _sharedPreferences.setString(
-        _getexhibitionDataSharedPrefsKey(exhibitionData.localeName),
+        _getexhibitionDataSharedPrefsKey(exhibitionData.id),
         jsonEncode(exhibitionData.toJson()));
 
     logger.i(
@@ -180,14 +182,13 @@ class ExhibitionService {
   Future<void> deletePersistedExhibitionDataFromLocalStorage(
       {required ExhibitionData exhibitionData}) async {
     var didDelete = await _sharedPreferences
-        .remove(_getexhibitionDataSharedPrefsKey(exhibitionData.localeName));
+        .remove(_getexhibitionDataSharedPrefsKey(exhibitionData.id));
 
     if (didDelete) {
-      logger.i(
-          'Deleted Exhibition data for locale ${exhibitionData.localeName} ');
+      logger.i('Deleted Exhibition data for locale ${exhibitionData.id} ');
     } else {
       logger.i(
-          'Failed to delete Exhibition data for locale ${exhibitionData.localeName} ');
+          'Failed to delete Exhibition data for locale ${exhibitionData.id} ');
     }
   }
 

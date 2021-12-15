@@ -38,8 +38,8 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get localeSelected => currentLocale != null;
 
   ExhibitionData? get exhibitionDataForCurrentLocale {
-    return exhibitionDataList.firstWhereOrNull(
-        (element) => element.localeName == _currentLocale?.name);
+    return exhibitionDataList
+        .firstWhereOrNull((element) => element.id == _currentLocale?.id);
   }
 
   bool get exhibitionDataIsLoadedForLocale =>
@@ -129,7 +129,7 @@ class ExhibitoinDataController extends ChangeNotifier {
     if (exhibitionDataForCurrentLocaleDeleted &&
         exhibitionDataList.isNotEmpty) {
       _currentLocale = supportedLocales.firstWhereOrNull(
-          (element) => element.name == exhibitionDataList.first.localeName);
+          (element) => element.id == exhibitionDataList.first.id);
     }
     notifyListeners();
   }

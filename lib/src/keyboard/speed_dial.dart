@@ -1,5 +1,6 @@
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
@@ -19,24 +20,24 @@ class SpeedDialItem {
   SpeedDialItem({
     this.type = SpeedDialItemType.number,
     this.text,
-    this.iconData,
+    this.iconAssetPath,
     this.onPressed,
     this.backgroundColor = dullOrange,
     this.contentColor = Colors.white,
     this.borderColor = Colors.white,
   })  : assert(
-            iconData == null ||
+            iconAssetPath == null ||
                 text == null ||
                 type == SpeedDialItemType.display,
             "one of the two arguments must be null"),
         assert(
-            iconData != null ||
+            iconAssetPath != null ||
                 text != null ||
                 type == SpeedDialItemType.display,
             "one of the two arguments must not be null");
   final SpeedDialItemType type;
   final String? text;
-  final IconData? iconData;
+  final String? iconAssetPath;
   final Function()? onPressed;
   final Color backgroundColor;
   final Color contentColor;
@@ -45,7 +46,7 @@ class SpeedDialItem {
 
 List<SpeedDialItem> speedDialButtons = [
   SpeedDialItem(
-    iconData: Icons.home,
+    iconAssetPath: homeIconPath,
     backgroundColor: Colors.white,
     contentColor: dullOrange,
     borderColor: dullOrange,
@@ -60,7 +61,7 @@ List<SpeedDialItem> speedDialButtons = [
 
   // PlaceHolderSpeedDialItem(),
   SpeedDialItem(
-    iconData: Icons.copy,
+    iconAssetPath: dataIconPath,
     backgroundColor: Colors.white,
     contentColor: dullOrange,
     type: SpeedDialItemType.localeAdminPanel,
@@ -79,7 +80,7 @@ List<SpeedDialItem> speedDialButtons = [
     text: '0',
   ),
   SpeedDialItem(
-    iconData: Icons.cancel,
+    iconAssetPath: deleteIconPath,
     contentColor: deepOrange,
     type: SpeedDialItemType.clear,
   ),
@@ -229,10 +230,11 @@ class SpeedDialButton extends StatelessWidget {
             backgroundColor: MaterialStateProperty.resolveWith((states) {
               return speedDialItem.backgroundColor;
             })),
-        child: speedDialItem.iconData != null
-            ? Icon(
-                speedDialItem.iconData,
+        child: speedDialItem.iconAssetPath != null
+            ? Image.asset(
+                speedDialItem.iconAssetPath!,
                 color: speedDialItem.contentColor,
+                width: 19,
               )
             : Text(
                 speedDialItem.text!,

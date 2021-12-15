@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 
 class MapView extends StatefulWidget {
   MapView({Key? key}) : super(key: key);
-  static const _mapZoom = 18.0;
 
   @override
   State<MapView> createState() => _MapViewState();
@@ -19,7 +18,7 @@ class MapView extends StatefulWidget {
 
 class _MapViewState extends State<MapView> {
   final MapController mapController = MapController();
-
+  static const mapZoom = 19.0;
   @override
   Widget build(BuildContext context) {
     return Selector<ExhibitoinDataController, ExhibitionData?>(
@@ -34,13 +33,16 @@ class _MapViewState extends State<MapView> {
               mapController: mapController,
               options: MapOptions(
                 center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-                zoom: MapView._mapZoom,
+                zoom: mapZoom,
+                maxZoom: 22,
               ),
               layers: [
                 TileLayerOptions(
+                  maxNativeZoom: 22,
+                  maxZoom: 22,
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
-                  tileProvider: const CachedTileProvider(),
+                  // tileProvider: const CachedTileProvider(),
                 ),
                 MarkerLayerOptions(markers: markers ?? []),
               ],

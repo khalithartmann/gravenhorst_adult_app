@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 
 class ExhibitAppBar extends StatelessWidget {
@@ -16,7 +17,11 @@ class ExhibitAppBar extends StatelessWidget {
       centerTitle: true,
       leadingWidth: 145,
       leading: Center(
-        child: Text("logo"),
+        child: Image.asset(
+          logoPath,
+          width: 64,
+          height: 40,
+        ),
       ),
       title: IconButton(
           onPressed: () {

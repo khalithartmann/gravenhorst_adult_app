@@ -40,8 +40,12 @@ class LocalAsset extends StatelessWidget {
                 height: height,
                 width: width,
                 errorBuilder: (context, error, s) {
+                  return Center(
+                    child:
+                        Text('Unable to load asset ${asset.assetUrlLocalPath}'),
+                  );
                   return Image.network(
-                    asset.assetUrl,
+                    asset.remoteUrl,
                     height: height,
                     fit: imageFit,
                     width: width,

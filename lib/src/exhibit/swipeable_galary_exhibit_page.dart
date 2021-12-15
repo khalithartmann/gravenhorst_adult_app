@@ -10,7 +10,7 @@ class SwipeableGalleryExhibit extends StatelessWidget {
   SwipeableGalleryExhibit({Key? key, required this.entry}) : super(key: key);
   final Entry entry;
 
-  static const type = 'swipingGallery';
+  static const type = 'SwipingGallery';
 
   final PageController pageController = PageController();
 

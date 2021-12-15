@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
@@ -22,10 +24,12 @@ class AudioPlayerController extends StatefulWidget {
 class _AudioPlayerControllerState extends State<AudioPlayerController> {
   var currentPositionInPercent = 0.0;
   var audioDuration;
+  late StreamSubscription streamSubscription;
 
   @override
   void initState() {
-    widget.audioPlayer.onPlayerStateChanged.listen((event) {
+    streamSubscription =
+        widget.audioPlayer.onPlayerStateChanged.listen((event) {
       setState(() {});
     });
 
@@ -125,5 +129,11 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
       onTap: onTap,
       child: icon,
     );
+  }
+
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
   }
 }

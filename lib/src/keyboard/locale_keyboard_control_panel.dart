@@ -99,8 +99,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                                               child: SizedBox(
                                                 width: 150,
                                                 child: Text(
-                                                    exhibition.localeName
-                                                        .toUpperCase(),
+                                                    exhibition.id.toUpperCase(),
                                                     style: const TextStyle(
                                                         fontSize: 22,
                                                         fontWeight:

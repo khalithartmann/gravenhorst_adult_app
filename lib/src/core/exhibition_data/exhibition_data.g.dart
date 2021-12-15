@@ -9,8 +9,7 @@ part of 'exhibition_data.dart';
 _$_ExhibitionData _$$_ExhibitionDataFromJson(Map<String, dynamic> json) =>
     _$_ExhibitionData(
       id: json['id'] as String,
-      localeName: json['locale_name'] as String,
-      contentSize: json['content_size'] as int,
+      contentSize: json['asset_content_size'] as int,
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
       tours: (json['tours'] as List<dynamic>)
@@ -21,8 +20,7 @@ _$_ExhibitionData _$$_ExhibitionDataFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_ExhibitionDataToJson(_$_ExhibitionData instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'locale_name': instance.localeName,
-      'content_size': instance.contentSize,
+      'asset_content_size': instance.contentSize,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'tours': instance.tours.map((e) => e.toJson()).toList(),
@@ -31,8 +29,8 @@ Map<String, dynamic> _$$_ExhibitionDataToJson(_$_ExhibitionData instance) =>
 _$_Tour _$$_TourFromJson(Map<String, dynamic> json) => _$_Tour(
       id: json['id'] as int,
       name: json['name'] as String,
-      sortOrder: json['sort_order'] as int,
-      description: json['description'] as String,
+      sortOrder: json['sort_order'] as int?,
+      description: json['description'] as String?,
       exhibits: (json['locations'] as List<dynamic>)
           .map((e) => Exhibit.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -48,7 +46,7 @@ Map<String, dynamic> _$$_TourToJson(_$_Tour instance) => <String, dynamic>{
 
 _$_Exhibit _$$_ExhibitFromJson(Map<String, dynamic> json) => _$_Exhibit(
       id: json['id'] as int,
-      sortOrder: json['sort_order'] as int,
+      sortOrder: json['sort_order'] as int?,
       name: json['name'] as String,
       latitude: json['latitude'] as String,
       longitude: json['longitude'] as String,
@@ -73,10 +71,10 @@ Map<String, dynamic> _$$_ExhibitToJson(_$_Exhibit instance) =>
 
 _$_Entry _$$_EntryFromJson(Map<String, dynamic> json) => _$_Entry(
       id: json['id'] as int,
-      sortOrder: json['sort_order'] as int,
+      sortOrder: json['sort_order'] as int?,
       type: json['type'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      title: json['title'] as String?,
+      description: json['description'] as String?,
       background:
           Background.fromJson(json['background'] as Map<String, dynamic>),
       assets: (json['assets'] as List<dynamic>)
@@ -112,28 +110,28 @@ Map<String, dynamic> _$$_BackgroundToJson(_$_Background instance) =>
 
 _$_Asset _$$_AssetFromJson(Map<String, dynamic> json) => _$_Asset(
       id: json['id'] as int,
-      sortOrder: json['sort_order'] as int,
-      assetUrl: json['asset_url'] as String,
+      sortOrder: json['sort_order'] as int?,
+      url: json['url'] as String,
       mimeType: json['mime_type'] as String,
-      description: json['description'] as String,
-      title: json['title'] as String,
-      copyright: json['copyright'] as String,
-      assetSize: json['asset_size'] as int,
-      assetDuration: json['asset_duration'] as int,
-      autoplay: json['autoplay'] as bool,
+      description: json['description'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      copyright: json['copyright'] as String?,
+      size: json['size'] as int,
+      duration: (json['duration'] as num?)?.toDouble(),
+      autoplay: json['autoplay'] as bool?,
       updatedAt: json['updated_at'] as String,
     );
 
 Map<String, dynamic> _$$_AssetToJson(_$_Asset instance) => <String, dynamic>{
       'id': instance.id,
       'sort_order': instance.sortOrder,
-      'asset_url': instance.assetUrl,
+      'url': instance.url,
       'mime_type': instance.mimeType,
       'description': instance.description,
       'title': instance.title,
       'copyright': instance.copyright,
-      'asset_size': instance.assetSize,
-      'asset_duration': instance.assetDuration,
+      'size': instance.size,
+      'duration': instance.duration,
       'autoplay': instance.autoplay,
       'updated_at': instance.updatedAt,
     };

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gravenhorst_adults_app/src/core/api_config.dart';
+import 'package:gravenhorst_adults_app/src/core/dependency_injection/dependency_injection.dart';
 import 'package:gravenhorst_adults_app/src/core/failure.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,8 +14,7 @@ part 'exhibition_data.freezed.dart';
 class ExhibitionData with _$ExhibitionData {
   const factory ExhibitionData({
     required String id,
-    required String localeName,
-    required int contentSize,
+    @JsonKey(name: 'asset_content_size') required int contentSize,
     required String createdAt,
     required String updatedAt,
     required List<Tour> tours,
@@ -28,8 +29,8 @@ class Tour with _$Tour {
   const factory Tour({
     required int id,
     required String name,
-    required int sortOrder,
-    required String description,
+    int? sortOrder,
+    String? description,
     @JsonKey(name: 'locations') required List<Exhibit> exhibits,
   }) = _Tour;
 
@@ -40,7 +41,7 @@ class Tour with _$Tour {
 class Exhibit with _$Exhibit {
   const factory Exhibit({
     required int id,
-    required int sortOrder,
+    int? sortOrder,
     required String name,
     required String latitude,
     required String longitude,
@@ -57,10 +58,10 @@ class Exhibit with _$Exhibit {
 class Entry with _$Entry {
   const factory Entry({
     required int id,
-    required int sortOrder,
+    int? sortOrder,
     required String type,
-    required String title,
-    required String description,
+    String? title,
+    String? description,
     required Background background,
     required List<Asset> assets,
   }) = _Entry;
@@ -88,24 +89,28 @@ class Asset with _$Asset {
   const Asset._();
   const factory Asset({
     required int id,
-    required int sortOrder,
-    required String assetUrl,
+    int? sortOrder,
+    required String url,
     required String mimeType,
-    required String description,
-    required String title,
-    required String copyright,
-    required int assetSize,
-    required int assetDuration,
-    required bool autoplay,
+    @Default("") String description,
+    @Default("") String title,
+    String? copyright,
+    required int size,
+    double? duration,
+    bool? autoplay,
     required String updatedAt,
   }) = _Asset;
 
   factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
 
-  final assetFolderPath = 'nordleu.de/assets/';
-
   String get assetUrlLocalPath {
-    return assetUrl.replaceFirst('https://', '');
+    var baseUrl = getIt<ApiConfig>().baseUrl;
+    return Uri.file('$baseUrl$url').toFilePath();
+  }
+
+  String get remoteUrl {
+    var baseUrl = getIt<ApiConfig>().baseUrl;
+    return Uri.https(baseUrl, url).toString();
   }
 
   AssetType get assetType {
@@ -123,8 +128,6 @@ class Asset with _$Asset {
   // todo check if .creat(recursive:true) causes problems when you call this function for the sole purpose of retrieveing the file
   Future<File> localFile() async {
     final path = await documentDirectoryPath;
-
-    print('$path/$assetUrlLocalPath');
 
     return File('$path/$assetUrlLocalPath');
   }

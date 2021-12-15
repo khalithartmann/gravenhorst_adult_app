@@ -14,7 +14,7 @@ class SelectableGalleryExhibitPage extends StatefulWidget {
 
   final Entry entry;
 
-  static const type = 'selectingGallery';
+  static const type = 'SelectingGallery';
 
   @override
   State<SelectableGalleryExhibitPage> createState() =>
@@ -37,13 +37,14 @@ class _SelectableGalleryExhibitPageState
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-              padding: const EdgeInsets.only(top: 54),
-              child:
-                  DescriptionContainer(description: widget.entry.description)),
-        ),
+        if (widget.entry.description != null)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 54),
+                child: DescriptionContainer(
+                    description: widget.entry.description!)),
+          ),
         Padding(
           padding: const EdgeInsets.only(top: 30),
           child: LocalAsset(

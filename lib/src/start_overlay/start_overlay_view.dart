@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
@@ -37,7 +38,6 @@ class _StartOverlayViewState extends State<StartOverlayView>
       logger.i("this is it ${exhibitionDataController.state}");
       if (exhibitionDataController.state ==
           ExhibitoinDataControllerState.downloadingExhibitionData) {
-        print('closing overlay');
         setState(() {
           isExpanded = true;
         });
@@ -47,10 +47,8 @@ class _StartOverlayViewState extends State<StartOverlayView>
         });
       }
 
-      print('isExpanded $isExpanded');
       if (!isExpanded) {
-        _controller.animateTo((MediaQuery.of(context).size.height - 130) /
-            MediaQuery.of(context).size.height);
+        _controller.animateTo(1);
       } else {
         _controller.animateTo(0);
       }
@@ -60,8 +58,11 @@ class _StartOverlayViewState extends State<StartOverlayView>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
+    return AnimatedPositioned(
+      duration: standardAnimationDuration,
+      bottom: isExpanded ? 0 : MediaQuery.of(context).size.height - 80,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       child: Stack(children: [
         buildBackgroundWithHole(context),
         buildHeadline2(context),
@@ -73,13 +74,6 @@ class _StartOverlayViewState extends State<StartOverlayView>
             ? const ExhibitionDataDownloadIndicator()
             : Container()
       ]),
-      builder: (BuildContext context, Widget? child) {
-        return Transform.translate(
-          offset: Offset(
-              0, -(MediaQuery.of(context).size.height * _controller.value)),
-          child: child,
-        );
-      },
     );
   }
 
@@ -150,8 +144,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
         child: IconButton(
           onPressed: () {
             if (isExpanded) {
-              _controller.animateTo((MediaQuery.of(context).size.height - 130) /
-                  MediaQuery.of(context).size.height);
+              _controller.animateTo(1);
             } else {
               _controller.animateTo(0);
             }
@@ -168,32 +161,24 @@ class _StartOverlayViewState extends State<StartOverlayView>
             ),
           ),
         ),
-        // icon: AnimatedBuilder(
-        //   child: const Icon(Icons.arrow_upward, color: Colors.white),
-        //   animation: _controller,
-        //   builder: (context, child) {
-        //     return Transform.rotate(
-        //       angle: ((180 * 1.2) * _controller.value) * math.pi / 180,
-        //       child: child,
-        //     );
-        //   },
-        // )),
       ),
     );
   }
 
-  AnimatedAlign buildLogo() {
+  Widget buildLogo() {
     return AnimatedAlign(
       duration: standardAnimationDuration,
       alignment: isExpanded ? Alignment.centerLeft : Alignment.bottomLeft,
-      child: const SizedBox(
-          height: 77,
-          width: 121,
-          child: Icon(
-            Icons.circle,
-            color: Colors.white,
-            size: 40,
-          )),
+      child: Container(
+        margin: const EdgeInsets.only(left: 35, bottom: 10),
+        height: 77,
+        width: 121,
+        child: Image.asset(
+          logoPath,
+          width: 64,
+          height: 40,
+        ),
+      ),
     );
   }
 

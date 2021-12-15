@@ -9,7 +9,7 @@ import 'local_asset.dart';
 class RegularExhibitPage extends StatelessWidget {
   const RegularExhibitPage({Key? key, required this.entry}) : super(key: key);
 
-  static const type = 'regular';
+  static const type = 'Regular';
 
   final Entry entry;
 
@@ -18,12 +18,13 @@ class RegularExhibitPage extends StatelessWidget {
     assert(entry.assets.length == 1);
     return ListView(
       children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-              padding: const EdgeInsets.only(top: 54),
-              child: DescriptionContainer(description: entry.description)),
-        ),
+        if (entry.description != null)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 54),
+                child: DescriptionContainer(description: entry.description!)),
+          ),
         Padding(
           padding: const EdgeInsets.only(top: 30),
           child: LocalAsset(

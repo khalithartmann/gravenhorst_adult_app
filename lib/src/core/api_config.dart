@@ -9,16 +9,15 @@ abstract class ApiConfig {
 @Singleton(as: ApiConfig, env: [Environment.dev])
 class DevApiConfig implements ApiConfig {
   @override
-  String get baseUrl => 'nordleu.de';
+  String get baseUrl => 'nordleudi.de';
 
   @override
   Uri getSupportedLocalesUri() {
-    return Uri.https(baseUrl, '/gravenhorst_cms/api/v1/locales.json');
+    return Uri.https(baseUrl, '/api/v1/locales');
   }
 
   @override
   Uri getTourDataForLocaleUri({required String localeId}) {
-    return Uri.parse(
-        'https://raw.githubusercontent.com/fg-hh/gh_test-data/main/api/v1/locales/$localeId.json');
+    return Uri.https(baseUrl, '/api/v1/locales/$localeId');
   }
 }

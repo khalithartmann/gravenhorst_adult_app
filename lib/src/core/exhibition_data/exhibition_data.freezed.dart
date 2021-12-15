@@ -23,14 +23,12 @@ class _$ExhibitionDataTearOff {
 
   _ExhibitionData call(
       {required String id,
-      required String localeName,
-      required int contentSize,
+      @JsonKey(name: 'asset_content_size') required int contentSize,
       required String createdAt,
       required String updatedAt,
       required List<Tour> tours}) {
     return _ExhibitionData(
       id: id,
-      localeName: localeName,
       contentSize: contentSize,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -49,7 +47,7 @@ const $ExhibitionData = _$ExhibitionDataTearOff();
 /// @nodoc
 mixin _$ExhibitionData {
   String get id => throw _privateConstructorUsedError;
-  String get localeName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'asset_content_size')
   int get contentSize => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
@@ -68,8 +66,7 @@ abstract class $ExhibitionDataCopyWith<$Res> {
       _$ExhibitionDataCopyWithImpl<$Res>;
   $Res call(
       {String id,
-      String localeName,
-      int contentSize,
+      @JsonKey(name: 'asset_content_size') int contentSize,
       String createdAt,
       String updatedAt,
       List<Tour> tours});
@@ -87,7 +84,6 @@ class _$ExhibitionDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? localeName = freezed,
     Object? contentSize = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -97,10 +93,6 @@ class _$ExhibitionDataCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      localeName: localeName == freezed
-          ? _value.localeName
-          : localeName // ignore: cast_nullable_to_non_nullable
               as String,
       contentSize: contentSize == freezed
           ? _value.contentSize
@@ -131,8 +123,7 @@ abstract class _$ExhibitionDataCopyWith<$Res>
   @override
   $Res call(
       {String id,
-      String localeName,
-      int contentSize,
+      @JsonKey(name: 'asset_content_size') int contentSize,
       String createdAt,
       String updatedAt,
       List<Tour> tours});
@@ -152,7 +143,6 @@ class __$ExhibitionDataCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? localeName = freezed,
     Object? contentSize = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -162,10 +152,6 @@ class __$ExhibitionDataCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      localeName: localeName == freezed
-          ? _value.localeName
-          : localeName // ignore: cast_nullable_to_non_nullable
               as String,
       contentSize: contentSize == freezed
           ? _value.contentSize
@@ -192,8 +178,7 @@ class __$ExhibitionDataCopyWithImpl<$Res>
 class _$_ExhibitionData implements _ExhibitionData {
   const _$_ExhibitionData(
       {required this.id,
-      required this.localeName,
-      required this.contentSize,
+      @JsonKey(name: 'asset_content_size') required this.contentSize,
       required this.createdAt,
       required this.updatedAt,
       required this.tours});
@@ -204,8 +189,7 @@ class _$_ExhibitionData implements _ExhibitionData {
   @override
   final String id;
   @override
-  final String localeName;
-  @override
+  @JsonKey(name: 'asset_content_size')
   final int contentSize;
   @override
   final String createdAt;
@@ -216,7 +200,7 @@ class _$_ExhibitionData implements _ExhibitionData {
 
   @override
   String toString() {
-    return 'ExhibitionData(id: $id, localeName: $localeName, contentSize: $contentSize, createdAt: $createdAt, updatedAt: $updatedAt, tours: $tours)';
+    return 'ExhibitionData(id: $id, contentSize: $contentSize, createdAt: $createdAt, updatedAt: $updatedAt, tours: $tours)';
   }
 
   @override
@@ -225,8 +209,6 @@ class _$_ExhibitionData implements _ExhibitionData {
         (other.runtimeType == runtimeType &&
             other is _ExhibitionData &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.localeName, localeName) ||
-                other.localeName == localeName) &&
             (identical(other.contentSize, contentSize) ||
                 other.contentSize == contentSize) &&
             (identical(other.createdAt, createdAt) ||
@@ -237,8 +219,8 @@ class _$_ExhibitionData implements _ExhibitionData {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, localeName, contentSize,
-      createdAt, updatedAt, const DeepCollectionEquality().hash(tours));
+  int get hashCode => Object.hash(runtimeType, id, contentSize, createdAt,
+      updatedAt, const DeepCollectionEquality().hash(tours));
 
   @JsonKey(ignore: true)
   @override
@@ -254,8 +236,7 @@ class _$_ExhibitionData implements _ExhibitionData {
 abstract class _ExhibitionData implements ExhibitionData {
   const factory _ExhibitionData(
       {required String id,
-      required String localeName,
-      required int contentSize,
+      @JsonKey(name: 'asset_content_size') required int contentSize,
       required String createdAt,
       required String updatedAt,
       required List<Tour> tours}) = _$_ExhibitionData;
@@ -266,8 +247,7 @@ abstract class _ExhibitionData implements ExhibitionData {
   @override
   String get id;
   @override
-  String get localeName;
-  @override
+  @JsonKey(name: 'asset_content_size')
   int get contentSize;
   @override
   String get createdAt;
@@ -292,8 +272,8 @@ class _$TourTearOff {
   _Tour call(
       {required int id,
       required String name,
-      required int sortOrder,
-      required String description,
+      int? sortOrder,
+      String? description,
       @JsonKey(name: 'locations') required List<Exhibit> exhibits}) {
     return _Tour(
       id: id,
@@ -316,8 +296,8 @@ const $Tour = _$TourTearOff();
 mixin _$Tour {
   int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get sortOrder => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  int? get sortOrder => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'locations')
   List<Exhibit> get exhibits => throw _privateConstructorUsedError;
 
@@ -333,8 +313,8 @@ abstract class $TourCopyWith<$Res> {
   $Res call(
       {int id,
       String name,
-      int sortOrder,
-      String description,
+      int? sortOrder,
+      String? description,
       @JsonKey(name: 'locations') List<Exhibit> exhibits});
 }
 
@@ -366,11 +346,11 @@ class _$TourCopyWithImpl<$Res> implements $TourCopyWith<$Res> {
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       exhibits: exhibits == freezed
           ? _value.exhibits
           : exhibits // ignore: cast_nullable_to_non_nullable
@@ -387,8 +367,8 @@ abstract class _$TourCopyWith<$Res> implements $TourCopyWith<$Res> {
   $Res call(
       {int id,
       String name,
-      int sortOrder,
-      String description,
+      int? sortOrder,
+      String? description,
       @JsonKey(name: 'locations') List<Exhibit> exhibits});
 }
 
@@ -421,11 +401,11 @@ class __$TourCopyWithImpl<$Res> extends _$TourCopyWithImpl<$Res>
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       exhibits: exhibits == freezed
           ? _value.exhibits
           : exhibits // ignore: cast_nullable_to_non_nullable
@@ -440,8 +420,8 @@ class _$_Tour implements _Tour {
   const _$_Tour(
       {required this.id,
       required this.name,
-      required this.sortOrder,
-      required this.description,
+      this.sortOrder,
+      this.description,
       @JsonKey(name: 'locations') required this.exhibits});
 
   factory _$_Tour.fromJson(Map<String, dynamic> json) => _$$_TourFromJson(json);
@@ -451,9 +431,9 @@ class _$_Tour implements _Tour {
   @override
   final String name;
   @override
-  final int sortOrder;
+  final int? sortOrder;
   @override
-  final String description;
+  final String? description;
   @override
   @JsonKey(name: 'locations')
   final List<Exhibit> exhibits;
@@ -496,8 +476,8 @@ abstract class _Tour implements Tour {
   const factory _Tour(
       {required int id,
       required String name,
-      required int sortOrder,
-      required String description,
+      int? sortOrder,
+      String? description,
       @JsonKey(name: 'locations') required List<Exhibit> exhibits}) = _$_Tour;
 
   factory _Tour.fromJson(Map<String, dynamic> json) = _$_Tour.fromJson;
@@ -507,9 +487,9 @@ abstract class _Tour implements Tour {
   @override
   String get name;
   @override
-  int get sortOrder;
+  int? get sortOrder;
   @override
-  String get description;
+  String? get description;
   @override
   @JsonKey(name: 'locations')
   List<Exhibit> get exhibits;
@@ -528,7 +508,7 @@ class _$ExhibitTearOff {
 
   _Exhibit call(
       {required int id,
-      required int sortOrder,
+      int? sortOrder,
       required String name,
       required String latitude,
       required String longitude,
@@ -558,7 +538,7 @@ const $Exhibit = _$ExhibitTearOff();
 /// @nodoc
 mixin _$Exhibit {
   int get id => throw _privateConstructorUsedError;
-  int get sortOrder => throw _privateConstructorUsedError;
+  int? get sortOrder => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get latitude => throw _privateConstructorUsedError;
   String get longitude => throw _privateConstructorUsedError;
@@ -577,7 +557,7 @@ abstract class $ExhibitCopyWith<$Res> {
       _$ExhibitCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      int sortOrder,
+      int? sortOrder,
       String name,
       String latitude,
       String longitude,
@@ -613,7 +593,7 @@ class _$ExhibitCopyWithImpl<$Res> implements $ExhibitCopyWith<$Res> {
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -649,7 +629,7 @@ abstract class _$ExhibitCopyWith<$Res> implements $ExhibitCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      int sortOrder,
+      int? sortOrder,
       String name,
       String latitude,
       String longitude,
@@ -686,7 +666,7 @@ class __$ExhibitCopyWithImpl<$Res> extends _$ExhibitCopyWithImpl<$Res>
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -720,7 +700,7 @@ class __$ExhibitCopyWithImpl<$Res> extends _$ExhibitCopyWithImpl<$Res>
 class _$_Exhibit implements _Exhibit {
   const _$_Exhibit(
       {required this.id,
-      required this.sortOrder,
+      this.sortOrder,
       required this.name,
       required this.latitude,
       required this.longitude,
@@ -734,7 +714,7 @@ class _$_Exhibit implements _Exhibit {
   @override
   final int id;
   @override
-  final int sortOrder;
+  final int? sortOrder;
   @override
   final String name;
   @override
@@ -799,7 +779,7 @@ class _$_Exhibit implements _Exhibit {
 abstract class _Exhibit implements Exhibit {
   const factory _Exhibit(
       {required int id,
-      required int sortOrder,
+      int? sortOrder,
       required String name,
       required String latitude,
       required String longitude,
@@ -812,7 +792,7 @@ abstract class _Exhibit implements Exhibit {
   @override
   int get id;
   @override
-  int get sortOrder;
+  int? get sortOrder;
   @override
   String get name;
   @override
@@ -841,10 +821,10 @@ class _$EntryTearOff {
 
   _Entry call(
       {required int id,
-      required int sortOrder,
+      int? sortOrder,
       required String type,
-      required String title,
-      required String description,
+      String? title,
+      String? description,
       required Background background,
       required List<Asset> assets}) {
     return _Entry(
@@ -869,10 +849,10 @@ const $Entry = _$EntryTearOff();
 /// @nodoc
 mixin _$Entry {
   int get id => throw _privateConstructorUsedError;
-  int get sortOrder => throw _privateConstructorUsedError;
+  int? get sortOrder => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   Background get background => throw _privateConstructorUsedError;
   List<Asset> get assets => throw _privateConstructorUsedError;
 
@@ -887,10 +867,10 @@ abstract class $EntryCopyWith<$Res> {
       _$EntryCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      int sortOrder,
+      int? sortOrder,
       String type,
-      String title,
-      String description,
+      String? title,
+      String? description,
       Background background,
       List<Asset> assets});
 
@@ -923,7 +903,7 @@ class _$EntryCopyWithImpl<$Res> implements $EntryCopyWith<$Res> {
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -931,11 +911,11 @@ class _$EntryCopyWithImpl<$Res> implements $EntryCopyWith<$Res> {
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       background: background == freezed
           ? _value.background
           : background // ignore: cast_nullable_to_non_nullable
@@ -962,10 +942,10 @@ abstract class _$EntryCopyWith<$Res> implements $EntryCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      int sortOrder,
+      int? sortOrder,
       String type,
-      String title,
-      String description,
+      String? title,
+      String? description,
       Background background,
       List<Asset> assets});
 
@@ -1000,7 +980,7 @@ class __$EntryCopyWithImpl<$Res> extends _$EntryCopyWithImpl<$Res>
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -1008,11 +988,11 @@ class __$EntryCopyWithImpl<$Res> extends _$EntryCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       background: background == freezed
           ? _value.background
           : background // ignore: cast_nullable_to_non_nullable
@@ -1030,10 +1010,10 @@ class __$EntryCopyWithImpl<$Res> extends _$EntryCopyWithImpl<$Res>
 class _$_Entry implements _Entry {
   const _$_Entry(
       {required this.id,
-      required this.sortOrder,
+      this.sortOrder,
       required this.type,
-      required this.title,
-      required this.description,
+      this.title,
+      this.description,
       required this.background,
       required this.assets});
 
@@ -1043,13 +1023,13 @@ class _$_Entry implements _Entry {
   @override
   final int id;
   @override
-  final int sortOrder;
+  final int? sortOrder;
   @override
   final String type;
   @override
-  final String title;
+  final String? title;
   @override
-  final String description;
+  final String? description;
   @override
   final Background background;
   @override
@@ -1095,10 +1075,10 @@ class _$_Entry implements _Entry {
 abstract class _Entry implements Entry {
   const factory _Entry(
       {required int id,
-      required int sortOrder,
+      int? sortOrder,
       required String type,
-      required String title,
-      required String description,
+      String? title,
+      String? description,
       required Background background,
       required List<Asset> assets}) = _$_Entry;
 
@@ -1107,13 +1087,13 @@ abstract class _Entry implements Entry {
   @override
   int get id;
   @override
-  int get sortOrder;
+  int? get sortOrder;
   @override
   String get type;
   @override
-  String get title;
+  String? get title;
   @override
-  String get description;
+  String? get description;
   @override
   Background get background;
   @override
@@ -1344,26 +1324,26 @@ class _$AssetTearOff {
 
   _Asset call(
       {required int id,
-      required int sortOrder,
-      required String assetUrl,
+      int? sortOrder,
+      required String url,
       required String mimeType,
-      required String description,
-      required String title,
-      required String copyright,
-      required int assetSize,
-      required int assetDuration,
-      required bool autoplay,
+      String description = "",
+      String title = "",
+      String? copyright,
+      required int size,
+      double? duration,
+      bool? autoplay,
       required String updatedAt}) {
     return _Asset(
       id: id,
       sortOrder: sortOrder,
-      assetUrl: assetUrl,
+      url: url,
       mimeType: mimeType,
       description: description,
       title: title,
       copyright: copyright,
-      assetSize: assetSize,
-      assetDuration: assetDuration,
+      size: size,
+      duration: duration,
       autoplay: autoplay,
       updatedAt: updatedAt,
     );
@@ -1380,15 +1360,15 @@ const $Asset = _$AssetTearOff();
 /// @nodoc
 mixin _$Asset {
   int get id => throw _privateConstructorUsedError;
-  int get sortOrder => throw _privateConstructorUsedError;
-  String get assetUrl => throw _privateConstructorUsedError;
+  int? get sortOrder => throw _privateConstructorUsedError;
+  String get url => throw _privateConstructorUsedError;
   String get mimeType => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get copyright => throw _privateConstructorUsedError;
-  int get assetSize => throw _privateConstructorUsedError;
-  int get assetDuration => throw _privateConstructorUsedError;
-  bool get autoplay => throw _privateConstructorUsedError;
+  String? get copyright => throw _privateConstructorUsedError;
+  int get size => throw _privateConstructorUsedError;
+  double? get duration => throw _privateConstructorUsedError;
+  bool? get autoplay => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1402,15 +1382,15 @@ abstract class $AssetCopyWith<$Res> {
       _$AssetCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      int sortOrder,
-      String assetUrl,
+      int? sortOrder,
+      String url,
       String mimeType,
       String description,
       String title,
-      String copyright,
-      int assetSize,
-      int assetDuration,
-      bool autoplay,
+      String? copyright,
+      int size,
+      double? duration,
+      bool? autoplay,
       String updatedAt});
 }
 
@@ -1426,13 +1406,13 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? sortOrder = freezed,
-    Object? assetUrl = freezed,
+    Object? url = freezed,
     Object? mimeType = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
-    Object? assetSize = freezed,
-    Object? assetDuration = freezed,
+    Object? size = freezed,
+    Object? duration = freezed,
     Object? autoplay = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -1444,10 +1424,10 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
-      assetUrl: assetUrl == freezed
-          ? _value.assetUrl
-          : assetUrl // ignore: cast_nullable_to_non_nullable
+              as int?,
+      url: url == freezed
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String,
       mimeType: mimeType == freezed
           ? _value.mimeType
@@ -1464,19 +1444,19 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
       copyright: copyright == freezed
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
-              as String,
-      assetSize: assetSize == freezed
-          ? _value.assetSize
-          : assetSize // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
               as int,
-      assetDuration: assetDuration == freezed
-          ? _value.assetDuration
-          : assetDuration // ignore: cast_nullable_to_non_nullable
-              as int,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as double?,
       autoplay: autoplay == freezed
           ? _value.autoplay
           : autoplay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -1492,15 +1472,15 @@ abstract class _$AssetCopyWith<$Res> implements $AssetCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      int sortOrder,
-      String assetUrl,
+      int? sortOrder,
+      String url,
       String mimeType,
       String description,
       String title,
-      String copyright,
-      int assetSize,
-      int assetDuration,
-      bool autoplay,
+      String? copyright,
+      int size,
+      double? duration,
+      bool? autoplay,
       String updatedAt});
 }
 
@@ -1517,13 +1497,13 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? sortOrder = freezed,
-    Object? assetUrl = freezed,
+    Object? url = freezed,
     Object? mimeType = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
-    Object? assetSize = freezed,
-    Object? assetDuration = freezed,
+    Object? size = freezed,
+    Object? duration = freezed,
     Object? autoplay = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -1535,10 +1515,10 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
       sortOrder: sortOrder == freezed
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
-              as int,
-      assetUrl: assetUrl == freezed
-          ? _value.assetUrl
-          : assetUrl // ignore: cast_nullable_to_non_nullable
+              as int?,
+      url: url == freezed
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
               as String,
       mimeType: mimeType == freezed
           ? _value.mimeType
@@ -1555,19 +1535,19 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
       copyright: copyright == freezed
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
-              as String,
-      assetSize: assetSize == freezed
-          ? _value.assetSize
-          : assetSize // ignore: cast_nullable_to_non_nullable
+              as String?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
               as int,
-      assetDuration: assetDuration == freezed
-          ? _value.assetDuration
-          : assetDuration // ignore: cast_nullable_to_non_nullable
-              as int,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as double?,
       autoplay: autoplay == freezed
           ? _value.autoplay
           : autoplay // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -1581,15 +1561,15 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
 class _$_Asset extends _Asset {
   const _$_Asset(
       {required this.id,
-      required this.sortOrder,
-      required this.assetUrl,
+      this.sortOrder,
+      required this.url,
       required this.mimeType,
-      required this.description,
-      required this.title,
-      required this.copyright,
-      required this.assetSize,
-      required this.assetDuration,
-      required this.autoplay,
+      this.description = "",
+      this.title = "",
+      this.copyright,
+      required this.size,
+      this.duration,
+      this.autoplay,
       required this.updatedAt})
       : super._();
 
@@ -1599,29 +1579,31 @@ class _$_Asset extends _Asset {
   @override
   final int id;
   @override
-  final int sortOrder;
+  final int? sortOrder;
   @override
-  final String assetUrl;
+  final String url;
   @override
   final String mimeType;
+  @JsonKey(defaultValue: "")
   @override
   final String description;
+  @JsonKey(defaultValue: "")
   @override
   final String title;
   @override
-  final String copyright;
+  final String? copyright;
   @override
-  final int assetSize;
+  final int size;
   @override
-  final int assetDuration;
+  final double? duration;
   @override
-  final bool autoplay;
+  final bool? autoplay;
   @override
   final String updatedAt;
 
   @override
   String toString() {
-    return 'Asset(id: $id, sortOrder: $sortOrder, assetUrl: $assetUrl, mimeType: $mimeType, description: $description, title: $title, copyright: $copyright, assetSize: $assetSize, assetDuration: $assetDuration, autoplay: $autoplay, updatedAt: $updatedAt)';
+    return 'Asset(id: $id, sortOrder: $sortOrder, url: $url, mimeType: $mimeType, description: $description, title: $title, copyright: $copyright, size: $size, duration: $duration, autoplay: $autoplay, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1632,8 +1614,7 @@ class _$_Asset extends _Asset {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sortOrder, sortOrder) ||
                 other.sortOrder == sortOrder) &&
-            (identical(other.assetUrl, assetUrl) ||
-                other.assetUrl == assetUrl) &&
+            (identical(other.url, url) || other.url == url) &&
             (identical(other.mimeType, mimeType) ||
                 other.mimeType == mimeType) &&
             (identical(other.description, description) ||
@@ -1641,10 +1622,9 @@ class _$_Asset extends _Asset {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.copyright, copyright) ||
                 other.copyright == copyright) &&
-            (identical(other.assetSize, assetSize) ||
-                other.assetSize == assetSize) &&
-            (identical(other.assetDuration, assetDuration) ||
-                other.assetDuration == assetDuration) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
             (identical(other.autoplay, autoplay) ||
                 other.autoplay == autoplay) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1652,19 +1632,8 @@ class _$_Asset extends _Asset {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      sortOrder,
-      assetUrl,
-      mimeType,
-      description,
-      title,
-      copyright,
-      assetSize,
-      assetDuration,
-      autoplay,
-      updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, sortOrder, url, mimeType,
+      description, title, copyright, size, duration, autoplay, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -1680,15 +1649,15 @@ class _$_Asset extends _Asset {
 abstract class _Asset extends Asset {
   const factory _Asset(
       {required int id,
-      required int sortOrder,
-      required String assetUrl,
+      int? sortOrder,
+      required String url,
       required String mimeType,
-      required String description,
-      required String title,
-      required String copyright,
-      required int assetSize,
-      required int assetDuration,
-      required bool autoplay,
+      String description,
+      String title,
+      String? copyright,
+      required int size,
+      double? duration,
+      bool? autoplay,
       required String updatedAt}) = _$_Asset;
   const _Asset._() : super._();
 
@@ -1697,9 +1666,9 @@ abstract class _Asset extends Asset {
   @override
   int get id;
   @override
-  int get sortOrder;
+  int? get sortOrder;
   @override
-  String get assetUrl;
+  String get url;
   @override
   String get mimeType;
   @override
@@ -1707,13 +1676,13 @@ abstract class _Asset extends Asset {
   @override
   String get title;
   @override
-  String get copyright;
+  String? get copyright;
   @override
-  int get assetSize;
+  int get size;
   @override
-  int get assetDuration;
+  double? get duration;
   @override
-  bool get autoplay;
+  bool? get autoplay;
   @override
   String get updatedAt;
   @override

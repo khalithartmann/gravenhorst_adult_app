@@ -15,7 +15,7 @@ class ExhibitEntryPointPage extends StatefulWidget {
 
   final Entry entry;
 
-  static const type = 'entryPoint';
+  static const type = 'EntryPoint';
 
   @override
   State<ExhibitEntryPointPage> createState() => _ExhibitEntryPointPageState();
@@ -73,6 +73,9 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
 
   bool get hasBackgroundImage => backgroundImageAsset != null;
   Widget buildHeadline() {
+    if (widget.entry.title == null) {
+      return Container();
+    }
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -82,7 +85,7 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
           right: 30,
         ),
         child: Text(
-          widget.entry.title,
+          widget.entry.title!,
           style: Theme.of(context).textTheme.headline2!.copyWith(
                 color: darkGrey,
                 fontWeight: FontWeight.normal,
@@ -114,5 +117,11 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
             ]),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    audioPlayer.dispose();
   }
 }
