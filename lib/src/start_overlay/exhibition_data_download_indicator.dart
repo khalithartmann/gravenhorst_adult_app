@@ -62,7 +62,6 @@ class ExhibitionDataDownloadIndicator extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Icon(
                           Icons.downloading,
@@ -73,13 +72,14 @@ class ExhibitionDataDownloadIndicator extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
-                              AppLocalizations.of(context)!.downloadingHint,
-                              textAlign: TextAlign.start,
-                              style: const TextStyle(
-                                  fontSize: 32,
-                                  color: darkGrey,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                                AppLocalizations.of(context)!.downloadingHint,
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                        color: darkGrey,
+                                        fontWeight: FontWeight.w400)),
                           ),
                         )
                       ],
