@@ -32,19 +32,34 @@ class _MapViewState extends State<MapView> {
             child: FlutterMap(
               mapController: mapController,
               options: MapOptions(
-                center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-                zoom: mapZoom,
-                maxZoom: 22,
+                interactiveFlags:
+                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+
+                bounds: LatLngBounds(
+                    LatLng(52.288301, 7.622590), LatLng(52.286005, 7.626735)),
+                boundsOptions: FitBoundsOptions(
+                  padding: EdgeInsets.zero,
+                ),
+                minZoom: 17,
+                maxZoom: 19,
+
+                // center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
+                zoom: 16,
               ),
               layers: [
                 TileLayerOptions(
-                  maxNativeZoom: 22,
-                  maxZoom: 22,
+                  maxNativeZoom: 19,
+                  minNativeZoom: 17,
+                  maxZoom: 19,
+                  minZoom: 17,
+
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
                   // tileProvider: const CachedTileProvider(),
                 ),
-                MarkerLayerOptions(markers: markers ?? []),
+                MarkerLayerOptions(
+                  markers: markers ?? [],
+                ),
               ],
             ),
           );

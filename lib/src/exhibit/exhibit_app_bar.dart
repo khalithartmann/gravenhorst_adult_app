@@ -19,8 +19,8 @@ class ExhibitAppBar extends StatelessWidget {
       leading: Center(
         child: Image.asset(
           logoPath,
-          width: 64,
-          height: 40,
+          width: 84,
+          height: 53,
         ),
       ),
       title: IconButton(
@@ -33,13 +33,13 @@ class ExhibitAppBar extends StatelessWidget {
           )),
       actions: [
         Padding(
-          padding: EdgeInsets.only(right: 30),
+          padding: const EdgeInsets.only(right: 30),
           child: Text(
             exhibit.name,
             style: Theme.of(context)
                 .textTheme
                 .headline1!
-                .copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                .copyWith(color: Colors.white),
           ),
         ),
       ],

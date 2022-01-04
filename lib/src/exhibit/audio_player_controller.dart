@@ -89,11 +89,15 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
 
   Future<void> play() async {
     var audioPath = (await widget.audioAsset.localFile()).path;
+
     int result = await widget.audioPlayer.play(audioPath, isLocal: true);
     if (result != 1) {
       logger.i('todo show snackbar: could not play audio ');
       // success
     } else {
+      // workaround [https://github.com/bluefireteam/audioplayers/issues/588]
+      await Future.delayed(const Duration(milliseconds: 100));
+
       audioDuration = await widget.audioPlayer.getDuration();
     }
   }

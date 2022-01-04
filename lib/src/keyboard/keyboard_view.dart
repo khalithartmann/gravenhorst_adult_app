@@ -15,7 +15,7 @@ class Keyboard extends StatefulWidget {
 }
 
 class _KeyboardState extends State<Keyboard> {
-  bool isOpen = true;
+  bool isOpen = false;
   bool showLocaleAdminestrationPanel = false;
   @override
   Widget build(BuildContext context) {

@@ -24,10 +24,11 @@ class ExhibitEntryPointPage extends StatefulWidget {
 class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
   late Asset? backgroundImageAsset;
   late Asset audioAsset;
-  var audioPlayer = AudioPlayer();
+  late AudioPlayer audioPlayer;
 
   @override
   void initState() {
+    audioPlayer = AudioPlayer(playerId: '1');
     backgroundImageAsset = getFirstEntryByType(assetType: AssetType.image);
     audioAsset = getFirstEntryByType(assetType: AssetType.audio)!;
     super.initState();

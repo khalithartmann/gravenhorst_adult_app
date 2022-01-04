@@ -6,12 +6,9 @@ class AnimatedSlogan extends StatelessWidget {
   const AnimatedSlogan({
     Key? key,
     required this.isExpanded,
-    required AnimationController controller,
-  })  : _controller = controller,
-        super(key: key);
+  }) : super(key: key);
 
   final bool isExpanded;
-  final AnimationController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +20,22 @@ class AnimatedSlogan extends StatelessWidget {
               isExpanded ? Alignment.bottomCenter : Alignment.bottomRight,
           child: AnimatedPadding(
             duration: standardAnimationDuration,
-            padding: isExpanded
-                ? EdgeInsets.zero
-                : const EdgeInsets.only(right: 0, bottom: 16),
-            child: Transform.scale(
-              scale: 0.5,
-              child: AnimatedPadding(
-                duration: standardAnimationDuration,
-                padding: EdgeInsets.only(bottom: isExpanded ? 100 : 0),
-                child: AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, child) {
-                      return Text(
-                        AppLocalizations.of(context)!.startPageH1,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Colors.white,
-                            fontSize:
-                                Theme.of(context).textTheme.button!.fontSize! *
-                                        (1 - _controller.value) +
-                                    MediaQuery.of(context).size.height * 0.02),
-                      );
-                    }),
+            padding: EdgeInsets.only(
+                bottom: isExpanded ? 90 : 16, right: isExpanded ? 0 : 16),
+            child: AnimatedDefaultTextStyle(
+              style: isExpanded
+                  ? Theme.of(context)
+                      .textTheme
+                      .button!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(color: Colors.white),
+              duration: standardAnimationDuration,
+              child: Text(
+                AppLocalizations.of(context)!.startPageH1,
+                textAlign: TextAlign.center,
               ),
             ),
           ),

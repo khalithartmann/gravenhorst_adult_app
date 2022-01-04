@@ -20,13 +20,8 @@ class StartOverlayView extends StatefulWidget {
   State<StartOverlayView> createState() => _StartOverlayViewState();
 }
 
-class _StartOverlayViewState extends State<StartOverlayView>
-    with TickerProviderStateMixin {
+class _StartOverlayViewState extends State<StartOverlayView> {
   bool isExpanded = true;
-  late final AnimationController _controller = AnimationController(
-    duration: standardAnimationDuration,
-    vsync: this,
-  );
 
   @override
   void initState() {
@@ -46,12 +41,6 @@ class _StartOverlayViewState extends State<StartOverlayView>
           isExpanded = true;
         });
       }
-
-      if (!isExpanded) {
-        _controller.animateTo(1);
-      } else {
-        _controller.animateTo(0);
-      }
     });
     super.initState();
   }
@@ -60,7 +49,10 @@ class _StartOverlayViewState extends State<StartOverlayView>
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: standardAnimationDuration,
-      bottom: isExpanded ? 0 : MediaQuery.of(context).size.height - 80,
+      bottom: isExpanded
+          ? 0
+          : MediaQuery.of(context).size.height -
+              (80 + MediaQuery.of(context).padding.top),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Stack(children: [
@@ -94,7 +86,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
     return AnimatedSwitcher(
       duration: standardAnimationDuration,
       child: exhibitionDataForCurrentLocaleLoaded || !isExpanded
-          ? AnimatedSlogan(isExpanded: isExpanded, controller: _controller)
+          ? AnimatedSlogan(isExpanded: isExpanded)
           : SupportedLocalesList(),
     );
   }
@@ -114,7 +106,7 @@ class _StartOverlayViewState extends State<StartOverlayView>
       alignment: Alignment.topCenter,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top: 30),
+          padding: const EdgeInsets.only(top: 36),
           child: Transform.rotate(
             angle: 270 * math.pi / 180,
             child: Text(
@@ -139,15 +131,11 @@ class _StartOverlayViewState extends State<StartOverlayView>
     }
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
+      child: AnimatedPadding(
+        duration: standardAnimationDuration,
+        padding: EdgeInsets.only(bottom: isExpanded ? 30 : 12),
         child: IconButton(
           onPressed: () {
-            if (isExpanded) {
-              _controller.animateTo(1);
-            } else {
-              _controller.animateTo(0);
-            }
             setState(() {
               isExpanded = !isExpanded;
             });
@@ -171,21 +159,15 @@ class _StartOverlayViewState extends State<StartOverlayView>
       alignment: isExpanded ? Alignment.centerLeft : Alignment.bottomLeft,
       child: Container(
         margin: const EdgeInsets.only(left: 35, bottom: 10),
-        height: 77,
-        width: 121,
+        width: 84,
+        height: 53,
         child: Image.asset(
           logoPath,
-          width: 64,
-          height: 40,
+          width: 84,
+          height: 53,
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }
 
