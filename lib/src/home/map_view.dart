@@ -32,26 +32,24 @@ class _MapViewState extends State<MapView> {
             child: FlutterMap(
               mapController: mapController,
               options: MapOptions(
-                interactiveFlags:
-                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                interactiveFlags: InteractiveFlag.pinchZoom,
 
                 bounds: LatLngBounds(
                     LatLng(52.288301, 7.622590), LatLng(52.286005, 7.626735)),
-                boundsOptions: FitBoundsOptions(
-                  padding: EdgeInsets.zero,
-                ),
-                minZoom: 17,
+                boundsOptions:
+                    const FitBoundsOptions(padding: EdgeInsets.zero, inside: true),
+                minZoom: 18,
                 maxZoom: 19,
 
                 // center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-                zoom: 16,
+                zoom: 18,
               ),
               layers: [
                 TileLayerOptions(
                   maxNativeZoom: 19,
-                  minNativeZoom: 17,
+                  minNativeZoom: 18,
                   maxZoom: 19,
-                  minZoom: 17,
+                  minZoom: 18,
 
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
@@ -75,8 +73,8 @@ class _MapViewState extends State<MapView> {
         .expand((element) => element)
         .map(
           (exhibit) => Marker(
-              height: 80,
-              width: 60,
+              height: 72,
+              width: 54,
               point: LatLng(double.parse(exhibit.latitude),
                   double.parse(exhibit.longitude)),
               builder: (context) => InkWell(
@@ -92,17 +90,19 @@ class _MapViewState extends State<MapView> {
                           boxShadow: const [
                             BoxShadow(blurRadius: 10, color: Colors.black)
                           ]),
-                      height: 88,
-                      width: 66,
+                      height: 72,
+                      width: 54,
                       alignment: Alignment.bottomRight,
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 14, bottom: 8),
+                        padding: const EdgeInsets.only(right: 6, bottom: 3),
                         child: Text(
                           exhibit.name,
                           style: Theme.of(context)
                               .textTheme
-                              .headline4!
-                              .copyWith(color: Colors.white),
+                              .headline5!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400),
                         ),
                       ),
                     ),

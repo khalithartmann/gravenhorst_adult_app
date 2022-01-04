@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:provider/provider.dart';
+
+double get _standardButtonWidth => 66;
+double get _standardButtonHeight => 56;
 
 class LocaleKeyboardControlPanel extends StatelessWidget {
   const LocaleKeyboardControlPanel({
@@ -19,18 +20,18 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
     final exhibitionDataController = context.read<ExhibitoinDataController>();
     return AnimatedPositioned(
       duration: standardAnimationDuration,
-      left: showLocaleAdminestrationPanel ? 0 : -309,
+      left: _getLeftPositionOfControlPanel(context),
       bottom: showLocaleAdminestrationPanel ? 0 : -224,
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Container(
-          width: 375,
+          width: getWidthOfControlPanel(context),
           height: 280,
           color: dullOrange,
           child: Column(
             children: [
               Container(
-                height: 56,
+                height: _standardButtonHeight,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   border: Border(
@@ -47,8 +48,8 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                             border: Border(
                                 right:
                                     BorderSide(width: 0.5, color: dullOrange))),
-                        width: 66,
-                        height: 56,
+                        width: _standardButtonWidth,
+                        height: _standardButtonHeight,
                         child: const Icon(
                           Icons.copy,
                           color: dullOrange,
@@ -76,7 +77,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                                 .map((exhibition) => Align(
                                       alignment: Alignment.topCenter,
                                       child: Container(
-                                        height: 56,
+                                        height: _standardButtonHeight,
                                         child: Row(
                                           children: [
                                             InkWell(
@@ -86,10 +87,10 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                                                         exhibitionData:
                                                             exhibition);
                                               },
-                                              child: const SizedBox(
-                                                height: 56,
-                                                width: 66,
-                                                child: Icon(Icons.delete,
+                                              child: SizedBox(
+                                                height: _standardButtonHeight,
+                                                width: _standardButtonWidth,
+                                                child: const Icon(Icons.delete,
                                                     color: deepOrange),
                                               ),
                                             ),
@@ -131,7 +132,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                         ),
                         Positioned(
                             top: 0,
-                            left: 66,
+                            left: _standardButtonWidth,
                             child: Container(
                                 height: 168, width: 0.5, color: Colors.white))
                       ],
@@ -142,7 +143,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                    width: 66,
+                    width: _standardButtonWidth,
                     decoration: const BoxDecoration(
                         border: Border(
                             right:
@@ -159,8 +160,9 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                       )),
                       padding: MaterialStateProperty.resolveWith(
                           (states) => EdgeInsets.zero),
-                      fixedSize: MaterialStateProperty.resolveWith(
-                          (states) => const Size(309, 56)),
+                      fixedSize: MaterialStateProperty.resolveWith((states) =>
+                          Size(getUpdateButtonWidth(context),
+                              _standardButtonHeight)),
                       backgroundColor: MaterialStateProperty.resolveWith(
                           (states) => deepOrange)),
                   child: const Center(
@@ -178,5 +180,20 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  double getUpdateButtonWidth(BuildContext context) =>
+      getWidthOfControlPanel(context) - _standardButtonWidth;
+
+  double getWidthOfControlPanel(BuildContext context) {
+    return isMobilePlatform(context) ? MediaQuery.of(context).size.width : 375;
+  }
+
+  double _getLeftPositionOfControlPanel(BuildContext context) {
+    return showLocaleAdminestrationPanel
+        ? 0
+        : isMobilePlatform(context)
+            ? (-MediaQuery.of(context).size.width + _standardButtonWidth)
+            : -309;
   }
 }

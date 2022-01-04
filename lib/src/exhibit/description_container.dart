@@ -17,7 +17,7 @@ class DescriptionContainer extends StatelessWidget {
         description,
         style: Theme.of(context)
             .textTheme
-            .bodyText1!
+            .headline5!
             .copyWith(color: darkGrey, fontWeight: FontWeight.w300),
       ),
     );

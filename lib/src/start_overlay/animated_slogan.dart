@@ -21,7 +21,7 @@ class AnimatedSlogan extends StatelessWidget {
           child: AnimatedPadding(
             duration: standardAnimationDuration,
             padding: EdgeInsets.only(
-                bottom: isExpanded ? 90 : 16, right: isExpanded ? 0 : 16),
+                bottom: isExpanded ? 90 : 20, right: isExpanded ? 0 : 20),
             child: AnimatedDefaultTextStyle(
               style: isExpanded
                   ? Theme.of(context)

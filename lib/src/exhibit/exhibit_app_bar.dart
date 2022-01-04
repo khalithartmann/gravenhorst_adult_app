@@ -33,13 +33,11 @@ class ExhibitAppBar extends StatelessWidget {
           )),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 30),
+          padding: const EdgeInsets.only(right: 20),
           child: Text(
             exhibit.name,
-            style: Theme.of(context)
-                .textTheme
-                .headline1!
-                .copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.headline1!.copyWith(
+                color: Colors.white, fontWeight: FontWeight.w400, height: 1.1),
           ),
         ),
       ],

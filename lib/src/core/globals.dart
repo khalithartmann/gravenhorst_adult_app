@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,4 +26,8 @@ Future<String> get documentDirectoryPath async {
   final directory = await getApplicationDocumentsDirectory();
 
   return directory.path;
+}
+
+bool isMobilePlatform(BuildContext context) {
+  return MediaQuery.of(context).size.width <= 400;
 }

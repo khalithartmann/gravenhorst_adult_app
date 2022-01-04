@@ -7,6 +7,9 @@ import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/exhibit_view.dart';
 import 'package:provider/provider.dart';
 
+double get _speedDialButtonWidth => 66;
+double get _speedDialButtonHeight => 56;
+
 enum SpeedDialItemType {
   number,
   submit,
@@ -107,21 +110,23 @@ class _SpeedDialState extends State<SpeedDial> {
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: standardAnimationDuration,
-      left: widget.isOpen ? 66 : -243,
+      left: widget.isOpen
+          ? _speedDialButtonWidth
+          : -((_speedDialButtonWidth * 4)),
       bottom: widget.isOpen ? 0 : -224,
       child: Container(
-        width: 309,
+        width: getSpeedDialKeyboardWidth(context),
         height: 330,
         alignment: Alignment.bottomLeft,
         child: GridView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               crossAxisSpacing: 0,
               mainAxisSpacing: 0,
-              mainAxisExtent: 56,
+              mainAxisExtent: _speedDialButtonHeight,
             ),
             itemCount: speedDialButtons.length,
             itemBuilder: (BuildContext context, int index) {
@@ -172,6 +177,12 @@ class _SpeedDialState extends State<SpeedDial> {
             }),
       ),
     );
+  }
+
+  double getSpeedDialKeyboardWidth(BuildContext context) {
+    return isMobilePlatform(context)
+        ? MediaQuery.of(context).size.width - _speedDialButtonWidth
+        : 309;
   }
 }
 
@@ -225,8 +236,8 @@ class SpeedDialButton extends StatelessWidget {
                         color: speedDialItem.borderColor, width: 0.5))),
             padding:
                 MaterialStateProperty.resolveWith((states) => EdgeInsets.zero),
-            fixedSize: MaterialStateProperty.resolveWith(
-                (states) => const Size(66, 56)),
+            fixedSize: MaterialStateProperty.resolveWith((states) =>
+                Size(_speedDialButtonWidth, _speedDialButtonHeight)),
             backgroundColor: MaterialStateProperty.resolveWith((states) {
               return speedDialItem.backgroundColor;
             })),
