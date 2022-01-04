@@ -143,8 +143,10 @@ class _StartOverlayViewState extends State<StartOverlayView> {
           icon: AnimatedRotation(
             turns: isExpanded ? 0 : (180 / 360),
             duration: standardAnimationDuration,
-            child: Icon(
-              Icons.arrow_upward,
+            child: Image.asset(
+              arrowIconPath,
+              width: 20,
+              height: 24,
               color: Colors.white,
             ),
           ),
