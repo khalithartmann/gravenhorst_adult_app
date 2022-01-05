@@ -61,7 +61,7 @@ class LocaleSelector extends StatelessWidget {
                           locale.id.toUpperCase().split('_').last,
                           style: Theme.of(context)
                               .textTheme
-                              .headline3!
+                              .headline4!
                               .copyWith(
                                   color:
                                       isSelected ? deepOrange : Colors.white),

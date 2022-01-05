@@ -15,11 +15,9 @@ class DescriptionContainer extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.8,
       child: Text(
         description,
-        style: Theme.of(context)
-            .textTheme
-            .headline5!
-            .copyWith(color: darkGrey, fontWeight: FontWeight.w300),
+        style: Theme.of(context).textTheme.headline5!.copyWith(
+            color: darkGrey, fontWeight: FontWeight.w300, height: 1.2),
       ),
     );
   }
-}
+} 

@@ -61,7 +61,7 @@ class _StartOverlayViewState extends State<StartOverlayView> {
         buildHeadline1(context),
         buildLogo(),
         buildArrowIconButton(context),
-        const ExhibitionDataDownloadIndicator(),
+        // const ExhibitionDataDownloadIndicator(),
         context.watch<ExhibitoinDataController>().state ==
                 ExhibitoinDataControllerState.downloadingExhibitionData
             ? const ExhibitionDataDownloadIndicator()

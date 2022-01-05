@@ -7,3 +7,7 @@ const logoPath = 'assets/icons/logo.png';
 const deleteIconPath = 'assets/icons/delete_icon.png';
 
 const homeIconPath = 'assets/icons/home_icon.png';
+
+const danceFloor = 'assets/icons/Danceflore.png';
+
+const himmelsTisch = 'assets/icons/Himmelstisch.png';

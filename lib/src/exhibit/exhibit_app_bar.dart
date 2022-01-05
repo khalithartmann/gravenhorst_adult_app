@@ -37,7 +37,10 @@ class ExhibitAppBar extends StatelessWidget {
           child: Text(
             exhibit.name,
             style: Theme.of(context).textTheme.headline1!.copyWith(
-                color: Colors.white, fontWeight: FontWeight.w400, height: 1.1),
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                height: 1.2,
+                fontSize: 75),
           ),
         ),
       ],
