@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
@@ -33,7 +34,11 @@ class _MapViewState extends State<MapView> {
             child: FlutterMap(
               mapController: mapController,
               options: MapOptions(
-                interactiveFlags: InteractiveFlag.pinchZoom,
+                interactiveFlags:
+                    InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                plugins: [
+                  MarkerClusterPlugin(),
+                ],
 
                 bounds: LatLngBounds(
                     LatLng(52.288301, 7.622590), LatLng(52.286005, 7.626735)),
@@ -56,8 +61,28 @@ class _MapViewState extends State<MapView> {
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
                   // tileProvider: const CachedTileProvider(),
                 ),
-                MarkerLayerOptions(
+                MarkerClusterLayerOptions(
+                  disableClusteringAtZoom: 23,
+                  size: const Size(54, 72),
+                  zoomToBoundsOnClick: false,
                   markers: markers ?? [],
+                  spiderfyCircleRadius: 50,
+                  builder: (context, markers) {
+                    return StandardMarker(
+                      color: deepOrange,
+                      text: '${markers.length.toString()} st.',
+                    );
+                  },
+                ),
+                MarkerLayerOptions(
+                  markers: [
+                    Marker(
+                        point: LatLng(52.286438, 7.623414),
+                        builder: (context) => Image.asset(danceFloor)),
+                    Marker(
+                        point: LatLng(52.286405, 7.624301),
+                        builder: (context) => Image.asset(himmelsTisch))
+                  ],
                 ),
               ],
             ),
@@ -85,45 +110,49 @@ class _MapViewState extends State<MapView> {
                                 exhibit: exhibit,
                               )));
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: hexToColor(exhibit.markerColor),
-                          boxShadow: const [
-                            BoxShadow(blurRadius: 10, color: Colors.black)
-                          ]),
-                      height: 72,
-                      width: 54,
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 6, bottom: 3),
-                        child: Text(
-                          exhibit.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400),
-                        ),
-                      ),
+                    child: StandardMarker(
+                      color: hexToColor(exhibit.markerColor),
+                      text: exhibit.name,
                     ),
                   )),
         )
         .toList();
 
-    markers
-      ..insert(
-          0,
-          Marker(
-              point: LatLng(52.286438, 7.623414),
-              builder: (context) => Image.asset(danceFloor)))
-      ..insert(
-          0,
-          Marker(
-              point: LatLng(52.286405, 7.624301),
-              builder: (context) => Image.asset(himmelsTisch)));
+    // insert dance floor icon as marker
 
     return markers;
+  }
+}
+
+class StandardMarker extends StatelessWidget {
+  const StandardMarker({
+    Key? key,
+    required this.color,
+    required this.text,
+  }) : super(key: key);
+  final Color color;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: color,
+          boxShadow: const [BoxShadow(blurRadius: 10, color: Colors.black)]),
+      height: 72,
+      width: 54,
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 6, bottom: 3),
+        child: Text(
+          text,
+          style: Theme.of(context)
+              .textTheme
+              .headline5!
+              .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+        ),
+      ),
+    );
   }
 }
 

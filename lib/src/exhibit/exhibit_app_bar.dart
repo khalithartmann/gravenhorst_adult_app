@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
@@ -24,13 +25,19 @@ class ExhibitAppBar extends StatelessWidget {
         ),
       ),
       title: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 30,
-          )),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: RotationTransition(
+          turns: const AlwaysStoppedAnimation(270 / 360),
+          child: Image.asset(
+            arrowIconPath,
+            width: 20,
+            height: 24,
+            color: Colors.white,
+          ),
+        ),
+      ),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 20),
