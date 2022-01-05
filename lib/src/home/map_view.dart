@@ -12,7 +12,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 class MapView extends StatefulWidget {
-  MapView({Key? key}) : super(key: key);
+  const MapView({Key? key}) : super(key: key);
 
   @override
   State<MapView> createState() => _MapViewState();
