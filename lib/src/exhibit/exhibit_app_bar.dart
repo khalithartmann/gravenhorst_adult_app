@@ -24,33 +24,41 @@ class ExhibitAppBar extends StatelessWidget {
           height: 53,
         ),
       ),
-      title: IconButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: RotationTransition(
-          turns: const AlwaysStoppedAnimation(270 / 360),
-          child: Image.asset(
-            arrowIconPath,
-            width: 20,
-            height: 24,
-            color: Colors.white,
+      title: Row(
+        children: [
+          Expanded(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: RotationTransition(
+                turns: const AlwaysStoppedAnimation(270 / 360),
+                child: Image.asset(
+                  arrowIconPath,
+                  width: 20,
+                  height: 24,
+                  color: Colors.white,
+                ),
+              ),
+            ),
           ),
-        ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                exhibit.name,
+                style: Theme.of(context).textTheme.headline1!.copyWith(
+                      color: Colors.white,
+                      fontSize: 75,
+                      fontWeight: FontWeight.w400,
+                      height: 1.2,
+                    ),
+              ),
+            ),
+          ),
+        ],
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Text(
-            exhibit.name,
-            style: Theme.of(context).textTheme.headline1!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-                height: 1.2,
-                fontSize: 75),
-          ),
-        ),
-      ],
+      actions: [],
     );
   }
 }

@@ -4,7 +4,7 @@ description: A new Flutter project.
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -18,10 +18,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_map: ^0.14.0
-
+  flutter_map_location_marker: ^2.0.0
   flutter_map_marker_cluster: ^0.4.4
   freezed: ^1.0.0
   freezed_annotation: ^1.0.0
+  geolocator: ^8.0.1
   get_it: ^7.2.0
   http: ^0.13.4
   injectable: ^1.5.0
@@ -56,19 +57,6 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: DIN Alternate
-      fonts:
-        - asset: assets/fonts/DIN_Alternate_Black.ttf
-          weight: 800
-        - asset: assets/fonts/DIN_Alternate_Bold.ttf
-          weight: 600
-        - asset: assets/fonts/DIN_Alternate_Medium.ttf
-          weight: 500
-        - asset: assets/fonts/DIN_Alternate.ttf
-          weight: 400
-        - asset: assets/fonts/DIN_Alternate_Light.ttf
-          weight: 300
-
     - family: DIN
       fonts:
         - asset: assets/fonts/DIN_Black.ttf

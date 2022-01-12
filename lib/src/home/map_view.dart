@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
@@ -21,6 +23,13 @@ class MapView extends StatefulWidget {
 class _MapViewState extends State<MapView> {
   final MapController mapController = MapController();
   static const mapZoom = 19.0;
+
+  @override
+  void initState() {
+    _requestLocationPermission();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Selector<ExhibitoinDataController, ExhibitionData?>(
@@ -50,18 +59,35 @@ class _MapViewState extends State<MapView> {
                 // center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
                 zoom: 17,
               ),
-              layers: [
-                TileLayerOptions(
+              children: [
+                TileLayerWidget(
+                    options: TileLayerOptions(
                   maxNativeZoom: 19,
                   minNativeZoom: 17,
                   maxZoom: 19,
                   minZoom: 17,
-
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
                   // tileProvider: const CachedTileProvider(),
-                ),
-                MarkerClusterLayerOptions(
+                )),
+                MarkerLayerWidget(
+                    options: MarkerLayerOptions(
+                  markers: [
+                    Marker(
+                        point: LatLng(52.286438, 7.623414),
+                        builder: (context) => Image.asset(danceFloor)),
+                    Marker(
+                        point: LatLng(52.286405, 7.624301),
+                        builder: (context) => Image.asset(himmelsTisch))
+                  ],
+                )),
+                LocationMarkerLayerWidget(
+                  options: LocationMarkerLayerOptions(
+                    showHeadingSector: true,
+                  ),
+                ), // <-- add layer widget here
+                MarkerClusterLayerWidget(
+                    options: MarkerClusterLayerOptions(
                   disableClusteringAtZoom: 23,
                   size: const Size(54, 72),
                   zoomToBoundsOnClick: false,
@@ -73,21 +99,48 @@ class _MapViewState extends State<MapView> {
                       text: '${markers.length.toString()} st.',
                     );
                   },
-                ),
-                MarkerLayerOptions(
-                  markers: [
-                    Marker(
-                        point: LatLng(52.286438, 7.623414),
-                        builder: (context) => Image.asset(danceFloor)),
-                    Marker(
-                        point: LatLng(52.286405, 7.624301),
-                        builder: (context) => Image.asset(himmelsTisch))
-                  ],
-                ),
+                )),
               ],
             ),
           );
         });
+  }
+
+  /// Request location permission for device
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
+  _requestLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
   }
 
   List<Marker>? generateMarkersList(ExhibitionData? exhibitionData) {
