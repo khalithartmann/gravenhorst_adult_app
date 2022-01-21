@@ -70,17 +70,7 @@ class _MapViewState extends State<MapView> {
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
                   // tileProvider: const CachedTileProvider(),
                 )),
-                MarkerLayerWidget(
-                    options: MarkerLayerOptions(
-                  markers: [
-                    Marker(
-                        point: LatLng(52.286438, 7.623414),
-                        builder: (context) => Image.asset(danceFloor)),
-                    Marker(
-                        point: LatLng(52.286405, 7.624301),
-                        builder: (context) => Image.asset(himmelsTisch))
-                  ],
-                )),
+
                 LocationMarkerLayerWidget(
                   options: LocationMarkerLayerOptions(
                     showHeadingSector: true,
@@ -96,7 +86,8 @@ class _MapViewState extends State<MapView> {
                   builder: (context, markers) {
                     return StandardMarker(
                       color: deepOrange,
-                      text: '${markers.length.toString()} st.',
+                      text: '${markers.length.toString()}+',
+                      textAlignment: Alignment.topLeft,
                     );
                   },
                 )),
@@ -182,9 +173,11 @@ class StandardMarker extends StatelessWidget {
     Key? key,
     required this.color,
     required this.text,
+    this.textAlignment = Alignment.bottomRight,
   }) : super(key: key);
   final Color color;
   final String text;
+  final Alignment textAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -194,15 +187,13 @@ class StandardMarker extends StatelessWidget {
           boxShadow: const [BoxShadow(blurRadius: 10, color: Colors.black)]),
       height: 72,
       width: 54,
-      alignment: Alignment.bottomRight,
+      alignment: textAlignment,
       child: Padding(
-        padding: const EdgeInsets.only(right: 6, bottom: 3),
+        padding: const EdgeInsets.all(6),
         child: Text(
           text,
-          style: Theme.of(context)
-              .textTheme
-              .headline5!
-              .copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+              color: Colors.white, fontWeight: FontWeight.w400, height: 0.8),
         ),
       ),
     );

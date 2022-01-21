@@ -35,7 +35,7 @@ class RegularExhibitPage extends StatelessWidget {
         Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 30.0),
+            padding: const EdgeInsets.only(top: 30.0, bottom: 30),
             child: ImageDescriptionText(
               text: entry.assets.first.description,
             ),

@@ -88,9 +88,7 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
         child: Text(
           widget.entry.title!,
           style: Theme.of(context).textTheme.headline2!.copyWith(
-                color: darkGrey,
-                fontWeight: FontWeight.normal,
-              ),
+              color: darkGrey, fontWeight: FontWeight.normal, height: 1),
         ),
       ),
     );
