@@ -14,12 +14,14 @@ class LocalVideoPlayer extends StatefulWidget {
 
 class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   late VideoPlayerController _controller;
+  double sliderValue = 0;
 
   @override
   void initState() {
     super.initState();
     print('this is my local file ');
     print(widget.localFile);
+
     _controller = VideoPlayerController.file(widget.localFile)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
@@ -31,7 +33,25 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
-      child: VideoPlayer(_controller),
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          VideoPlayer(_controller),
+          Positioned(
+            bottom: 10,
+            child: Slider(
+                min: 0,
+                max: 1,
+                value: sliderValue,
+                onChanged: (value) {
+                  setState(() {
+                    sliderValue = value;
+                    _controller.seekTo(_controller.value.duration * value);
+                  });
+                }),
+          )
+        ],
+      ),
     );
   }
 

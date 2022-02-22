@@ -23,14 +23,14 @@ class ExhibitEntryPointPage extends StatefulWidget {
 
 class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
   late Asset? backgroundImageAsset;
-  late Asset audioAsset;
+  late Asset? audioAsset;
   late AudioPlayer audioPlayer;
 
   @override
   void initState() {
     audioPlayer = AudioPlayer(playerId: '1');
     backgroundImageAsset = getFirstEntryByType(assetType: AssetType.image);
-    audioAsset = getFirstEntryByType(assetType: AssetType.audio)!;
+    audioAsset = getFirstEntryByType(assetType: AssetType.audio);
     super.initState();
   }
 
@@ -47,13 +47,14 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
         buildBackgroundImage(),
         buildGradientImageOverlay(),
         buildHeadline(),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 111),
-              child: AudioPlayerController(
-                  audioPlayer: audioPlayer, audioAsset: audioAsset),
-            )),
+        if (audioAsset != null)
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 111),
+                child: AudioPlayerController(
+                    audioPlayer: audioPlayer, audioAsset: audioAsset!),
+              )),
       ],
     );
   }

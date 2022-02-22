@@ -15,7 +15,7 @@ class RegularExhibitPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    assert(entry.assets.length == 1);
+    assert(entry.assets.length <= 1);
     return ListView(
       children: [
         if (entry.description != null)
@@ -25,22 +25,24 @@ class RegularExhibitPage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 54),
                 child: DescriptionContainer(description: entry.description!)),
           ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: LocalAsset(
-            asset: entry.assets.first,
-            width: MediaQuery.of(context).size.width * 0.8,
-          ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30.0, bottom: 30),
-            child: ImageDescriptionText(
-              text: entry.assets.first.description,
+        if (entry.assets.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: LocalAsset(
+              asset: entry.assets.first,
+              width: MediaQuery.of(context).size.width * 0.8,
             ),
           ),
-        )
+        if (entry.assets.isNotEmpty)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30.0, bottom: 30),
+              child: ImageDescriptionText(
+                text: entry.assets.first.description,
+              ),
+            ),
+          )
       ],
     );
   }

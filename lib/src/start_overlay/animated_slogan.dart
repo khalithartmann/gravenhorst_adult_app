@@ -27,7 +27,7 @@ class AnimatedSlogan extends StatelessWidget {
                   ? Theme.of(context)
                       .textTheme
                       .button!
-                      .copyWith(color: Colors.white)
+                      .copyWith(color: Colors.white, height: 1.1)
                   : Theme.of(context)
                       .textTheme
                       .bodyText2!

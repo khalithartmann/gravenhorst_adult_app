@@ -46,9 +46,8 @@ class ExhibitView extends StatelessWidget {
                         return SwipeableGalleryExhibit(entry: currentEntry);
 
                       default:
-                        return Center(
-                            child: Text(
-                                'Exhibit Entry Type not implemented : ${currentEntry.type}'));
+                        throw UnimplementedError(
+                            'Exhibit Entry Type not implemented : ${currentEntry.type}');
                     }
                   }).toList(),
                 ],
