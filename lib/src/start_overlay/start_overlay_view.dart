@@ -25,8 +25,9 @@ class _StartOverlayViewState extends State<StartOverlayView> {
 
   @override
   void initState() {
-    context.read<ExhibitoinDataController>().addListener(() {
-      final exhibitionDataController = context.read<ExhibitoinDataController>();
+    final exhibitionDataController = context.read<ExhibitoinDataController>();
+
+    exhibitionDataController.addListener(() {
       var isLoaded =
           exhibitionDataController.exhibitionDataForCurrentLocale != null;
 

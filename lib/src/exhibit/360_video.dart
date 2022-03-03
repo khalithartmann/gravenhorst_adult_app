@@ -56,10 +56,10 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
         imageData = File(destinationPath).readAsBytesSync();
       } else {
         imageData = await VideoThumbnail.thumbnailData(
-          video: widget.localFile.path,
-          timeMs: duration.inMilliseconds,
-          imageFormat: ImageFormat.JPEG,
-        );
+            video: widget.localFile.path,
+            timeMs: duration.inMilliseconds,
+            imageFormat: ImageFormat.JPEG,
+            quality: 100);
 
         if (imageData == null) {
           throw Exception("unable to extract frame in time: $duration ms ");
@@ -98,7 +98,6 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
                   child: ImageView360(
                     key: UniqueKey(),
                     imageList: snapshot.data!,
-                    swipeSensitivity: 4,
                     rotationDirection: RotationDirection.anticlockwise,
                     frameChangeDuration: const Duration(milliseconds: 30),
                   ),
