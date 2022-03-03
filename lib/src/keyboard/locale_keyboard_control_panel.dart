@@ -153,7 +153,10 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    
+                    context.read<ExhibitoinDataController>().onLanguageSelected(
+                        locale: context
+                            .read<ExhibitoinDataController>()
+                            .currentLocale!);
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

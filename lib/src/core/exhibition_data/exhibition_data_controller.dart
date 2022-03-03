@@ -76,9 +76,10 @@ class ExhibitoinDataController extends ChangeNotifier {
         _exhibitionService.fetchExhibitionData(locale: locale);
 
     downloadProgressStream =
-        exhibitionDataProgressTupelStream.map((exhibitoinDataProgressTupel) {
-      final progress = exhibitoinDataProgressTupel.value2;
-      final exhibitionData = exhibitoinDataProgressTupel.value1;
+        exhibitionDataProgressTupelStream.map((exhibitionDataProgressTupel) {
+      print(exhibitionDataProgressTupel);
+      final progress = exhibitionDataProgressTupel.value2;
+      final exhibitionData = exhibitionDataProgressTupel.value1;
       bool dataLoaded = progress == 100;
       bool isDownloading = progress < 100 && progress > 0;
 
@@ -89,18 +90,23 @@ class ExhibitoinDataController extends ChangeNotifier {
         notifyListeners();
       }
 
-      bool exhibitionDataAlreadyExistsInList =
-          exhibitionDataList.contains(exhibitionData);
+      bool exhibitionDataAlreadyExistsInList = exhibitionDataList
+          .where((element) => exhibitionData?.id == element.id)
+          .isNotEmpty;
+
       if (dataLoaded) {
-        if (!exhibitionDataAlreadyExistsInList) {
-          exhibitionDataList.add(exhibitionData!);
-          downloadProgressStream = null;
-          downloadProgressStreamSubscription?.cancel();
+        if (exhibitionDataAlreadyExistsInList) {
+          exhibitionDataList
+              .removeWhere((element) => element.id == exhibitionData!.id);
         }
+
+        exhibitionDataList.add(exhibitionData!);
+        downloadProgressStream = null;
+        downloadProgressStreamSubscription?.cancel();
         _state = ExhibitoinDataControllerState.ready;
         notifyListeners();
       }
-      return exhibitoinDataProgressTupel.value2;
+      return exhibitionDataProgressTupel.value2;
     }).asBroadcastStream();
 
     downloadProgressStreamSubscription =
@@ -137,7 +143,7 @@ class ExhibitoinDataController extends ChangeNotifier {
   void loadExhibitionDataFromLocalStorage() {
     for (var locale in supportedLocales) {
       var exhibitionData = _exhibitionService
-          .tryGetExhibitionDataObjectFromLocalStorage(localeName: locale.name);
+          .tryGetExhibitionDataObjectFromLocalStorage(localeId: locale.name);
 
       if (exhibitionData != null) {
         exhibitionDataList.add(exhibitionData);

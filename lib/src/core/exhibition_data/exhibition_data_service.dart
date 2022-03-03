@@ -57,16 +57,16 @@ class ExhibitionService {
     yield const Tuple2<ExhibitionData?, int>(null, 0);
     var uri = _apiConfig.getTourDataForLocaleUri(localeId: locale.id);
 
-    var exhibitionData =
-        tryGetExhibitionDataObjectFromLocalStorage(localeName: locale.name);
+    // var exhibitionData =
+    //     tryGetExhibitionDataObjectFromLocalStorage(localeId: locale.id);
 
     // todo implemented more sufficticated logic.
     //  - check update date etc.
     //  - check if assets are available
-    if (exhibitionData != null) {
-      yield Tuple2(exhibitionData, 100);
-      return;
-    }
+    // if (exhibitionData != null) {
+    //   yield Tuple2(exhibitionData, 100);
+    //   return;
+    // }
 
     try {
       var res = await _client.get(uri);
@@ -79,11 +79,11 @@ class ExhibitionService {
         );
       }
 
-      exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
+      var exhibitionData = ExhibitionData.fromJson(jsonDecode(res.body));
       yield* persistExhibitionDataToLocalStorage(
           exhibitionData: exhibitionData);
 
-      await persistExhibitonDataObject(exhibitionData: exhibitionData);
+      // await persistExhibitonDataObject(exhibitionData: exhibitionData);
 
       yield Tuple2(exhibitionData, 100);
     } catch (e, s) {
@@ -193,9 +193,9 @@ class ExhibitionService {
   }
 
   ExhibitionData? tryGetExhibitionDataObjectFromLocalStorage(
-      {required String localeName}) {
+      {required String localeId}) {
     var stringObj = _sharedPreferences
-        .getString(_getexhibitionDataSharedPrefsKey(localeName));
+        .getString(_getexhibitionDataSharedPrefsKey(localeId));
 
     if (stringObj == null) {
       return null;
