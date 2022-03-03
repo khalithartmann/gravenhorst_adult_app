@@ -10,20 +10,10 @@ import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:injectable/injectable.dart';
 import 'package:collection/collection.dart';
 
-enum ExhibitoinDataControllerState {
-  intial,
-  loadingSupportedLocales,
-  checkingIfExhibitionDataAlreadyExists,
-  downloadingExhibitionData,
-  ready
-}
-
 @singleton
 class ExhibitoinDataController extends ChangeNotifier {
   ExhibitoinDataController(this._exhibitionService);
 
-  var _state = ExhibitoinDataControllerState.intial;
-  ExhibitoinDataControllerState get state => _state;
   final ExhibitionService _exhibitionService;
 
   Either<Failure, List<ExhibitionLocale>>? _eitherFailureOrSupportedLocales;
@@ -34,6 +24,11 @@ class ExhibitoinDataController extends ChangeNotifier {
   }
 
   ExhibitionLocale? _currentLocale;
+  set currentLocale(ExhibitionLocale? locale) {
+    _currentLocale = locale;
+    notifyListeners();
+  }
+
   ExhibitionLocale? get currentLocale => _currentLocale;
   bool get localeSelected => currentLocale != null;
 
@@ -45,14 +40,23 @@ class ExhibitoinDataController extends ChangeNotifier {
   bool get exhibitionDataIsLoadedForLocale =>
       exhibitionDataForCurrentLocale != null;
 
-  void getSupportedLocales() async {
-    _state = ExhibitoinDataControllerState.loadingSupportedLocales;
+  bool _isDownloadingData = false;
+  bool get isDownloadingData => _isDownloadingData;
+  set isDownloadingData(bool value) {
+    _isDownloadingData = value;
     notifyListeners();
+  }
+
+  bool get isReady =>
+      exhibitionDataForCurrentLocale != null && !isDownloadingData;
+
+  void getSupportedLocales() async {
+    isDownloadingData = true;
 
     _eitherFailureOrSupportedLocales =
         await _exhibitionService.fetchSupportedLocales();
-    _state = ExhibitoinDataControllerState.ready;
-    notifyListeners();
+
+    isDownloadingData = false;
     logger.v(
         '[getSupportedLocales] supported Locales are: $_eitherFailureOrSupportedLocales ');
   }
@@ -66,29 +70,18 @@ class ExhibitoinDataController extends ChangeNotifier {
   ///
   /// The function calls [fetchExhibitionData] which returns a stream containing a [Tupel2<ExhibitionData?, int>] of type
   /// the first value of the [Tuple2] is the ExhibitonData which is returned when the second value is equal too 100
-  void onLanguageSelected({required ExhibitionLocale locale}) async {
-    _state =
-        ExhibitoinDataControllerState.checkingIfExhibitionDataAlreadyExists;
-    _currentLocale = locale;
-    notifyListeners();
+  void onLanguageSelected({required ExhibitionLocale locale}) {
+    isDownloadingData = true;
+    currentLocale = locale;
 
     var exhibitionDataProgressTupelStream =
         _exhibitionService.fetchExhibitionData(locale: locale);
 
     downloadProgressStream =
         exhibitionDataProgressTupelStream.map((exhibitionDataProgressTupel) {
-      print(exhibitionDataProgressTupel);
       final progress = exhibitionDataProgressTupel.value2;
       final exhibitionData = exhibitionDataProgressTupel.value1;
       bool dataLoaded = progress == 100;
-      bool isDownloading = progress < 100 && progress > 0;
-
-      /// Set state to [downloadingExhibitionData] if data was not not retrieved from cache
-      if (isDownloading &&
-          _state != ExhibitoinDataControllerState.downloadingExhibitionData) {
-        _state = ExhibitoinDataControllerState.downloadingExhibitionData;
-        notifyListeners();
-      }
 
       bool exhibitionDataAlreadyExistsInList = exhibitionDataList
           .where((element) => exhibitionData?.id == element.id)
@@ -103,17 +96,10 @@ class ExhibitoinDataController extends ChangeNotifier {
         exhibitionDataList.add(exhibitionData!);
         downloadProgressStream = null;
         downloadProgressStreamSubscription?.cancel();
-        _state = ExhibitoinDataControllerState.ready;
-        notifyListeners();
+        isDownloadingData = false;
       }
       return exhibitionDataProgressTupel.value2;
     }).asBroadcastStream();
-
-    downloadProgressStreamSubscription =
-        downloadProgressStream!.listen((event) {});
-
-    _state = ExhibitoinDataControllerState.ready;
-    notifyListeners();
 
     logger.v(
         '[getExhibitionDataForLocale]: loaded exhibition data  $exhibitionDataList');

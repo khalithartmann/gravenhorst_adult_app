@@ -31,9 +31,7 @@ class _StartOverlayViewState extends State<StartOverlayView> {
       var isLoaded =
           exhibitionDataController.exhibitionDataForCurrentLocale != null;
 
-      logger.i("this is it ${exhibitionDataController.state}");
-      if (exhibitionDataController.state ==
-          ExhibitoinDataControllerState.downloadingExhibitionData) {
+      if (exhibitionDataController.isDownloadingData) {
         setState(() {
           isExpanded = true;
         });
@@ -48,6 +46,7 @@ class _StartOverlayViewState extends State<StartOverlayView> {
 
   @override
   Widget build(BuildContext context) {
+    var exhibitionController = context.watch<ExhibitoinDataController>();
     return AnimatedPositioned(
       duration: standardAnimationDuration,
       bottom: isExpanded
@@ -63,8 +62,8 @@ class _StartOverlayViewState extends State<StartOverlayView> {
         buildLogo(),
         buildArrowIconButton(context),
         // const ExhibitionDataDownloadIndicator(),
-        context.watch<ExhibitoinDataController>().state ==
-                ExhibitoinDataControllerState.downloadingExhibitionData
+        exhibitionController.isDownloadingData &&
+                exhibitionController.supportedLocales.isNotEmpty
             ? const ExhibitionDataDownloadIndicator()
             : Container()
       ]),
@@ -73,12 +72,12 @@ class _StartOverlayViewState extends State<StartOverlayView> {
 
   Widget buildHeadline1(BuildContext context) {
     var exhibitionController = context.watch<ExhibitoinDataController>();
-    var isReady =
-        exhibitionController.state == ExhibitoinDataControllerState.ready;
+    var supportedLocalesLoaded =
+        exhibitionController.supportedLocales.isNotEmpty;
     var exhibitionDataForCurrentLocaleLoaded =
         exhibitionController.exhibitionDataIsLoadedForLocale;
 
-    if (!isReady) {
+    if (!supportedLocalesLoaded) {
       return const Center(
           child: CircularProgressIndicator(
         color: deepOrange,
@@ -87,7 +86,9 @@ class _StartOverlayViewState extends State<StartOverlayView> {
 
     return AnimatedSwitcher(
       duration: standardAnimationDuration,
-      child: exhibitionDataForCurrentLocaleLoaded || !isExpanded
+      child: exhibitionController.isDownloadingData ||
+              exhibitionDataForCurrentLocaleLoaded ||
+              !isExpanded
           ? AnimatedSlogan(isExpanded: isExpanded)
           : SupportedLocalesList(),
     );

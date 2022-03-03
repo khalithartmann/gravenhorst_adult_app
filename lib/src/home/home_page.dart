@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
                 controller.supportedLocales.isNotEmpty) {
               controller.loadExhibitionDataFromLocalStorage();
             }
-            if (controller.state.index > 2) {
+            if (controller.isReady) {
               return const Keyboard();
             }
             return Container();

@@ -48,7 +48,7 @@ class LocalAsset extends StatelessWidget {
                   }));
                 },
                 child: Hero(
-                  tag: 'imageHero',
+                  tag: 'imageHero_${snapshot.data!.path}',
                   child: Image.file(
                     snapshot.data!,
                     fit: imageFit,
@@ -110,7 +110,7 @@ class FullScreenImageView extends StatelessWidget {
       ),
       body: Center(
         child: Hero(
-          tag: 'imageHero',
+          tag: 'imageHero_${localFile.path}',
           child: Image.file(
             localFile,
           ),

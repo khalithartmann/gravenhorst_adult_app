@@ -28,9 +28,6 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
   @override
   void initState() {
     super.initState();
-    print('local file path');
-    print(widget.localFile.parent.path);
-    print(widget.localFile);
     _videoPlayerController = VideoPlayerController.file(widget.localFile);
 
     _videoPlayerController.initialize().then(((value) {
@@ -40,15 +37,12 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
 
   Future<void> getFrames() async {
     var videoDuratoin = _videoPlayerController.value.duration;
-    print(videoDuratoin);
 
     for (var duration = Duration.zero;
         duration <= videoDuratoin;
         duration += const Duration(milliseconds: 500)) {
       var destinationPath = p.join(widget.localFile.parent.path, "frames",
           "${p.basenameWithoutExtension(widget.localFile.path)}_${duration.inMilliseconds}.jpeg");
-
-      print(destinationPath);
 
       Uint8List? imageData;
 
@@ -86,7 +80,7 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
         stream: imageListStreamController.stream,
         builder: ((context, snapshot) {
           if (!snapshot.hasData) {
-            return Text("Pre-Caching images...");
+            return Container();
           }
           return IgnorePointer(
             ignoring: !imagePrecached,
@@ -97,6 +91,7 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
                   opacity: imagePrecached ? 1 : 0.5,
                   child: ImageView360(
                     key: UniqueKey(),
+                    swipeSensitivity: 2,
                     imageList: snapshot.data!,
                     rotationDirection: RotationDirection.anticlockwise,
                     frameChangeDuration: const Duration(milliseconds: 30),
@@ -125,5 +120,12 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
     // setState(() {
     //   imagePrecached = true;
     // });
+  }
+
+  @override
+  void dispose() {
+    imageListStreamController.close();
+    _videoPlayerController.dispose();
+    super.dispose();
   }
 }

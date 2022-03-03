@@ -31,13 +31,10 @@ class LocaleSelector extends StatelessWidget {
                           controller.currentLocale?.id == locale.id;
 
                       return ElevatedButton(
-                        onPressed: controller.state !=
-                                    ExhibitoinDataControllerState.ready ||
-                                isSelected
+                        onPressed: isSelected
                             ? null
-                            : () {
-                                controller.onLanguageSelected(locale: locale);
-                              },
+                            : () =>
+                                controller.onLanguageSelected(locale: locale),
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
