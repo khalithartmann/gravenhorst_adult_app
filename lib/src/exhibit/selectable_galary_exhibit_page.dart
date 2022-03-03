@@ -65,32 +65,30 @@ class _SelectableGalleryExhibitPageState
           padding: const EdgeInsets.only(top: 20.0, bottom: 40),
           child: Wrap(
             alignment: WrapAlignment.center,
+            runSpacing: 2,
+            spacing: 2,
             children: [
               ...assets.map((asset) => InkWell(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectdAsset = asset;
-                        });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(1),
-                        color: asset == selectdAsset ? darkGrey : Colors.white,
-                        width: 105,
-                        height: 70,
-                        child: Center(
-                          child: Text(
-                            asset.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline3!
-                                .copyWith(
-                                    fontWeight: FontWeight.w300,
-                                    color: asset == selectdAsset
-                                        ? Colors.white
-                                        : darkGrey,
-                                    height: 1.5),
-                          ),
+                    onTap: () {
+                      setState(() {
+                        selectdAsset = asset;
+                      });
+                    },
+                    child: Container(
+                      color: asset == selectdAsset ? darkGrey : Colors.white,
+                      height: 70,
+                      child: Center(
+                        child: Text(
+                          asset.title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(
+                                  fontWeight: FontWeight.w300,
+                                  color: asset == selectdAsset
+                                      ? Colors.white
+                                      : darkGrey,
+                                  height: 1.5),
                         ),
                       ),
                     ),

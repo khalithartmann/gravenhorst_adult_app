@@ -16,28 +16,39 @@ class ExhibitAppBar extends StatelessWidget {
     return AppBar(
       toolbarHeight: double.infinity,
       centerTitle: true,
-      leadingWidth: 145,
-      leading: Center(
-        child: Image.asset(
-          logoPath,
-          width: 84,
-          height: 53,
-        ),
+      leadingWidth: 0,
+      leading: Container(
+        color: Colors.green,
+        width: 0,
+        height: 0,
       ),
       title: Row(
         children: [
           Expanded(
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: RotationTransition(
-                turns: const AlwaysStoppedAnimation(270 / 360),
-                child: Image.asset(
-                  arrowIconPath,
-                  width: 20,
-                  height: 24,
-                  color: Colors.white,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Image.asset(
+                logoPath,
+                width: 84,
+                height: 53,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: RotationTransition(
+                  turns: const AlwaysStoppedAnimation(270 / 360),
+                  child: Image.asset(
+                    arrowIconPath,
+                    width: 20,
+                    height: 24,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -45,20 +56,23 @@ class ExhibitAppBar extends StatelessWidget {
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                exhibit.name,
-                style: Theme.of(context).textTheme.headline1!.copyWith(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  exhibit.name,
+                  style: const TextStyle(
+                      fontFamily: 'DIN',
                       color: Colors.white,
-                      fontSize: 75,
+                      fontSize: 70,
                       fontWeight: FontWeight.w400,
-                      height: 1.2,
-                    ),
+                      height: 1,
+                      overflow: TextOverflow.visible),
+                ),
               ),
             ),
           ),
         ],
       ),
-      actions: [],
     );
   }
 }

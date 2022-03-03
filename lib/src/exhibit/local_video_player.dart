@@ -44,10 +44,8 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
                 max: 1,
                 value: sliderValue,
                 onChanged: (value) {
-                  setState(() {
-                    sliderValue = value;
-                    _controller.seekTo(_controller.value.duration * value);
-                  });
+                  sliderValue = value;
+                  _controller.seekTo(_controller.value.duration * value);
                 }),
           )
         ],

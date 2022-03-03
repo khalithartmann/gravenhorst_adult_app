@@ -90,18 +90,20 @@ class Asset with _$Asset {
   const factory Asset({
     required int id,
     int? sortOrder,
+    required int size,
     required String url,
     required String mimeType,
+    double? duration,
+    bool? autoplay,
     @Default("") String description,
     @Default("") String title,
     String? copyright,
-    required int size,
-    double? duration,
-    bool? autoplay,
     required String updatedAt,
   }) = _Asset;
 
-  factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
+  factory Asset.fromJson(Map<String, dynamic> json) {
+    return _$AssetFromJson(json);
+  }
 
   String get assetUrlLocalPath {
     var baseUrl = getIt<ApiConfig>().baseUrl;
