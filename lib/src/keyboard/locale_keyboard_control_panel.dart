@@ -154,9 +154,11 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     context.read<ExhibitoinDataController>().onLanguageSelected(
-                        locale: context
-                            .read<ExhibitoinDataController>()
-                            .currentLocale!);
+                          locale: context
+                              .read<ExhibitoinDataController>()
+                              .currentLocale!,
+                          isTablet: isTablet(context),
+                        );
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

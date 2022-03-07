@@ -87,6 +87,13 @@ enum AssetType { image, audio, video }
 @freezed
 class Asset with _$Asset {
   const Asset._();
+
+  @Assert(
+      'mimeType == "video" && autoplay != null && interactive != null && loop != null||mimeType != "video"',
+      'autoplay, interactive and loop are required for mimeType "video"')
+  @Assert(
+      'mimeType == "audio" && autoplay != null && loop != null||mimeType != "audio"',
+      'autoplay and loop are required for mimeType "audio"')
   const factory Asset({
     required int id,
     int? sortOrder,
@@ -95,6 +102,8 @@ class Asset with _$Asset {
     required String mimeType,
     double? duration,
     bool? autoplay,
+    bool? interactive,
+    bool? loop,
     @Default("") String description,
     @Default("") String title,
     String? copyright,

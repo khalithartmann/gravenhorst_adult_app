@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'exhibition_data.dart';
@@ -208,19 +209,22 @@ class _$_ExhibitionData implements _ExhibitionData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ExhibitionData &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.contentSize, contentSize) ||
-                other.contentSize == contentSize) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality()
+                .equals(other.contentSize, contentSize) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.tours, tours));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, contentSize, createdAt,
-      updatedAt, const DeepCollectionEquality().hash(tours));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(contentSize),
+      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(updatedAt),
+      const DeepCollectionEquality().hash(tours));
 
   @JsonKey(ignore: true)
   @override
@@ -448,17 +452,21 @@ class _$_Tour implements _Tour {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Tour &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.sortOrder, sortOrder) ||
-                other.sortOrder == sortOrder) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.sortOrder, sortOrder) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.exhibits, exhibits));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, sortOrder, description,
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(sortOrder),
+      const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(exhibits));
 
   @JsonKey(ignore: true)
@@ -738,31 +746,27 @@ class _$_Exhibit implements _Exhibit {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Exhibit &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sortOrder, sortOrder) ||
-                other.sortOrder == sortOrder) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
-            (identical(other.markerColor, markerColor) ||
-                other.markerColor == markerColor) &&
-            (identical(other.textColor, textColor) ||
-                other.textColor == textColor) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.sortOrder, sortOrder) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude) &&
+            const DeepCollectionEquality()
+                .equals(other.markerColor, markerColor) &&
+            const DeepCollectionEquality().equals(other.textColor, textColor) &&
             const DeepCollectionEquality().equals(other.entries, entries));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
-      sortOrder,
-      name,
-      latitude,
-      longitude,
-      markerColor,
-      textColor,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(sortOrder),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude),
+      const DeepCollectionEquality().hash(markerColor),
+      const DeepCollectionEquality().hash(textColor),
       const DeepCollectionEquality().hash(entries));
 
   @JsonKey(ignore: true)
@@ -1045,21 +1049,27 @@ class _$_Entry implements _Entry {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Entry &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sortOrder, sortOrder) ||
-                other.sortOrder == sortOrder) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.background, background) ||
-                other.background == background) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.sortOrder, sortOrder) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality()
+                .equals(other.background, background) &&
             const DeepCollectionEquality().equals(other.assets, assets));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, sortOrder, type, title,
-      description, background, const DeepCollectionEquality().hash(assets));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(sortOrder),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(background),
+      const DeepCollectionEquality().hash(assets));
 
   @JsonKey(ignore: true)
   @override
@@ -1267,17 +1277,20 @@ class _$_Background implements _Background {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Background &&
-            (identical(other.imageAssetId, imageAssetId) ||
-                other.imageAssetId == imageAssetId) &&
-            (identical(other.color, color) || other.color == color) &&
-            (identical(other.size, size) || other.size == size) &&
-            (identical(other.position, position) ||
-                other.position == position));
+            const DeepCollectionEquality()
+                .equals(other.imageAssetId, imageAssetId) &&
+            const DeepCollectionEquality().equals(other.color, color) &&
+            const DeepCollectionEquality().equals(other.size, size) &&
+            const DeepCollectionEquality().equals(other.position, position));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, imageAssetId, color, size, position);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(imageAssetId),
+      const DeepCollectionEquality().hash(color),
+      const DeepCollectionEquality().hash(size),
+      const DeepCollectionEquality().hash(position));
 
   @JsonKey(ignore: true)
   @override
@@ -1325,26 +1338,30 @@ class _$AssetTearOff {
   _Asset call(
       {required int id,
       int? sortOrder,
+      required int size,
       required String url,
       required String mimeType,
+      double? duration,
+      bool? autoplay,
+      bool? interactive,
+      bool? loop,
       String description = "",
       String title = "",
       String? copyright,
-      required int size,
-      double? duration,
-      bool? autoplay,
       required String updatedAt}) {
     return _Asset(
       id: id,
       sortOrder: sortOrder,
+      size: size,
       url: url,
       mimeType: mimeType,
+      duration: duration,
+      autoplay: autoplay,
+      interactive: interactive,
+      loop: loop,
       description: description,
       title: title,
       copyright: copyright,
-      size: size,
-      duration: duration,
-      autoplay: autoplay,
       updatedAt: updatedAt,
     );
   }
@@ -1361,14 +1378,16 @@ const $Asset = _$AssetTearOff();
 mixin _$Asset {
   int get id => throw _privateConstructorUsedError;
   int? get sortOrder => throw _privateConstructorUsedError;
+  int get size => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   String get mimeType => throw _privateConstructorUsedError;
+  double? get duration => throw _privateConstructorUsedError;
+  bool? get autoplay => throw _privateConstructorUsedError;
+  bool? get interactive => throw _privateConstructorUsedError;
+  bool? get loop => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get copyright => throw _privateConstructorUsedError;
-  int get size => throw _privateConstructorUsedError;
-  double? get duration => throw _privateConstructorUsedError;
-  bool? get autoplay => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1383,14 +1402,16 @@ abstract class $AssetCopyWith<$Res> {
   $Res call(
       {int id,
       int? sortOrder,
+      int size,
       String url,
       String mimeType,
+      double? duration,
+      bool? autoplay,
+      bool? interactive,
+      bool? loop,
       String description,
       String title,
       String? copyright,
-      int size,
-      double? duration,
-      bool? autoplay,
       String updatedAt});
 }
 
@@ -1406,14 +1427,16 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? sortOrder = freezed,
+    Object? size = freezed,
     Object? url = freezed,
     Object? mimeType = freezed,
+    Object? duration = freezed,
+    Object? autoplay = freezed,
+    Object? interactive = freezed,
+    Object? loop = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
-    Object? size = freezed,
-    Object? duration = freezed,
-    Object? autoplay = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -1425,6 +1448,10 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
               as int?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
       url: url == freezed
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -1433,6 +1460,22 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
           ? _value.mimeType
           : mimeType // ignore: cast_nullable_to_non_nullable
               as String,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as double?,
+      autoplay: autoplay == freezed
+          ? _value.autoplay
+          : autoplay // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      interactive: interactive == freezed
+          ? _value.interactive
+          : interactive // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      loop: loop == freezed
+          ? _value.loop
+          : loop // ignore: cast_nullable_to_non_nullable
+              as bool?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -1445,18 +1488,6 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
               as String?,
-      size: size == freezed
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as int,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as double?,
-      autoplay: autoplay == freezed
-          ? _value.autoplay
-          : autoplay // ignore: cast_nullable_to_non_nullable
-              as bool?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -1473,14 +1504,16 @@ abstract class _$AssetCopyWith<$Res> implements $AssetCopyWith<$Res> {
   $Res call(
       {int id,
       int? sortOrder,
+      int size,
       String url,
       String mimeType,
+      double? duration,
+      bool? autoplay,
+      bool? interactive,
+      bool? loop,
       String description,
       String title,
       String? copyright,
-      int size,
-      double? duration,
-      bool? autoplay,
       String updatedAt});
 }
 
@@ -1497,14 +1530,16 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? sortOrder = freezed,
+    Object? size = freezed,
     Object? url = freezed,
     Object? mimeType = freezed,
+    Object? duration = freezed,
+    Object? autoplay = freezed,
+    Object? interactive = freezed,
+    Object? loop = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
-    Object? size = freezed,
-    Object? duration = freezed,
-    Object? autoplay = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_Asset(
@@ -1516,6 +1551,10 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
           ? _value.sortOrder
           : sortOrder // ignore: cast_nullable_to_non_nullable
               as int?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
       url: url == freezed
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -1524,6 +1563,22 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
           ? _value.mimeType
           : mimeType // ignore: cast_nullable_to_non_nullable
               as String,
+      duration: duration == freezed
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as double?,
+      autoplay: autoplay == freezed
+          ? _value.autoplay
+          : autoplay // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      interactive: interactive == freezed
+          ? _value.interactive
+          : interactive // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      loop: loop == freezed
+          ? _value.loop
+          : loop // ignore: cast_nullable_to_non_nullable
+              as bool?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -1536,18 +1591,6 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
               as String?,
-      size: size == freezed
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as int,
-      duration: duration == freezed
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as double?,
-      autoplay: autoplay == freezed
-          ? _value.autoplay
-          : autoplay // ignore: cast_nullable_to_non_nullable
-              as bool?,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -1562,16 +1605,29 @@ class _$_Asset extends _Asset {
   const _$_Asset(
       {required this.id,
       this.sortOrder,
+      required this.size,
       required this.url,
       required this.mimeType,
+      this.duration,
+      this.autoplay,
+      this.interactive,
+      this.loop,
       this.description = "",
       this.title = "",
       this.copyright,
-      required this.size,
-      this.duration,
-      this.autoplay,
       required this.updatedAt})
-      : super._();
+      : assert(
+            mimeType == "video" &&
+                    autoplay != null &&
+                    interactive != null &&
+                    loop != null ||
+                mimeType != "video",
+            'autoplay, interactive and loop are required for mimeType "video"'),
+        assert(
+            mimeType == "audio" && autoplay != null && loop != null ||
+                mimeType != "audio",
+            'autoplay and loop are required for mimeType "audio"'),
+        super._();
 
   factory _$_Asset.fromJson(Map<String, dynamic> json) =>
       _$$_AssetFromJson(json);
@@ -1581,29 +1637,33 @@ class _$_Asset extends _Asset {
   @override
   final int? sortOrder;
   @override
+  final int size;
+  @override
   final String url;
   @override
   final String mimeType;
-  @JsonKey(defaultValue: "")
-  @override
-  final String description;
-  @JsonKey(defaultValue: "")
-  @override
-  final String title;
-  @override
-  final String? copyright;
-  @override
-  final int size;
   @override
   final double? duration;
   @override
   final bool? autoplay;
   @override
+  final bool? interactive;
+  @override
+  final bool? loop;
+  @JsonKey()
+  @override
+  final String description;
+  @JsonKey()
+  @override
+  final String title;
+  @override
+  final String? copyright;
+  @override
   final String updatedAt;
 
   @override
   String toString() {
-    return 'Asset(id: $id, sortOrder: $sortOrder, url: $url, mimeType: $mimeType, description: $description, title: $title, copyright: $copyright, size: $size, duration: $duration, autoplay: $autoplay, updatedAt: $updatedAt)';
+    return 'Asset(id: $id, sortOrder: $sortOrder, size: $size, url: $url, mimeType: $mimeType, duration: $duration, autoplay: $autoplay, interactive: $interactive, loop: $loop, description: $description, title: $title, copyright: $copyright, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1611,29 +1671,39 @@ class _$_Asset extends _Asset {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Asset &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sortOrder, sortOrder) ||
-                other.sortOrder == sortOrder) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.mimeType, mimeType) ||
-                other.mimeType == mimeType) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.copyright, copyright) ||
-                other.copyright == copyright) &&
-            (identical(other.size, size) || other.size == size) &&
-            (identical(other.duration, duration) ||
-                other.duration == duration) &&
-            (identical(other.autoplay, autoplay) ||
-                other.autoplay == autoplay) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.sortOrder, sortOrder) &&
+            const DeepCollectionEquality().equals(other.size, size) &&
+            const DeepCollectionEquality().equals(other.url, url) &&
+            const DeepCollectionEquality().equals(other.mimeType, mimeType) &&
+            const DeepCollectionEquality().equals(other.duration, duration) &&
+            const DeepCollectionEquality().equals(other.autoplay, autoplay) &&
+            const DeepCollectionEquality()
+                .equals(other.interactive, interactive) &&
+            const DeepCollectionEquality().equals(other.loop, loop) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality().equals(other.copyright, copyright) &&
+            const DeepCollectionEquality().equals(other.updatedAt, updatedAt));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, sortOrder, url, mimeType,
-      description, title, copyright, size, duration, autoplay, updatedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(sortOrder),
+      const DeepCollectionEquality().hash(size),
+      const DeepCollectionEquality().hash(url),
+      const DeepCollectionEquality().hash(mimeType),
+      const DeepCollectionEquality().hash(duration),
+      const DeepCollectionEquality().hash(autoplay),
+      const DeepCollectionEquality().hash(interactive),
+      const DeepCollectionEquality().hash(loop),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(copyright),
+      const DeepCollectionEquality().hash(updatedAt));
 
   @JsonKey(ignore: true)
   @override
@@ -1650,14 +1720,16 @@ abstract class _Asset extends Asset {
   const factory _Asset(
       {required int id,
       int? sortOrder,
+      required int size,
       required String url,
       required String mimeType,
+      double? duration,
+      bool? autoplay,
+      bool? interactive,
+      bool? loop,
       String description,
       String title,
       String? copyright,
-      required int size,
-      double? duration,
-      bool? autoplay,
       required String updatedAt}) = _$_Asset;
   const _Asset._() : super._();
 
@@ -1668,21 +1740,25 @@ abstract class _Asset extends Asset {
   @override
   int? get sortOrder;
   @override
+  int get size;
+  @override
   String get url;
   @override
   String get mimeType;
+  @override
+  double? get duration;
+  @override
+  bool? get autoplay;
+  @override
+  bool? get interactive;
+  @override
+  bool? get loop;
   @override
   String get description;
   @override
   String get title;
   @override
   String? get copyright;
-  @override
-  int get size;
-  @override
-  double? get duration;
-  @override
-  bool? get autoplay;
   @override
   String get updatedAt;
   @override

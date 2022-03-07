@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:flutter/material.dart';
@@ -10,103 +11,95 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-class ThreeSixtyVideo extends StatefulWidget {
-  const ThreeSixtyVideo({Key? key, required this.localFile}) : super(key: key);
+class ThreeSixtyVideo extends StatelessWidget {
+  ThreeSixtyVideo({Key? key, required this.localFile, required this.duration})
+      : super(key: key);
 
   final File localFile;
+  final Duration duration;
 
-  @override
-  _ThreeSixtyVideoState createState() => _ThreeSixtyVideoState();
-}
+  final List<ImageProvider> imageList = <ImageProvider>[];
 
-class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
-  List<ImageProvider> imageList = <ImageProvider>[];
-  bool imagePrecached = false;
-  var imageListStreamController = StreamController<List<ImageProvider>>();
-  late VideoPlayerController _videoPlayerController;
+  final imageListStreamController = StreamController<List<ImageProvider>>();
 
-  @override
-  void initState() {
-    super.initState();
-    _videoPlayerController = VideoPlayerController.file(widget.localFile);
+  Future<bool> getFrames(BuildContext context) async {
+    imageList.clear();
 
-    _videoPlayerController.initialize().then(((value) {
-      getFrames();
-    }));
-  }
+    try {
+      for (var duration = Duration.zero;
+          duration <= duration;
+          duration += const Duration(milliseconds: 500)) {
+        var destinationPath = p.join(localFile.parent.path, "frames",
+            "${p.basenameWithoutExtension(localFile.path)}_${duration.inMilliseconds}.jpeg");
 
-  Future<void> getFrames() async {
-    var videoDuratoin = _videoPlayerController.value.duration;
+        Uint8List? imageData;
 
-    for (var duration = Duration.zero;
-        duration <= videoDuratoin;
-        duration += const Duration(milliseconds: 500)) {
-      var destinationPath = p.join(widget.localFile.parent.path, "frames",
-          "${p.basenameWithoutExtension(widget.localFile.path)}_${duration.inMilliseconds}.jpeg");
+        if (File(destinationPath).existsSync()) {
+          imageData = File(destinationPath).readAsBytesSync();
+        } else {
+          imageData = await VideoThumbnail.thumbnailData(
+              video: localFile.path,
+              timeMs: duration.inMilliseconds,
+              imageFormat: ImageFormat.JPEG,
+              quality: 100);
 
-      Uint8List? imageData;
-
-      if (File(destinationPath).existsSync()) {
-        imageData = File(destinationPath).readAsBytesSync();
-      } else {
-        imageData = await VideoThumbnail.thumbnailData(
-            video: widget.localFile.path,
-            timeMs: duration.inMilliseconds,
-            imageFormat: ImageFormat.JPEG,
-            quality: 100);
-
-        if (imageData == null) {
-          throw Exception("unable to extract frame in time: $duration ms ");
+          if (imageData == null) {
+            throw Exception("unable to extract frame in time: $duration ms ");
+          }
+          File(destinationPath)
+            ..createSync(recursive: true)
+            ..writeAsBytesSync(List<int>.from(imageData));
         }
-        File(destinationPath)
-          ..createSync(recursive: true)
-          ..writeAsBytesSync(List<int>.from(imageData));
+
+        var image = Image.memory(imageData).image;
+        imageList.add(image);
+        imageListStreamController.add(imageList);
+        await precacheImage(image, context);
       }
-
-      var image = Image.memory(imageData).image;
-      imageList.add(image);
-      imageListStreamController.add(imageList);
-      await precacheImage(image, context);
+      return true;
+    } catch (e, s) {
+      logger.e(e.toString(), e, s);
+      return false;
     }
-
-    setState(() {
-      imagePrecached = true;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<ImageProvider>>(
-        stream: imageListStreamController.stream,
-        builder: ((context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container();
-          }
-          return IgnorePointer(
-            ignoring: !imagePrecached,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Opacity(
-                  opacity: imagePrecached ? 1 : 0.5,
-                  child: ImageView360(
-                    key: UniqueKey(),
-                    swipeSensitivity: 2,
-                    imageList: snapshot.data!,
-                    rotationDirection: RotationDirection.anticlockwise,
-                    frameChangeDuration: const Duration(milliseconds: 30),
+    return FutureBuilder<void>(
+        future: getFrames(context),
+        builder: (context, futureSnapshot) {
+          return StreamBuilder<List<ImageProvider>>(
+              stream: imageListStreamController.stream,
+              builder: ((context, streamSnapshot) {
+                if (!streamSnapshot.hasData) {
+                  return Container();
+                }
+                return IgnorePointer(
+                  ignoring: !futureSnapshot.hasData,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Opacity(
+                        opacity: futureSnapshot.hasData ? 1 : 0.5,
+                        child: ImageView360(
+                          key: UniqueKey(),
+                          swipeSensitivity: 2,
+                          imageList: streamSnapshot.data!,
+                          rotationDirection: RotationDirection.anticlockwise,
+                          frameChangeDuration: const Duration(milliseconds: 30),
+                        ),
+                      ),
+                      if (!futureSnapshot.hasData)
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: deepOrange,
+                          ),
+                        )
+                    ],
                   ),
-                ),
-                if (!imagePrecached)
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: deepOrange,
-                    ),
-                  )
-              ],
-            ),
-          );
-        }));
+                );
+              }));
+        });
   }
 
   void updateImageList(BuildContext context,
@@ -120,12 +113,5 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
     // setState(() {
     //   imagePrecached = true;
     // });
-  }
-
-  @override
-  void dispose() {
-    imageListStreamController.close();
-    _videoPlayerController.dispose();
-    super.dispose();
   }
 }

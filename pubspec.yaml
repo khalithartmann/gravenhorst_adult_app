@@ -13,6 +13,7 @@ dependencies:
   audioplayers: ^0.20.1
   cached_network_image: ^3.1.0+1
   dartz: ^0.10.0
+  flash: ^2.0.3+2
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -29,8 +30,8 @@ dependencies:
   imageview360:
     path: ../POCs/flutter_imageview_360/
   injectable: ^1.5.0
-  json_annotation: ^4.3.0
-  json_serializable: ^6.0.1
+  json_annotation: ^4.4.0
+  json_serializable: ^6.1.4
   location: ^4.3.0
   logger: ^1.1.0
   page_transition: ^2.0.5
@@ -44,11 +45,11 @@ dependencies:
   video_thumbnail: ^0.4.6
 
 dev_dependencies:
-  build_runner: ^2.1.5
+  build_runner: ^2.1.7
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-  injectable_generator: ^1.5.2
+  injectable_generator: ^1.5.3
 
 flutter:
   uses-material-design: true

@@ -11,7 +11,7 @@ import 'package:video_player/video_player.dart';
 
 import 'local_video_player.dart';
 
-class LocalAsset extends StatelessWidget {
+class LocalAsset extends StatefulWidget {
   const LocalAsset({
     Key? key,
     required this.asset,
@@ -26,11 +26,19 @@ class LocalAsset extends StatelessWidget {
   final BoxFit imageFit;
 
   @override
+  State<LocalAsset> createState() => _LocalAssetState();
+}
+
+class _LocalAssetState extends State<LocalAsset> {
+  @override
   Widget build(BuildContext context) {
+    print("selected asset ");
+    print(widget.asset.assetUrlLocalPath);
+
     return Center(
       child: SizedBox(
         child: FutureBuilder<File>(
-          future: asset.localFile(),
+          future: widget.asset.localFile(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(
@@ -38,7 +46,7 @@ class LocalAsset extends StatelessWidget {
               );
             }
 
-            if (asset.assetType == AssetType.image) {
+            if (widget.asset.assetType == AssetType.image) {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
@@ -51,23 +59,24 @@ class LocalAsset extends StatelessWidget {
                   tag: 'imageHero_${snapshot.data!.path}',
                   child: Image.file(
                     snapshot.data!,
-                    fit: imageFit,
-                    height: height,
-                    width: width,
+                    fit: widget.imageFit,
+                    height: widget.height,
+                    width: widget.width,
                     errorBuilder: (context, error, s) {
                       return Image.network(
-                        asset.remoteUrl,
-                        height: height,
-                        fit: imageFit,
-                        width: width,
+                        widget.asset.remoteUrl,
+                        height: widget.height,
+                        fit: widget.imageFit,
+                        width: widget.width,
                       );
                     },
                   ),
                 ),
               );
-            } else if (asset.assetType == AssetType.video) {
+            } else if (widget.asset.assetType == AssetType.video) {
               return ThreeSixtyVideo(
                 localFile: snapshot.data!,
+                duration: Duration(seconds: widget.asset.duration!.toInt()),
               );
             } else {
               throw Exception('Unsupported asset format ');

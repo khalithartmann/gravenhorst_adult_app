@@ -19,6 +19,9 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   @override
   void initState() {
     super.initState();
+    print("object");
+    print(widget.localFile);
+    print(widget.localFile.absolute.path);
 
     _controller = VideoPlayerController.file(widget.localFile)
       ..initialize().then((_) {

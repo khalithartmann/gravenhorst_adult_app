@@ -53,9 +53,12 @@ class ExhibitionService {
   }
 
   Stream<Tuple2<ExhibitionData?, int>> fetchExhibitionData(
-      {required ExhibitionLocale locale}) async* {
+      {required ExhibitionLocale locale, required bool isTablet}) async* {
     yield const Tuple2<ExhibitionData?, int>(null, 0);
-    var uri = _apiConfig.getTourDataForLocaleUri(localeId: locale.id);
+    var uri = _apiConfig.getTourDataForLocaleUri(
+        localeId: locale.id, resolution: isTablet ? 'high' : 'low');
+
+    print(uri);
 
     // var exhibitionData =
     //     tryGetExhibitionDataObjectFromLocalStorage(localeId: locale.id);
@@ -70,6 +73,9 @@ class ExhibitionService {
 
     try {
       var res = await _client.get(uri);
+
+      print("this is my uri ");
+      print(res.request!.url);
 
       if (res.statusCode != 200) {
         logger.w(

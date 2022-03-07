@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -33,5 +36,45 @@ Future<String> get documentDirectoryPath async {
 }
 
 bool isMobilePlatform(BuildContext context) {
-  return MediaQuery.of(context).size.width <= 400;
+  var shortestSide = MediaQuery.of(context).size.shortestSide;
+  return shortestSide < 600;
+}
+
+bool isTablet(BuildContext context) => !isMobilePlatform(context);
+
+Future<void> showTopSnackBar(BuildContext context, {required String text}) {
+  return showFlash(
+    context: context,
+    duration: const Duration(seconds: 3),
+    builder: (context, controller) {
+      return Flash(
+        constraints: const BoxConstraints(
+          minHeight: 60,
+          minWidth: 250,
+          maxWidth: 600,
+          maxHeight: 60,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        controller: controller,
+        behavior: FlashBehavior.floating,
+        position: FlashPosition.top,
+        backgroundColor: darkGrey,
+        margin: const EdgeInsets.only(top: 110),
+        boxShadows: kElevationToShadow[4],
+        horizontalDismissDirection: HorizontalDismissDirection.horizontal,
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(20),
+          color: darkGrey,
+          child: Text(
+            text,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+      );
+    },
+  );
 }

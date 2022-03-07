@@ -5,8 +5,32 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
-class ExhibitionDataDownloadIndicator extends StatelessWidget {
+import '../core/globals.dart';
+
+class ExhibitionDataDownloadIndicator extends StatefulWidget {
   const ExhibitionDataDownloadIndicator({Key? key}) : super(key: key);
+
+  @override
+  State<ExhibitionDataDownloadIndicator> createState() =>
+      _ExhibitionDataDownloadIndicatorState();
+}
+
+class _ExhibitionDataDownloadIndicatorState
+    extends State<ExhibitionDataDownloadIndicator> {
+  late ExhibitoinDataController exhibitionDataController;
+
+  @override
+  void initState() {
+    exhibitionDataController = context.read<ExhibitoinDataController>();
+    exhibitionDataController.addListener(() {
+      if (exhibitionDataController.downloadProgressStreamFailure != null) {
+        print("someting wong ");
+        showTopSnackBar(context,
+            text: "Wir konnten die Daten leider nicht laden!");
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +62,7 @@ class ExhibitionDataDownloadIndicator extends StatelessWidget {
               Column(
                 children: [
                   StreamBuilder(
-                      stream: context
-                          .read<ExhibitoinDataController>()
-                          .downloadProgressStream,
+                      stream: exhibitionDataController.downloadProgressStream,
                       builder: (context, AsyncSnapshot<int> snapshot) {
                         var percent = 0.0;
                         if (snapshot.data != null && snapshot.hasData) {

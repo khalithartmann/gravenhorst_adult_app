@@ -13,7 +13,6 @@ import 'package:collection/collection.dart';
 @singleton
 class ExhibitoinDataController extends ChangeNotifier {
   ExhibitoinDataController(this._exhibitionService);
-
   final ExhibitionService _exhibitionService;
 
   Either<Failure, List<ExhibitionLocale>>? _eitherFailureOrSupportedLocales;
@@ -63,21 +62,29 @@ class ExhibitoinDataController extends ChangeNotifier {
 
   List<ExhibitionData> _exhibitionDataList = [];
   List<ExhibitionData> get exhibitionDataList => _exhibitionDataList;
-  Stream<int>? downloadProgressStream;
   StreamSubscription<int>? downloadProgressStreamSubscription;
+  Either<Failure, Stream<int>>? _eitherFailureOrDownloadProgressStream;
+  Stream<int>? get downloadProgressStream =>
+      _eitherFailureOrDownloadProgressStream?.fold((l) => null, (r) => r);
+  Failure? get downloadProgressStreamFailure =>
+      _eitherFailureOrDownloadProgressStream?.fold((l) => l, (r) => null);
 
   /// This function loads the [ExhibitionData] for the given [locale]
   ///
   /// The function calls [fetchExhibitionData] which returns a stream containing a [Tupel2<ExhibitionData?, int>] of type
   /// the first value of the [Tuple2] is the ExhibitonData which is returned when the second value is equal too 100
-  void onLanguageSelected({required ExhibitionLocale locale}) {
+  void onLanguageSelected(
+      {required ExhibitionLocale locale, required bool isTablet}) {
     isDownloadingData = true;
     currentLocale = locale;
 
     var exhibitionDataProgressTupelStream =
-        _exhibitionService.fetchExhibitionData(locale: locale);
+        _exhibitionService.fetchExhibitionData(
+      locale: locale,
+      isTablet: isTablet,
+    );
 
-    downloadProgressStream =
+    _eitherFailureOrDownloadProgressStream = right(
         exhibitionDataProgressTupelStream.map((exhibitionDataProgressTupel) {
       final progress = exhibitionDataProgressTupel.value2;
       final exhibitionData = exhibitionDataProgressTupel.value1;
@@ -94,12 +101,18 @@ class ExhibitoinDataController extends ChangeNotifier {
         }
 
         exhibitionDataList.add(exhibitionData!);
-        downloadProgressStream = null;
+        _eitherFailureOrDownloadProgressStream = null;
         downloadProgressStreamSubscription?.cancel();
         isDownloadingData = false;
       }
       return exhibitionDataProgressTupel.value2;
-    }).asBroadcastStream();
+    }).handleError((error) {
+      isDownloadingData = false;
+      _eitherFailureOrDownloadProgressStream =
+          left(Failure(msg: error.toString()));
+
+      notifyListeners();
+    }).asBroadcastStream());
 
     logger.v(
         '[getExhibitionDataForLocale]: loaded exhibition data  $exhibitionDataList');

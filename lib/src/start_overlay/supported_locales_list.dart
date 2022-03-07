@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:provider/src/provider.dart';
 
 class SupportedLocalesList extends StatelessWidget {
@@ -16,9 +17,8 @@ class SupportedLocalesList extends StatelessWidget {
           children: [
             ...exhibitionController.supportedLocales.map((locale) => InkWell(
                 onTap: () {
-                  context
-                      .read<ExhibitoinDataController>()
-                      .onLanguageSelected(locale: locale);
+                  context.read<ExhibitoinDataController>().onLanguageSelected(
+                      locale: locale, isTablet: isTablet(context));
                 },
                 child: Container(
                     margin: const EdgeInsets.only(
