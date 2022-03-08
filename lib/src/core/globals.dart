@@ -8,6 +8,8 @@ import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'exhibition_data/exhibition_locale.dart';
+
 const standardAnimationDuration = Duration(milliseconds: 300);
 
 var logger = Logger(
@@ -78,3 +80,6 @@ Future<void> showTopSnackBar(BuildContext context, {required String text}) {
     },
   );
 }
+
+double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;

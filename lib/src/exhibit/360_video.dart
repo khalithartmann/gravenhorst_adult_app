@@ -11,26 +11,37 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-class ThreeSixtyVideo extends StatelessWidget {
-  ThreeSixtyVideo({Key? key, required this.localFile, required this.duration})
+class ThreeSixtyVideo extends StatefulWidget {
+  const ThreeSixtyVideo(
+      {Key? key,
+      required this.localFile,
+      required this.duration,
+      required this.aspectRatio})
       : super(key: key);
 
   final File localFile;
   final Duration duration;
+  final double aspectRatio;
 
-  final List<ImageProvider> imageList = <ImageProvider>[];
+  @override
+  State<ThreeSixtyVideo> createState() => _ThreeSixtyVideoState();
+}
 
-  final imageListStreamController = StreamController<List<ImageProvider>>();
+class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
+  Image? thumbnail;
 
-  Future<bool> getFrames(BuildContext context) async {
+  Future<List<ImageProvider>> getFrames(BuildContext context) async {
+    print("this is the locale file ${widget.localFile.absolute}");
+    final List<ImageProvider> imageList = <ImageProvider>[];
+
     imageList.clear();
 
     try {
-      for (var duration = Duration.zero;
-          duration <= duration;
-          duration += const Duration(milliseconds: 500)) {
-        var destinationPath = p.join(localFile.parent.path, "frames",
-            "${p.basenameWithoutExtension(localFile.path)}_${duration.inMilliseconds}.jpeg");
+      for (var d = Duration.zero;
+          d <= widget.duration;
+          d += const Duration(seconds: 1)) {
+        var destinationPath = p.join(widget.localFile.parent.path, "frames",
+            "${p.basenameWithoutExtension(widget.localFile.path)}_${d.inMilliseconds}.jpeg");
 
         Uint8List? imageData;
 
@@ -38,80 +49,83 @@ class ThreeSixtyVideo extends StatelessWidget {
           imageData = File(destinationPath).readAsBytesSync();
         } else {
           imageData = await VideoThumbnail.thumbnailData(
-              video: localFile.path,
-              timeMs: duration.inMilliseconds,
+              video: widget.localFile.path,
+              timeMs: d.inMilliseconds,
               imageFormat: ImageFormat.JPEG,
               quality: 100);
 
           if (imageData == null) {
-            throw Exception("unable to extract frame in time: $duration ms ");
+            throw Exception(
+                "unable to extract frame in time: ${widget.duration} ms ");
           }
           File(destinationPath)
             ..createSync(recursive: true)
             ..writeAsBytesSync(List<int>.from(imageData));
         }
 
-        var image = Image.memory(imageData).image;
-        imageList.add(image);
-        imageListStreamController.add(imageList);
-        await precacheImage(image, context);
+        var image = Image.memory(imageData);
+
+        if (d == Duration.zero) {
+          setState(() {
+            thumbnail = image;
+          });
+        }
+        var imageProvider = image.image;
+        imageList.add(imageProvider);
+
+        await precacheImage(imageProvider, context);
       }
-      return true;
+      print("doneee");
+      return imageList;
     } catch (e, s) {
       logger.e(e.toString(), e, s);
-      return false;
+      return [];
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
+    return FutureBuilder<List<ImageProvider>>(
         future: getFrames(context),
         builder: (context, futureSnapshot) {
-          return StreamBuilder<List<ImageProvider>>(
-              stream: imageListStreamController.stream,
-              builder: ((context, streamSnapshot) {
-                if (!streamSnapshot.hasData) {
-                  return Container();
-                }
-                return IgnorePointer(
-                  ignoring: !futureSnapshot.hasData,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Opacity(
-                        opacity: futureSnapshot.hasData ? 1 : 0.5,
-                        child: ImageView360(
-                          key: UniqueKey(),
-                          swipeSensitivity: 2,
-                          imageList: streamSnapshot.data!,
-                          rotationDirection: RotationDirection.anticlockwise,
-                          frameChangeDuration: const Duration(milliseconds: 30),
-                        ),
-                      ),
-                      if (!futureSnapshot.hasData)
-                        const Center(
+          print(futureSnapshot.connectionState);
+          if (thumbnail != null && !futureSnapshot.hasData ||
+              futureSnapshot.connectionState == ConnectionState.waiting) {
+            return AspectRatio(
+                aspectRatio: widget.aspectRatio,
+                child: Container(
+                    width: screenWidth(context),
+                    child: Stack(
+                      children: [
+                        Opacity(opacity: 0.5, child: thumbnail!),
+                        Center(
                           child: CircularProgressIndicator(
                             color: deepOrange,
                           ),
                         )
-                    ],
-                  ),
-                );
-              }));
+                      ],
+                    )));
+          }
+          if (!futureSnapshot.hasData) {
+            return AspectRatio(
+              aspectRatio: 4 / 3,
+              child: Container(
+                height: screenHeight(context),
+                color: Colors.red,
+                width: screenWidth(context),
+              ),
+            );
+          }
+          return Opacity(
+            opacity: futureSnapshot.hasData ? 1 : 0.5,
+            child: ImageView360(
+              key: UniqueKey(),
+              swipeSensitivity: 2,
+              imageList: futureSnapshot.data!,
+              rotationDirection: RotationDirection.anticlockwise,
+              frameChangeDuration: const Duration(milliseconds: 30),
+            ),
+          );
         });
-  }
-
-  void updateImageList(BuildContext context,
-      {required List<File> imageFileList}) async {
-    for (var file in imageFileList) {
-      var image = Image.file(file).image;
-      imageList.add(image);
-      await precacheImage(image, context);
-    }
-
-    // setState(() {
-    //   imagePrecached = true;
-    // });
   }
 }

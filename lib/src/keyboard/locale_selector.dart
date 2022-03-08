@@ -55,7 +55,7 @@ class LocaleSelector extends StatelessWidget {
                               return dullOrange;
                             })),
                         child: Text(
-                          locale.id.toUpperCase().split('_').last,
+                          locale.formattedLocaleId,
                           style: Theme.of(context)
                               .textTheme
                               .headline4!

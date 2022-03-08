@@ -104,15 +104,15 @@ class Asset with _$Asset {
     bool? autoplay,
     bool? interactive,
     bool? loop,
+    required int? width,
+    required int? height,
     @Default("") String description,
     @Default("") String title,
     String? copyright,
     required String updatedAt,
   }) = _Asset;
 
-  factory Asset.fromJson(Map<String, dynamic> json) {
-    return _$AssetFromJson(json);
-  }
+  factory Asset.fromJson(Map<String, dynamic> json) => _$AssetFromJson(json);
 
   String get assetUrlLocalPath {
     var baseUrl = getIt<ApiConfig>().baseUrl;

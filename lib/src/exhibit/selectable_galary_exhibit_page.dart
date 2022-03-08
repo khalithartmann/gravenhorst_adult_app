@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/image_description.dart';
 
 import 'description_container.dart';
@@ -80,12 +81,15 @@ class _SelectableGalleryExhibitPageState
                     child: Container(
                       color: asset == selectdAsset ? darkGrey : Colors.white,
                       height: 70,
+                      padding: const EdgeInsets.all(4),
+                      width: screenWidth(context) * 0.45,
                       child: Center(
                         child: Text(
                           asset.title,
+                          textAlign: TextAlign.left,
                           style: Theme.of(context)
                               .textTheme
-                              .headline3!
+                              .headline4!
                               .copyWith(
                                   fontWeight: FontWeight.w300,
                                   color: asset == selectdAsset

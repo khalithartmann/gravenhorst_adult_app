@@ -10,4 +10,6 @@ class ExhibitionLocale {
   factory ExhibitionLocale.fromJson(Map<String, dynamic> json) {
     return _$ExhibitionLocaleFromJson(json);
   }
+
+  String get formattedLocaleId => id == "de_ls" ? "LS" : id.toUpperCase();
 }

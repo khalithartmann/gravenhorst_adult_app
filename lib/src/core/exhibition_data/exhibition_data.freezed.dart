@@ -1345,6 +1345,8 @@ class _$AssetTearOff {
       bool? autoplay,
       bool? interactive,
       bool? loop,
+      required int? width,
+      required int? height,
       String description = "",
       String title = "",
       String? copyright,
@@ -1359,6 +1361,8 @@ class _$AssetTearOff {
       autoplay: autoplay,
       interactive: interactive,
       loop: loop,
+      width: width,
+      height: height,
       description: description,
       title: title,
       copyright: copyright,
@@ -1385,6 +1389,8 @@ mixin _$Asset {
   bool? get autoplay => throw _privateConstructorUsedError;
   bool? get interactive => throw _privateConstructorUsedError;
   bool? get loop => throw _privateConstructorUsedError;
+  int? get width => throw _privateConstructorUsedError;
+  int? get height => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get copyright => throw _privateConstructorUsedError;
@@ -1409,6 +1415,8 @@ abstract class $AssetCopyWith<$Res> {
       bool? autoplay,
       bool? interactive,
       bool? loop,
+      int? width,
+      int? height,
       String description,
       String title,
       String? copyright,
@@ -1434,6 +1442,8 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
     Object? autoplay = freezed,
     Object? interactive = freezed,
     Object? loop = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
@@ -1476,6 +1486,14 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
           ? _value.loop
           : loop // ignore: cast_nullable_to_non_nullable
               as bool?,
+      width: width == freezed
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as int?,
+      height: height == freezed
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -1511,6 +1529,8 @@ abstract class _$AssetCopyWith<$Res> implements $AssetCopyWith<$Res> {
       bool? autoplay,
       bool? interactive,
       bool? loop,
+      int? width,
+      int? height,
       String description,
       String title,
       String? copyright,
@@ -1537,6 +1557,8 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
     Object? autoplay = freezed,
     Object? interactive = freezed,
     Object? loop = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
     Object? description = freezed,
     Object? title = freezed,
     Object? copyright = freezed,
@@ -1579,6 +1601,14 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
           ? _value.loop
           : loop // ignore: cast_nullable_to_non_nullable
               as bool?,
+      width: width == freezed
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as int?,
+      height: height == freezed
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -1612,6 +1642,8 @@ class _$_Asset extends _Asset {
       this.autoplay,
       this.interactive,
       this.loop,
+      required this.width,
+      required this.height,
       this.description = "",
       this.title = "",
       this.copyright,
@@ -1650,6 +1682,10 @@ class _$_Asset extends _Asset {
   final bool? interactive;
   @override
   final bool? loop;
+  @override
+  final int? width;
+  @override
+  final int? height;
   @JsonKey()
   @override
   final String description;
@@ -1663,7 +1699,7 @@ class _$_Asset extends _Asset {
 
   @override
   String toString() {
-    return 'Asset(id: $id, sortOrder: $sortOrder, size: $size, url: $url, mimeType: $mimeType, duration: $duration, autoplay: $autoplay, interactive: $interactive, loop: $loop, description: $description, title: $title, copyright: $copyright, updatedAt: $updatedAt)';
+    return 'Asset(id: $id, sortOrder: $sortOrder, size: $size, url: $url, mimeType: $mimeType, duration: $duration, autoplay: $autoplay, interactive: $interactive, loop: $loop, width: $width, height: $height, description: $description, title: $title, copyright: $copyright, updatedAt: $updatedAt)';
   }
 
   @override
@@ -1681,6 +1717,8 @@ class _$_Asset extends _Asset {
             const DeepCollectionEquality()
                 .equals(other.interactive, interactive) &&
             const DeepCollectionEquality().equals(other.loop, loop) &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.title, title) &&
@@ -1700,6 +1738,8 @@ class _$_Asset extends _Asset {
       const DeepCollectionEquality().hash(autoplay),
       const DeepCollectionEquality().hash(interactive),
       const DeepCollectionEquality().hash(loop),
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(height),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(copyright),
@@ -1727,6 +1767,8 @@ abstract class _Asset extends Asset {
       bool? autoplay,
       bool? interactive,
       bool? loop,
+      required int? width,
+      required int? height,
       String description,
       String title,
       String? copyright,
@@ -1753,6 +1795,10 @@ abstract class _Asset extends Asset {
   bool? get interactive;
   @override
   bool? get loop;
+  @override
+  int? get width;
+  @override
+  int? get height;
   @override
   String get description;
   @override

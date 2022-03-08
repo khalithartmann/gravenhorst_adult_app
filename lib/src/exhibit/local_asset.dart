@@ -74,10 +74,19 @@ class _LocalAssetState extends State<LocalAsset> {
                 ),
               );
             } else if (widget.asset.assetType == AssetType.video) {
-              return ThreeSixtyVideo(
-                localFile: snapshot.data!,
-                duration: Duration(seconds: widget.asset.duration!.toInt()),
-              );
+              if (widget.asset.interactive!) {
+                return ThreeSixtyVideo(
+                  localFile: snapshot.data!,
+                  duration: Duration(seconds: widget.asset.duration!.toInt()),
+                  aspectRatio: widget.asset.width! / widget.asset.height!,
+                );
+              } else {
+                return LocalVideoPlayer(
+                  localFile: snapshot.data!,
+                  autoplay: widget.asset.autoplay!,
+                  isLooping: widget.asset.loop!,
+                );
+              }
             } else {
               throw Exception('Unsupported asset format ');
             }
@@ -98,7 +107,7 @@ class FullScreenImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leadingWidth: 60,
         leading: IconButton(

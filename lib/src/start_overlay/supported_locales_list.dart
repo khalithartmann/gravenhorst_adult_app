@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
+import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_locale.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:provider/src/provider.dart';
 
 class SupportedLocalesList extends StatelessWidget {
+  const SupportedLocalesList({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final exhibitionController = context.read<ExhibitoinDataController>();
@@ -27,7 +30,7 @@ class SupportedLocalesList extends StatelessWidget {
                       top: 10,
                     ),
                     child: Text(
-                      locale.id.toUpperCase(),
+                      locale.formattedLocaleId,
                       style: Theme.of(context)
                           .textTheme
                           .button!
