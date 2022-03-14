@@ -88,7 +88,6 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
     return FutureBuilder<List<ImageProvider>>(
         future: getFrames(context),
         builder: (context, futureSnapshot) {
-          print(futureSnapshot.connectionState);
           if (thumbnail != null && !futureSnapshot.hasData ||
               futureSnapshot.connectionState == ConnectionState.waiting) {
             return AspectRatio(
