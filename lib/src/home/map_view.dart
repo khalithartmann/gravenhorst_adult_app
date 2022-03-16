@@ -27,6 +27,7 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     _requestLocationPermission();
+
     super.initState();
   }
 
@@ -45,26 +46,31 @@ class _MapViewState extends State<MapView> {
               options: MapOptions(
                 interactiveFlags:
                     InteractiveFlag.pinchZoom | InteractiveFlag.drag,
+                nePanBoundary: LatLng(52.288423, 7.627318),
+                swPanBoundary: LatLng(52.286176599309876, 7.622755794605564),
                 plugins: [
                   MarkerClusterPlugin(),
                 ],
 
-                bounds: LatLngBounds(
-                    LatLng(52.288301, 7.622590), LatLng(52.286005, 7.626735)),
+                center: LatLng(52.286542, 7.623975),
+                // bounds: LatLngBounds(
+                //     LatLng(postionSnapshot.data!.latitude,
+                //         postionSnapshot.data!.longitude),
+                //     LatLng(postionSnapshot.data!.latitude,
+                //         postionSnapshot.data!.longitude)),
                 boundsOptions: const FitBoundsOptions(
                     padding: EdgeInsets.zero, inside: true),
                 minZoom: 17,
-                maxZoom: 19,
+                maxZoom: 19.5,
 
-                // center: LatLng(52.286920, 7.6245600), // Kloster Gravenhorst
-                zoom: 17,
+                zoom: 18.5,
               ),
               children: [
                 TileLayerWidget(
                     options: TileLayerOptions(
-                  maxNativeZoom: 19,
+                  maxNativeZoom: 19.5,
                   minNativeZoom: 17,
-                  maxZoom: 19,
+                  maxZoom: 19.5,
                   minZoom: 17,
                   urlTemplate:
                       'https://api.mapbox.com/styles/v1/framegrabber/ckw0fy0za8roo14pljrdqjfrl/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZnJhbWVncmFiYmVyIiwiYSI6ImNrdzBmbjB4OWRhczMybnM3ZTV3N2I3NnMifQ.h0kT3DdBKoMP6NFLvAsVEw',
@@ -78,6 +84,7 @@ class _MapViewState extends State<MapView> {
                 ), // <-- add layer widget here
                 MarkerClusterLayerWidget(
                     options: MarkerClusterLayerOptions(
+                  maxClusterRadius: 60,
                   disableClusteringAtZoom: 23,
                   size: const Size(54, 72),
                   zoomToBoundsOnClick: false,
@@ -132,6 +139,15 @@ class _MapViewState extends State<MapView> {
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }
+
+    // Geolocator.getPositionStream(
+    //         locationSettings:
+    //             const LocationSettings(accuracy: LocationAccuracy.lowest))
+    //     .listen((event) {
+    //   print(event);
+    //   mapController.move(
+    //       LatLng(event.latitude, event.longitude), mapController.zoom);
+    // });
   }
 
   List<Marker>? generateMarkersList(ExhibitionData? exhibitionData) {

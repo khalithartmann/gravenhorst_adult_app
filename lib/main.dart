@@ -10,6 +10,10 @@ void main() async {
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
   configureDependencies(environment: Environment.dev);
 
   runApp(const MyApp());

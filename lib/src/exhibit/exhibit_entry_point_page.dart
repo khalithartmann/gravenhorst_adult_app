@@ -8,6 +8,7 @@ import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.
 
 import 'audio_player_controller.dart';
 import 'local_asset.dart';
+import 'title_text.dart';
 
 class ExhibitEntryPointPage extends StatefulWidget {
   const ExhibitEntryPointPage({Key? key, required this.entry})
@@ -86,11 +87,7 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
           left: 60,
           right: 30,
         ),
-        child: Text(
-          widget.entry.title!,
-          style: Theme.of(context).textTheme.headline2!.copyWith(
-              color: darkGrey, fontWeight: FontWeight.normal, height: 1),
-        ),
+        child: Headline2Text(text: widget.entry.title!),
       ),
     );
   }

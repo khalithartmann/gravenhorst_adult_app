@@ -3,6 +3,10 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  "startPageH1": "Travel through\nspace and time",
-  "startPageH2": "Kunsthaus\nKloster\nGravenhorst"
+  "startPageH1": "Journeys through\nspace and time",
+  "startPageH2": "Kunsthaus\nKloster\nGravenhorst",
+  "pickLanguage": "Choose language",
+  "downloadingHint": "One moment please, the contents are loading",
+  "contentManagerTitle": "Manage contents",
+  "updateButtonText": "Check for updates" 
 }

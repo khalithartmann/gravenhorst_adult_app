@@ -5,18 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
+
+import 'local_video_player.dart';
 
 class VideoPlayerControllerView extends StatefulWidget {
   const VideoPlayerControllerView({
     Key? key,
     required this.videoPlayerController,
     required this.isLooping,
+    this.trailingActionButton,
   }) : super(key: key);
 
   final VideoPlayerController videoPlayerController;
   final bool isLooping;
+  final Widget? trailingActionButton;
 
   @override
   _VideoPlayerControllerViewState createState() =>
@@ -55,6 +60,8 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
           StreamBuilder<Duration>(
             stream: _videoPositionStreamController.stream,
             builder: (context, positionSnapshot) {
+              var videoOrientation =
+                  getOrientation(size: widget.videoPlayerController.value.size);
               if (!positionSnapshot.hasData) {
                 currentPositionInPercent = 0.0;
               } else {
@@ -79,7 +86,7 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                 children: [
                   LinearPercentIndicator(
                     percent: currentPositionInPercent,
-                    width: 218,
+                    width: 180,
                     lineHeight: 1,
                     backgroundColor: Colors.white60,
                     progressColor: Colors.white,
@@ -94,7 +101,9 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                             .textTheme
                             .headline6!
                             .copyWith(color: Colors.white)),
-                  )
+                  ),
+                  if (widget.trailingActionButton != null)
+                    widget.trailingActionButton!,
                 ],
               );
             },

@@ -30,6 +30,8 @@ class ExhibitView extends StatelessWidget {
               TabBarView(
                 children: [
                   ...exhibit.entries.map((currentEntry) {
+                    print("current entry type is ${currentEntry.type} ");
+
                     switch (currentEntry.type) {
                       case ExhibitEntryPointPage.type:
                         return ExhibitEntryPointPage(entry: currentEntry);

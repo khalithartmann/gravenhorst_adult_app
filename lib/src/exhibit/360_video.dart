@@ -43,6 +43,9 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
         var destinationPath = p.join(widget.localFile.parent.path, "frames",
             "${p.basenameWithoutExtension(widget.localFile.path)}_${d.inMilliseconds}.jpeg");
 
+        print("this is my destination path ");
+        print(destinationPath);
+
         Uint8List? imageData;
 
         if (File(destinationPath).existsSync()) {

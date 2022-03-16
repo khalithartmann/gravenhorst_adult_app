@@ -83,3 +83,11 @@ Future<void> showTopSnackBar(BuildContext context, {required String text}) {
 
 double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
+Orientation getOrientation({required Size size}) {
+  if (size.width > size.height) {
+    return Orientation.landscape;
+  } else {
+    return Orientation.portrait;
+  }
+}

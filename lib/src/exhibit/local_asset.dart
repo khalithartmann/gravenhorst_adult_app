@@ -106,7 +106,7 @@ class FullScreenImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         leadingWidth: 60,
@@ -129,8 +129,11 @@ class FullScreenImageView extends StatelessWidget {
       body: Center(
         child: Hero(
           tag: 'imageHero_${localFile.path}',
-          child: Image.file(
-            localFile,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Image.file(
+              localFile,
+            ),
           ),
         ),
       ),

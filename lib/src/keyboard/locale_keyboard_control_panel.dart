@@ -3,6 +3,7 @@ import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 double get _standardButtonWidth => 66;
 double get _standardButtonHeight => 56;
@@ -56,9 +57,10 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 24),
-                      child: Text('Inhalte verwalten',
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24),
+                      child: Text(
+                          AppLocalizations.of(context)!.contentManagerTitle,
                           style: TextStyle(fontSize: 24, color: deepOrange)),
                     ),
                   ],
@@ -115,7 +117,7 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                                               padding: const EdgeInsets.only(
                                                   right: 24.0),
                                               child: Text(
-                                                  "${(exhibition.contentSize ~/ 1024)} MB"
+                                                  "${(exhibition.contentSize ~/ 1024000)} MB"
                                                       .toString(),
                                                   style: const TextStyle(
                                                     fontSize: 22,
@@ -172,10 +174,10 @@ class LocaleKeyboardControlPanel extends StatelessWidget {
                               _standardButtonHeight)),
                       backgroundColor: MaterialStateProperty.resolveWith(
                           (states) => deepOrange)),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Auf Aktualisierung prüfen',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.updateButtonText,
+                      style: const TextStyle(
                         fontSize: 22,
                       ),
                     ),
