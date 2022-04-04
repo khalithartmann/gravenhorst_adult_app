@@ -5,6 +5,7 @@ import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/description_container.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/image_description.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/local_asset.dart';
+import 'package:gravenhorst_adults_app/src/exhibit/title_text.dart';
 
 class SwipeableGalleryExhibit extends StatefulWidget {
   SwipeableGalleryExhibit({Key? key, required this.entry}) : super(key: key);
@@ -22,51 +23,70 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ListView(
       children: [
+        if (widget.entry.title != null)
+          Padding(
+              padding: EdgeInsets.only(left: 40, top: 60),
+              child: Headline3Text(text: widget.entry.title!)),
         SizedBox(
-            height: screenHeight(context),
             child: IndexedStack(
-              index: stackIndex.toInt(),
-              children: [
-                ...widget.entry.assets.map((asset) => Column(
-                      children: [
-                        LocalAsset(
-                          asset: asset,
-                          height: MediaQuery.of(context).size.height * 0.5,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 85.0),
-                          child: ImageDescriptionText(text: asset.copyright!),
-                        ),
-                      ],
-                    ))
-              ],
-            )),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 130, left: 30, right: 30),
-          child: SliderTheme(
-            data: SliderThemeData(
-                trackHeight: 3,
-                thumbShape: CustomSliderThumbRect(
-                    max: widget.entry.assets.length - 1,
-                    min: 0,
-                    thumbHeight: 20,
-                    thumbRadius: 0)),
-            child: Slider(
-                thumbColor: Colors.white,
-                activeColor: Colors.white,
-                value: stackIndex.toDouble(),
-                min: 0,
-                divisions: widget.entry.assets.length - 1,
-                max: widget.entry.assets.length.toDouble() - 1,
-                onChanged: (val) {
-                  setState(() {
-                    stackIndex = val;
-                  });
-                }),
+          index: stackIndex.toInt(),
+          children: [
+            ...widget.entry.assets.map((asset) => Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          LocalAsset(
+                            asset: asset,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: SliderTheme(
+                              data: SliderThemeData(
+                                  trackHeight: 3,
+                                  thumbShape: CustomSliderThumbRect(
+                                      max: widget.entry.assets.length - 1,
+                                      min: 0,
+                                      thumbHeight: 20,
+                                      thumbRadius: 0)),
+                              child: Slider(
+                                  thumbColor: Colors.white,
+                                  activeColor: Colors.white,
+                                  value: stackIndex.toDouble(),
+                                  min: 0,
+                                  divisions: widget.entry.assets.length - 1,
+                                  max:
+                                      widget.entry.assets.length.toDouble() - 1,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      stackIndex = val;
+                                    });
+                                  }),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: ImageDescriptionText(text: asset.copyright!),
+                    ),
+                  ],
+                ))
+          ],
+        )),
+        if (widget.entry.description != null)
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 30),
+                child: DescriptionContainer(
+                    description: widget.entry.description!)),
           ),
-        )
       ],
     );
   }

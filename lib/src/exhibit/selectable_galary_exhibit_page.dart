@@ -40,6 +40,7 @@ class _SelectableGalleryExhibitPageState
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
+      isAlwaysShown: true,
       controller: scrollController,
       child: ListView(
         controller: scrollController,

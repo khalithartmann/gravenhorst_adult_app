@@ -43,10 +43,11 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("this is my audioasset");
+    print(audioAsset);
     return Stack(
       children: [
         buildBackgroundImage(),
-        buildGradientImageOverlay(),
         buildHeadline(),
         if (audioAsset != null)
           Align(
@@ -88,30 +89,6 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
           right: 30,
         ),
         child: Headline2Text(text: widget.entry.title!),
-      ),
-    );
-  }
-
-  Widget buildGradientImageOverlay() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: FractionalOffset.topCenter,
-            end: FractionalOffset.bottomCenter,
-            colors: [
-              lightGrey,
-              lightGrey.withOpacity(0.9),
-              lightGrey.withOpacity(0.7),
-              lightGrey.withOpacity(0.5),
-              lightGrey.withOpacity(0),
-            ],
-            stops: const [
-              0.0,
-              0.25,
-              0.5,
-              0.75,
-              1.0
-            ]),
       ),
     );
   }

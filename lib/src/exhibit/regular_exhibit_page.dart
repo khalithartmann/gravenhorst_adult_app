@@ -20,6 +20,7 @@ class RegularExhibitPage extends StatelessWidget {
     assert(entry.assets.length <= 1);
     print(entry.assets.first.description);
     return Scrollbar(
+      isAlwaysShown: true,
       controller: scrollController,
       child: ListView(
         controller: scrollController,
