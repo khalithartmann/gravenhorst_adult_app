@@ -53,7 +53,7 @@ Future<void> showTopSnackBar(BuildContext context, {required String text}) {
         constraints: const BoxConstraints(
           minHeight: 60,
           minWidth: 250,
-          maxWidth: 600,
+          maxWidth: 340,
           maxHeight: 60,
         ),
         borderRadius: BorderRadius.circular(10),
@@ -61,7 +61,7 @@ Future<void> showTopSnackBar(BuildContext context, {required String text}) {
         behavior: FlashBehavior.floating,
         position: FlashPosition.top,
         backgroundColor: darkGrey,
-        margin: const EdgeInsets.only(top: 110),
+        margin: const EdgeInsets.only(top: 10, left: 20, right: 20),
         boxShadows: kElevationToShadow[4],
         horizontalDismissDirection: HorizontalDismissDirection.horizontal,
         child: Container(

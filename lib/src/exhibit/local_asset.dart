@@ -9,6 +9,7 @@ import 'package:gravenhorst_adults_app/src/exhibit/360_video.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:video_player/video_player.dart';
 
+import 'image_description.dart';
 import 'local_video_player.dart';
 
 class LocalAsset extends StatefulWidget {
@@ -35,9 +36,9 @@ class _LocalAssetState extends State<LocalAsset> {
     print("selected asset ");
     print(widget.asset.assetUrlLocalPath);
 
-    return Center(
-      child: SizedBox(
-        child: FutureBuilder<File>(
+    return Column(
+      children: [
+        FutureBuilder<File>(
           future: widget.asset.localFile(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -47,29 +48,32 @@ class _LocalAssetState extends State<LocalAsset> {
             }
 
             if (widget.asset.assetType == AssetType.image) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return FullScreenImageView(
-                      localFile: snapshot.data!,
-                    );
-                  }));
-                },
-                child: Hero(
-                  tag: 'imageHero_${snapshot.data!.path}',
-                  child: Image.file(
-                    snapshot.data!,
-                    fit: widget.imageFit,
-                    height: widget.height,
-                    width: widget.width,
-                    errorBuilder: (context, error, s) {
-                      return Image.network(
-                        widget.asset.remoteUrl,
-                        height: widget.height,
-                        fit: widget.imageFit,
-                        width: widget.width,
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return FullScreenImageView(
+                        localFile: snapshot.data!,
                       );
-                    },
+                    }));
+                  },
+                  child: Hero(
+                    tag: 'imageHero_${snapshot.data!.path}',
+                    child: Image.file(
+                      snapshot.data!,
+                      fit: widget.imageFit,
+                      height: widget.height,
+                      width: widget.width,
+                      errorBuilder: (context, error, s) {
+                        return Image.network(
+                          widget.asset.remoteUrl,
+                          height: widget.height,
+                          fit: widget.imageFit,
+                          width: widget.width,
+                        );
+                      },
+                    ),
                   ),
                 ),
               );
@@ -92,7 +96,17 @@ class _LocalAssetState extends State<LocalAsset> {
             }
           },
         ),
-      ),
+        Column(
+          children: [
+            ImageDescriptionText(text: widget.asset.description),
+            if (widget.asset.copyright != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: ImageDescriptionText(text: widget.asset.copyright!),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

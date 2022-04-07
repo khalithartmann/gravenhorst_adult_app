@@ -47,22 +47,13 @@ class _SelectableGalleryExhibitPageState
         children: [
           if (widget.entry.title != null)
             Padding(
-                padding: EdgeInsets.only(left: 40, top: 60),
+                padding: const EdgeInsets.only(left: 40, top: 60),
                 child: Headline3Text(text: widget.entry.title!)),
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: LocalAsset(
               asset: selectdAsset,
               width: MediaQuery.of(context).size.width * 0.8,
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: ImageDescriptionText(
-                text: selectdAsset.description,
-              ),
             ),
           ),
           Padding(

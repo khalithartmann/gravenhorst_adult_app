@@ -44,7 +44,7 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
                             asset: asset,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
                             child: SliderTheme(
                               data: SliderThemeData(
                                   trackHeight: 3,
@@ -70,10 +70,6 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
                           )
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: ImageDescriptionText(text: asset.copyright!),
                     ),
                   ],
                 ))

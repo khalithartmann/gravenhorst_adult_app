@@ -5,8 +5,10 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 
 import 'audio_player_controller.dart';
+import 'image_description.dart';
 import 'local_asset.dart';
 import 'title_text.dart';
 
@@ -67,12 +69,31 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
     }
     return Align(
         alignment: Alignment.bottomCenter,
-        child: LocalAsset(
-          asset: backgroundImageAsset!,
-          height: double.infinity,
-          width: double.infinity,
-          imageFit: BoxFit.cover,
-        ));
+        child: FutureBuilder<File>(
+            future: backgroundImageAsset!.localFile(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Container();
+              }
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Image.file(
+                    snapshot.data!,
+                    height: screenHeight(context),
+                    width: screenWidth(context),
+                    fit: BoxFit.cover,
+                  ),
+                  if (backgroundImageAsset!.copyright != null)
+                    Positioned(
+                      bottom: 30,
+                      child: ImageDescriptionText(
+                        text: backgroundImageAsset!.copyright!,
+                      ),
+                    ),
+                ],
+              );
+            }));
   }
 
   bool get hasBackgroundImage => backgroundImageAsset != null;

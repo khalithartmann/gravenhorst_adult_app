@@ -18,7 +18,7 @@ class RegularExhibitPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(entry.assets.length <= 1);
-    print(entry.assets.first.description);
+
     return Scrollbar(
       isAlwaysShown: true,
       controller: scrollController,
@@ -44,27 +44,7 @@ class RegularExhibitPage extends StatelessWidget {
           //         padding: const EdgeInsets.only(top: 54),
           //         child: DescriptionContainer(description: entry.description!)),
           //   ),
-          if (entry.assets.isNotEmpty)
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30.0, bottom: 30),
-                child: Column(
-                  children: [
-                    ImageDescriptionText(
-                      text: entry.assets.first.description,
-                    ),
-                    if (entry.assets.first.copyright != null)
-                      Padding(
-                        padding: EdgeInsets.only(top: 8),
-                        child: ImageDescriptionText(
-                          text: entry.assets.first.copyright!,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
+
           if (entry.description != null)
             Align(
               alignment: Alignment.topCenter,

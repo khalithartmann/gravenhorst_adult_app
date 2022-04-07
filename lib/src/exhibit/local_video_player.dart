@@ -73,7 +73,7 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
               aspectRatio: _controller.value.aspectRatio,
               child: VideoPlayer(_controller)),
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 30, bottom: 20),
             child: VideoPlayerControllerView(
               videoPlayerController: _controller,
               isLooping: widget.isLooping,
@@ -130,32 +130,33 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+        backgroundColor: Colors.black,
         body: Stack(
-      alignment: Alignment.center,
-      children: [
-        Center(
-          child: AspectRatio(
-              aspectRatio: widget.controller.value.aspectRatio,
-              child: VideoPlayer(widget.controller)),
-        ),
-        Positioned(
-          bottom: 30,
-          child: VideoPlayerControllerView(
-            videoPlayerController: widget.controller,
-            isLooping: widget.isLooping,
-            trailingActionButton: IconButton(
-                onPressed: () async {
-                  await SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                  ]);
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.fullscreen_exit, color: Colors.white)),
-          ),
-        )
-      ],
-    ));
+          alignment: Alignment.center,
+          children: [
+            Center(
+              child: AspectRatio(
+                  aspectRatio: widget.controller.value.aspectRatio,
+                  child: VideoPlayer(widget.controller)),
+            ),
+            Positioned(
+              bottom: 30,
+              child: VideoPlayerControllerView(
+                videoPlayerController: widget.controller,
+                isLooping: widget.isLooping,
+                trailingActionButton: IconButton(
+                    onPressed: () async {
+                      await SystemChrome.setPreferredOrientations([
+                        DeviceOrientation.portraitUp,
+                      ]);
+                      Navigator.of(context).pop();
+                    },
+                    icon:
+                        const Icon(Icons.fullscreen_exit, color: Colors.white)),
+              ),
+            )
+          ],
+        ));
   }
 
   @override

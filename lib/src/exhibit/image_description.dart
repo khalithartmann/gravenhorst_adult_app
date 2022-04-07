@@ -6,9 +6,11 @@ class ImageDescriptionText extends StatelessWidget {
   const ImageDescriptionText({
     Key? key,
     required this.text,
+    this.textColor = darkGrey,
   }) : super(key: key);
 
   final String text;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class ImageDescriptionText extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .headline6!
-            .copyWith(fontWeight: FontWeight.w300, color: darkGrey),
+            .copyWith(fontWeight: FontWeight.w300, color: textColor),
       ),
     );
   }
