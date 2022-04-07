@@ -25,6 +25,9 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
 
   @override
   Widget build(BuildContext context) {
+    assert(widget.entry.assets.isNotEmpty,
+        "Swipeable gallery page has to have assets");
+
     return ListView(
       children: [
         if (widget.entry.title != null)
@@ -54,7 +57,7 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
                                     thumbHeight: 20,
                                     thumbRadius: 0)),
                             child: Slider(
-                                inactiveColor: Colors.white,
+                                inactiveColor: deepOrange,
                                 thumbColor: Colors.white,
                                 activeColor: Colors.white,
                                 value: stackIndex.toDouble(),

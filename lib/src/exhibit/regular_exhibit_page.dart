@@ -22,37 +22,34 @@ class RegularExhibitPage extends StatelessWidget {
     return Scrollbar(
       isAlwaysShown: true,
       controller: scrollController,
-      child: ListView(
+      child: SingleChildScrollView(
         controller: scrollController,
-        children: [
-          if (entry.title != null)
-            Padding(
-                padding: EdgeInsets.only(left: 40, top: 60),
-                child: Headline3Text(text: entry.title!)),
-          if (entry.assets.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: LocalAsset(
-                asset: entry.assets.first,
-                width: MediaQuery.of(context).size.width * 0.8,
+        child: Column(
+          children: [
+            if (entry.title != null)
+              Padding(
+                  padding: const EdgeInsets.only(top: 60),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Headline3Text(text: entry.title!))),
+            if (entry.assets.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: LocalAsset(
+                  asset: entry.assets.first,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                ),
               ),
-            ),
-          // if (entry.description != null)
-          //   Align(
-          //     alignment: Alignment.topCenter,
-          //     child: Padding(
-          //         padding: const EdgeInsets.only(top: 54),
-          //         child: DescriptionContainer(description: entry.description!)),
-          //   ),
-
-          if (entry.description != null)
-            Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 30),
-                  child: DescriptionContainer(description: entry.description!)),
-            ),
-        ],
+            if (entry.description != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 30),
+                    child:
+                        DescriptionContainer(description: entry.description!)),
+              ),
+          ],
+        ),
       ),
     );
   }

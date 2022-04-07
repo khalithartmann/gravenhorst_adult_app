@@ -57,6 +57,7 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
       if (orientation == Orientation.landscape &&
           _controller.value.size.width > _controller.value.size.height) {
         WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+          _controller.pause();
           Navigator.of(context).push(PageTransition(
               type: PageTransitionType.fade,
               child: FullScreenVideoPlayer(
@@ -68,9 +69,12 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
 
       return Column(
         children: [
-          AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller)),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: screenHeight(context) - 300),
+            child: AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller)),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 30, bottom: 20),
             child: VideoPlayerControllerView(
@@ -123,11 +127,24 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
     ]);
+    widget.controller.play();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Center(
+            child: AspectRatio(
+                aspectRatio: widget.controller.value.aspectRatio,
+                child: VideoPlayer(widget.controller)),
+          ),
+        ],
+      ),
+    );
     return Scaffold(
         backgroundColor: Colors.black,
         body: Stack(

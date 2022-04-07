@@ -31,7 +31,7 @@ class VideoPlayerControllerView extends StatefulWidget {
 class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
   var currentPositionInPercent = 0.0;
 
-  final _videoPositionStreamController = StreamController<Duration>();
+  final _videoPositionStreamController = StreamController<Duration>.broadcast();
 
   @override
   void initState() {
@@ -48,11 +48,11 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 330,
-      height: 70,
       decoration: const BoxDecoration(
           color: darkGrey,
           boxShadow: [BoxShadow(color: darkGrey, blurRadius: 10)]),
+      width: 330,
+      height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -76,6 +76,7 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
 
                   if (!widget.isLooping) {
                     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+                      print("setting state");
                       setState(() {});
                     });
                   }
@@ -86,7 +87,7 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                 children: [
                   LinearPercentIndicator(
                     percent: currentPositionInPercent,
-                    width: 180,
+                    width: 120,
                     lineHeight: 1,
                     backgroundColor: Colors.white60,
                     progressColor: Colors.white,
@@ -115,16 +116,19 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
 
   Future<void> play() async {
     await widget.videoPlayerController.play();
+    print("setting state");
     setState(() {});
   }
 
   Future<void> pause() async {
     await widget.videoPlayerController.pause();
+    print("setting state");
     setState(() {});
   }
 
   Future<void> resume() async {
     await widget.videoPlayerController.play();
+    print("setting state");
     setState(() {});
   }
 

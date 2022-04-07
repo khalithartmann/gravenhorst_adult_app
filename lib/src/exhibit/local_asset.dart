@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/assets.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/360_video.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:video_player/video_player.dart';
@@ -37,69 +38,78 @@ class _LocalAssetState extends State<LocalAsset> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(
-          children: [
-            FutureBuilder<File>(
-              future: widget.asset.localFile(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Stack(
+            children: [
+              SizedBox(
+                width: widget.width,
+                height: widget.height,
+                child: FutureBuilder<File>(
+                  future: widget.asset.localFile(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                if (widget.asset.assetType == AssetType.image) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return FullScreenImageView(
-                            localFile: snapshot.data!,
-                          );
-                        }));
-                      },
-                      child: Hero(
-                        tag: 'imageHero_${snapshot.data!.path}',
-                        child: Image.file(
-                          snapshot.data!,
-                          fit: widget.imageFit,
-                          height: widget.height,
-                          width: widget.width,
-                          errorBuilder: (context, error, s) {
-                            return Image.network(
-                              widget.asset.remoteUrl,
-                              height: widget.height,
-                              fit: widget.imageFit,
-                              width: widget.width,
-                            );
-                          },
+                    if (widget.asset.assetType == AssetType.image) {
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight: screenHeight(context) - 100),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) {
+                                return FullScreenImageView(
+                                  localFile: snapshot.data!,
+                                );
+                              }));
+                            },
+                            child: Hero(
+                              tag: 'imageHero_${snapshot.data!.path}',
+                              child: Image.file(
+                                snapshot.data!,
+                                fit: widget.imageFit,
+                                errorBuilder: (context, error, s) {
+                                  return Image.network(
+                                    widget.asset.remoteUrl,
+                                    fit: widget.imageFit,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                } else if (widget.asset.assetType == AssetType.video) {
-                  if (widget.asset.interactive!) {
-                    return ThreeSixtyVideo(
-                      localFile: snapshot.data!,
-                      duration:
-                          Duration(seconds: widget.asset.duration!.toInt()),
-                      aspectRatio: widget.asset.width! / widget.asset.height!,
-                    );
-                  } else {
-                    return LocalVideoPlayer(
-                      localFile: snapshot.data!,
-                      autoplay: widget.asset.autoplay!,
-                      isLooping: widget.asset.loop!,
-                    );
-                  }
-                } else {
-                  throw Exception('Unsupported asset format ');
-                }
-              },
-            ),
-            if (widget.assetChild != null) widget.assetChild!
-          ],
+                      );
+                    } else if (widget.asset.assetType == AssetType.video) {
+                      if (widget.asset.interactive!) {
+                        return ThreeSixtyVideo(
+                          localFile: snapshot.data!,
+                          duration:
+                              Duration(seconds: widget.asset.duration!.toInt()),
+                          aspectRatio:
+                              widget.asset.width! / widget.asset.height!,
+                        );
+                      } else {
+                        return LocalVideoPlayer(
+                          localFile: snapshot.data!,
+                          autoplay: widget.asset.autoplay!,
+                          isLooping: widget.asset.loop!,
+                        );
+                      }
+                    } else {
+                      throw Exception('Unsupported asset format ');
+                    }
+                  },
+                ),
+              ),
+              if (widget.assetChild != null) widget.assetChild!
+            ],
+          ),
         ),
         Column(
           children: [

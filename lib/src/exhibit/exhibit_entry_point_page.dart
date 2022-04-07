@@ -102,7 +102,7 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
       return Container();
     }
     return Align(
-      alignment: Alignment.topCenter,
+      alignment: Alignment.topLeft,
       child: Container(
         margin: const EdgeInsets.only(
           top: 30,

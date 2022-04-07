@@ -18,11 +18,9 @@ class ExhibitView extends StatefulWidget {
 }
 
 class _ExhibitViewState extends State<ExhibitView>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
-
   late TabController _tabController;
-
   @override
   void initState() {
     _tabController =
@@ -39,62 +37,60 @@ class _ExhibitViewState extends State<ExhibitView>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: widget.exhibit.entries.length,
-      child: Scaffold(
-        backgroundColor: lightGrey,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
-          child: ExhibitAppBar(exhibit: widget.exhibit),
-        ),
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              TabBarView(
-                controller: _tabController,
-                children: [
-                  ...widget.exhibit.entries.map((currentEntry) {
-                    switch (currentEntry.type) {
-                      case ExhibitEntryPointPage.type:
-                        return ExhibitEntryPointPage(
-                          entry: currentEntry,
-                          audioPlayer: _audioPlayer,
-                        );
+    return Scaffold(
+      backgroundColor: lightGrey,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: ExhibitAppBar(exhibit: widget.exhibit),
+      ),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          children: [
+            TabBarView(
+              controller: _tabController,
+              children: [
+                ...widget.exhibit.entries.map((currentEntry) {
+                  switch (currentEntry.type) {
+                    case ExhibitEntryPointPage.type:
+                      return ExhibitEntryPointPage(
+                        entry: currentEntry,
+                        audioPlayer: _audioPlayer,
+                      );
 
-                      case RegularExhibitPage.type:
-                        return RegularExhibitPage(entry: currentEntry);
+                    case RegularExhibitPage.type:
+                      return RegularExhibitPage(entry: currentEntry);
 
-                      case SelectableGalleryExhibitPage.type:
-                        return SelectableGalleryExhibitPage(
-                          entry: currentEntry,
-                        );
+                    case SelectableGalleryExhibitPage.type:
+                      return SelectableGalleryExhibitPage(
+                        entry: currentEntry,
+                      );
 
-                      case SwipeableGalleryExhibit.type:
-                        return SwipeableGalleryExhibit(entry: currentEntry);
+                    case SwipeableGalleryExhibit.type:
+                      return SwipeableGalleryExhibit(entry: currentEntry);
 
-                      default:
-                        throw UnimplementedError(
-                            'Exhibit Entry Type not implemented : ${currentEntry.type}');
-                    }
-                  }).toList(),
-                ],
-              ),
-              Container(
-                height: 7.5,
-                color: Colors.white,
-              ),
-              SizedBox(
-                height: 15,
-                child: TabBar(
-                    indicator: const BoxDecoration(color: deepOrange),
-                    indicatorWeight: 15,
-                    tabs: List.generate(
-                        widget.exhibit.entries.length, (index) => Container())),
-              ),
-            ],
-          ),
+                    default:
+                      throw UnimplementedError(
+                          'Exhibit Entry Type not implemented : ${currentEntry.type}');
+                  }
+                }).toList(),
+              ],
+            ),
+            Container(
+              height: 7.5,
+              color: Colors.white,
+            ),
+            SizedBox(
+              height: 15,
+              child: TabBar(
+                  controller: _tabController,
+                  indicator: const BoxDecoration(color: deepOrange),
+                  indicatorWeight: 15,
+                  tabs: List.generate(
+                      widget.exhibit.entries.length, (index) => Container())),
+            ),
+          ],
         ),
       ),
     );

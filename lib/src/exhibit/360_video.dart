@@ -91,12 +91,12 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
               futureSnapshot.connectionState == ConnectionState.waiting) {
             return AspectRatio(
                 aspectRatio: widget.aspectRatio,
-                child: Container(
+                child: SizedBox(
                     width: screenWidth(context),
                     child: Stack(
                       children: [
-                        Opacity(opacity: 0.5, child: thumbnail!),
-                        Center(
+                        Opacity(opacity: 0.5, child: thumbnail),
+                        const Center(
                           child: CircularProgressIndicator(
                             color: deepOrange,
                           ),
