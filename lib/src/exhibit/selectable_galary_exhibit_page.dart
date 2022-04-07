@@ -65,37 +65,42 @@ class _SelectableGalleryExhibitPageState
               children: [
                 ...assets
                     .where((element) => element.title != null)
-                    .map((asset) => InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectdAsset = asset;
-                              print(
-                                  "selected asset is ${selectdAsset.assetUrlLocalPath}");
-                            });
-                          },
-                          child: Container(
-                            color:
-                                asset == selectdAsset ? darkGrey : Colors.white,
-                            height: 70,
-                            padding: const EdgeInsets.all(4),
-                            width: screenWidth(context) * 0.45,
-                            child: Center(
-                              child: Text(
-                                asset.title!,
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                        fontWeight: FontWeight.w300,
-                                        color: asset == selectdAsset
-                                            ? Colors.white
-                                            : darkGrey,
-                                        height: 1.5),
-                              ),
-                            ),
-                          ),
-                        ))
+                    .map((asset) {
+                  final isFirst = asset == assets.first;
+
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        selectdAsset = asset;
+                        print(
+                            "selected asset is ${selectdAsset.assetUrlLocalPath}");
+                      });
+                    },
+                    child: Container(
+                      color: asset == selectdAsset ? darkGrey : Colors.white,
+                      height: 70,
+                      padding: const EdgeInsets.all(4),
+                      width: isFirst && (assets.length % 2 == 1)
+                          ? screenWidth(context) * 0.9
+                          : screenWidth(context) * 0.45,
+                      child: Center(
+                        child: Text(
+                          asset.title!,
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  fontWeight: FontWeight.w300,
+                                  color: asset == selectdAsset
+                                      ? Colors.white
+                                      : darkGrey,
+                                  height: 1.5),
+                        ),
+                      ),
+                    ),
+                  );
+                })
               ],
             ),
           ),
