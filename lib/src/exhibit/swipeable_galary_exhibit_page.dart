@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
@@ -6,6 +7,7 @@ import 'package:gravenhorst_adults_app/src/exhibit/description_container.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/image_description.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/local_asset.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/title_text.dart';
+import 'package:provider/provider.dart';
 
 class SwipeableGalleryExhibit extends StatefulWidget {
   SwipeableGalleryExhibit({Key? key, required this.entry}) : super(key: key);
@@ -27,54 +29,51 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
       children: [
         if (widget.entry.title != null)
           Padding(
-              padding: EdgeInsets.only(left: 40, top: 60),
+              padding: EdgeInsets.only(left: 40, top: 60, bottom: 30),
               child: Headline3Text(text: widget.entry.title!)),
-        SizedBox(
-            child: IndexedStack(
+        IndexedStack(
           index: stackIndex.toInt(),
           children: [
-            ...widget.entry.assets.map((asset) => Column(
+            ...widget.entry.assets.map((asset) => Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          LocalAsset(
-                            asset: asset,
+                    LocalAsset(
+                      asset: asset,
+                      assetChild: Positioned(
+                        bottom: 30,
+                        width: screenWidth(context),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth(context) * 0.05),
+                          child: SliderTheme(
+                            data: SliderThemeData(
+                                trackHeight: 3,
+                                thumbShape: CustomSliderThumbRect(
+                                    max: widget.entry.assets.length - 1,
+                                    min: 0,
+                                    thumbHeight: 20,
+                                    thumbRadius: 0)),
+                            child: Slider(
+                                inactiveColor: Colors.white,
+                                thumbColor: Colors.white,
+                                activeColor: Colors.white,
+                                value: stackIndex.toDouble(),
+                                min: 0,
+                                divisions: widget.entry.assets.length - 1,
+                                max: widget.entry.assets.length.toDouble() - 1,
+                                onChanged: (val) {
+                                  setState(() {
+                                    stackIndex = val;
+                                  });
+                                }),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 80),
-                            child: SliderTheme(
-                              data: SliderThemeData(
-                                  trackHeight: 3,
-                                  thumbShape: CustomSliderThumbRect(
-                                      max: widget.entry.assets.length - 1,
-                                      min: 0,
-                                      thumbHeight: 20,
-                                      thumbRadius: 0)),
-                              child: Slider(
-                                  thumbColor: Colors.white,
-                                  activeColor: Colors.white,
-                                  value: stackIndex.toDouble(),
-                                  min: 0,
-                                  divisions: widget.entry.assets.length - 1,
-                                  max:
-                                      widget.entry.assets.length.toDouble() - 1,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      stackIndex = val;
-                                    });
-                                  }),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                     ),
                   ],
                 ))
           ],
-        )),
+        ),
         if (widget.entry.description != null)
           Align(
             alignment: Alignment.topCenter,

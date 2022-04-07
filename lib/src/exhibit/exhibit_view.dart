@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
@@ -8,19 +9,43 @@ import 'package:gravenhorst_adults_app/src/exhibit/swipeable_galary_exhibit_page
 import 'exhibit_app_bar.dart';
 import 'regular_exhibit_page.dart';
 
-class ExhibitView extends StatelessWidget {
+class ExhibitView extends StatefulWidget {
   const ExhibitView({Key? key, required this.exhibit}) : super(key: key);
   final Exhibit exhibit;
 
   @override
+  State<ExhibitView> createState() => _ExhibitViewState();
+}
+
+class _ExhibitViewState extends State<ExhibitView>
+    with SingleTickerProviderStateMixin {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController =
+        TabController(length: widget.exhibit.entries.length, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.index != 0 &&
+          _audioPlayer.state == PlayerState.PLAYING) {
+        _audioPlayer.pause();
+      }
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: exhibit.entries.length,
+      length: widget.exhibit.entries.length,
       child: Scaffold(
         backgroundColor: lightGrey,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(80),
-          child: ExhibitAppBar(exhibit: exhibit),
+          child: ExhibitAppBar(exhibit: widget.exhibit),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -28,13 +53,15 @@ class ExhibitView extends StatelessWidget {
           child: Stack(
             children: [
               TabBarView(
+                controller: _tabController,
                 children: [
-                  ...exhibit.entries.map((currentEntry) {
-                    print("current entry type is ${currentEntry.type} ");
-
+                  ...widget.exhibit.entries.map((currentEntry) {
                     switch (currentEntry.type) {
                       case ExhibitEntryPointPage.type:
-                        return ExhibitEntryPointPage(entry: currentEntry);
+                        return ExhibitEntryPointPage(
+                          entry: currentEntry,
+                          audioPlayer: _audioPlayer,
+                        );
 
                       case RegularExhibitPage.type:
                         return RegularExhibitPage(entry: currentEntry);
@@ -64,7 +91,7 @@ class ExhibitView extends StatelessWidget {
                     indicator: const BoxDecoration(color: deepOrange),
                     indicatorWeight: 15,
                     tabs: List.generate(
-                        exhibit.entries.length, (index) => Container())),
+                        widget.exhibit.entries.length, (index) => Container())),
               ),
             ],
           ),

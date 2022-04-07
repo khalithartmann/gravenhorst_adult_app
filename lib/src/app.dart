@@ -34,12 +34,10 @@ class _MyAppState extends State<MyApp> {
       child: FutureBuilder(
           future: getIt.allReady(),
           builder: (context, snapshot) {
-            print(snapshot);
             if (!snapshot.hasData) {
               return MaterialApp();
             }
 
-            print(context.read<ExhibitoinDataController>().currentLocale?.id);
             return MaterialApp(
               // Providing a restorationScopeId allows the Navigator built by the
               // MaterialApp to restore the navigation stack when a user leaves and

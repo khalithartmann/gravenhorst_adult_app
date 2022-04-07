@@ -56,7 +56,6 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.landscape &&
           _controller.value.size.width > _controller.value.size.height) {
-        print("object");
         WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
           Navigator.of(context).push(PageTransition(
               type: PageTransitionType.fade,

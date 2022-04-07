@@ -31,7 +31,6 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
   Image? thumbnail;
 
   Future<List<ImageProvider>> getFrames(BuildContext context) async {
-    print("this is the locale file ${widget.localFile.absolute}");
     final List<ImageProvider> imageList = <ImageProvider>[];
 
     imageList.clear();
@@ -42,9 +41,6 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
           d += const Duration(seconds: 1)) {
         var destinationPath = p.join(widget.localFile.parent.path, "frames",
             "${p.basenameWithoutExtension(widget.localFile.path)}_${d.inMilliseconds}.jpeg");
-
-        print("this is my destination path ");
-        print(destinationPath);
 
         Uint8List? imageData;
 
@@ -78,7 +74,7 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
 
         await precacheImage(imageProvider, context);
       }
-      print("doneee");
+
       return imageList;
     } catch (e, s) {
       logger.e(e.toString(), e, s);

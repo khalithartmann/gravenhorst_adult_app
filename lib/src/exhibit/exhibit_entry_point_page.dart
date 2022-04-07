@@ -13,9 +13,13 @@ import 'local_asset.dart';
 import 'title_text.dart';
 
 class ExhibitEntryPointPage extends StatefulWidget {
-  const ExhibitEntryPointPage({Key? key, required this.entry})
-      : super(key: key);
+  const ExhibitEntryPointPage({
+    Key? key,
+    required this.entry,
+    required this.audioPlayer,
+  }) : super(key: key);
 
+  final AudioPlayer audioPlayer;
   final Entry entry;
 
   static const type = 'EntryPoint';
@@ -27,11 +31,9 @@ class ExhibitEntryPointPage extends StatefulWidget {
 class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
   late Asset? backgroundImageAsset;
   late Asset? audioAsset;
-  late AudioPlayer audioPlayer;
 
   @override
   void initState() {
-    audioPlayer = AudioPlayer(playerId: '1');
     backgroundImageAsset = getFirstEntryByType(assetType: AssetType.image);
     audioAsset = getFirstEntryByType(assetType: AssetType.audio);
     super.initState();
@@ -45,8 +47,6 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("this is my audioasset");
-    print(audioAsset);
     return Stack(
       children: [
         buildBackgroundImage(),
@@ -57,7 +57,7 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 111),
                 child: AudioPlayerController(
-                    audioPlayer: audioPlayer, audioAsset: audioAsset!),
+                    audioPlayer: widget.audioPlayer, audioAsset: audioAsset!),
               )),
       ],
     );
@@ -117,6 +117,6 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
   @override
   void dispose() {
     super.dispose();
-    audioPlayer.dispose();
+    widget.audioPlayer.dispose();
   }
 }

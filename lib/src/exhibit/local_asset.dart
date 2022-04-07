@@ -19,12 +19,14 @@ class LocalAsset extends StatefulWidget {
     this.height,
     this.width,
     this.imageFit = BoxFit.contain,
+    this.assetChild,
   }) : super(key: key);
 
   final Asset asset;
   final double? height;
   final double? width;
   final BoxFit imageFit;
+  final Widget? assetChild;
 
   @override
   State<LocalAsset> createState() => _LocalAssetState();
@@ -33,68 +35,71 @@ class LocalAsset extends StatefulWidget {
 class _LocalAssetState extends State<LocalAsset> {
   @override
   Widget build(BuildContext context) {
-    print("selected asset ");
-    print(widget.asset.assetUrlLocalPath);
-
     return Column(
       children: [
-        FutureBuilder<File>(
-          future: widget.asset.localFile(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        Stack(
+          children: [
+            FutureBuilder<File>(
+              future: widget.asset.localFile(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-            if (widget.asset.assetType == AssetType.image) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return FullScreenImageView(
-                        localFile: snapshot.data!,
-                      );
-                    }));
-                  },
-                  child: Hero(
-                    tag: 'imageHero_${snapshot.data!.path}',
-                    child: Image.file(
-                      snapshot.data!,
-                      fit: widget.imageFit,
-                      height: widget.height,
-                      width: widget.width,
-                      errorBuilder: (context, error, s) {
-                        return Image.network(
-                          widget.asset.remoteUrl,
-                          height: widget.height,
-                          fit: widget.imageFit,
-                          width: widget.width,
-                        );
+                if (widget.asset.assetType == AssetType.image) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return FullScreenImageView(
+                            localFile: snapshot.data!,
+                          );
+                        }));
                       },
+                      child: Hero(
+                        tag: 'imageHero_${snapshot.data!.path}',
+                        child: Image.file(
+                          snapshot.data!,
+                          fit: widget.imageFit,
+                          height: widget.height,
+                          width: widget.width,
+                          errorBuilder: (context, error, s) {
+                            return Image.network(
+                              widget.asset.remoteUrl,
+                              height: widget.height,
+                              fit: widget.imageFit,
+                              width: widget.width,
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
-            } else if (widget.asset.assetType == AssetType.video) {
-              if (widget.asset.interactive!) {
-                return ThreeSixtyVideo(
-                  localFile: snapshot.data!,
-                  duration: Duration(seconds: widget.asset.duration!.toInt()),
-                  aspectRatio: widget.asset.width! / widget.asset.height!,
-                );
-              } else {
-                return LocalVideoPlayer(
-                  localFile: snapshot.data!,
-                  autoplay: widget.asset.autoplay!,
-                  isLooping: widget.asset.loop!,
-                );
-              }
-            } else {
-              throw Exception('Unsupported asset format ');
-            }
-          },
+                  );
+                } else if (widget.asset.assetType == AssetType.video) {
+                  if (widget.asset.interactive!) {
+                    return ThreeSixtyVideo(
+                      localFile: snapshot.data!,
+                      duration:
+                          Duration(seconds: widget.asset.duration!.toInt()),
+                      aspectRatio: widget.asset.width! / widget.asset.height!,
+                    );
+                  } else {
+                    return LocalVideoPlayer(
+                      localFile: snapshot.data!,
+                      autoplay: widget.asset.autoplay!,
+                      isLooping: widget.asset.loop!,
+                    );
+                  }
+                } else {
+                  throw Exception('Unsupported asset format ');
+                }
+              },
+            ),
+            if (widget.assetChild != null) widget.assetChild!
+          ],
         ),
         Column(
           children: [

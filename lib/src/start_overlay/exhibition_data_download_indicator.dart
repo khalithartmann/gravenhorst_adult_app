@@ -24,7 +24,6 @@ class _ExhibitionDataDownloadIndicatorState
     exhibitionDataController = context.read<ExhibitoinDataController>();
     exhibitionDataController.addListener(() {
       if (exhibitionDataController.downloadProgressStreamFailure != null) {
-        print("someting wong ");
         showTopSnackBar(context,
             text: "Wir konnten die Daten leider nicht laden!");
       }

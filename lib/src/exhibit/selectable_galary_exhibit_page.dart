@@ -34,7 +34,6 @@ class _SelectableGalleryExhibitPageState
     super.initState();
     assets = widget.entry.assets;
     selectdAsset = assets.first;
-    print("init state");
   }
 
   @override
@@ -72,8 +71,6 @@ class _SelectableGalleryExhibitPageState
                     onTap: () {
                       setState(() {
                         selectdAsset = asset;
-                        print(
-                            "selected asset is ${selectdAsset.assetUrlLocalPath}");
                       });
                     },
                     child: Container(
