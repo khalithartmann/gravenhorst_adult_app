@@ -106,8 +106,8 @@ class Asset with _$Asset {
     bool? loop,
     required int? width,
     required int? height,
-    @Default("") String description,
-    @Default("") String title,
+    String? description,
+    String? title,
     String? copyright,
     required String updatedAt,
   }) = _Asset;

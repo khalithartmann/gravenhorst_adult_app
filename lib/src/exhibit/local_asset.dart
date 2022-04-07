@@ -98,7 +98,8 @@ class _LocalAssetState extends State<LocalAsset> {
         ),
         Column(
           children: [
-            ImageDescriptionText(text: widget.asset.description),
+            if (widget.asset.description != null)
+              ImageDescriptionText(text: widget.asset.description!),
             if (widget.asset.copyright != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),

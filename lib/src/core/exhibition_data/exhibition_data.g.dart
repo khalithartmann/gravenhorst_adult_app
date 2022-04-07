@@ -120,8 +120,8 @@ _$_Asset _$$_AssetFromJson(Map<String, dynamic> json) => _$_Asset(
       loop: json['loop'] as bool?,
       width: json['width'] as int?,
       height: json['height'] as int?,
-      description: json['description'] as String? ?? "",
-      title: json['title'] as String? ?? "",
+      description: json['description'] as String?,
+      title: json['title'] as String?,
       copyright: json['copyright'] as String?,
       updatedAt: json['updated_at'] as String,
     );

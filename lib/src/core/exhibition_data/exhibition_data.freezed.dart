@@ -1347,8 +1347,8 @@ class _$AssetTearOff {
       bool? loop,
       required int? width,
       required int? height,
-      String description = "",
-      String title = "",
+      String? description,
+      String? title,
       String? copyright,
       required String updatedAt}) {
     return _Asset(
@@ -1391,8 +1391,8 @@ mixin _$Asset {
   bool? get loop => throw _privateConstructorUsedError;
   int? get width => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   String? get copyright => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -1417,8 +1417,8 @@ abstract class $AssetCopyWith<$Res> {
       bool? loop,
       int? width,
       int? height,
-      String description,
-      String title,
+      String? description,
+      String? title,
       String? copyright,
       String updatedAt});
 }
@@ -1497,11 +1497,11 @@ class _$AssetCopyWithImpl<$Res> implements $AssetCopyWith<$Res> {
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       copyright: copyright == freezed
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
@@ -1531,8 +1531,8 @@ abstract class _$AssetCopyWith<$Res> implements $AssetCopyWith<$Res> {
       bool? loop,
       int? width,
       int? height,
-      String description,
-      String title,
+      String? description,
+      String? title,
       String? copyright,
       String updatedAt});
 }
@@ -1612,11 +1612,11 @@ class __$AssetCopyWithImpl<$Res> extends _$AssetCopyWithImpl<$Res>
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       copyright: copyright == freezed
           ? _value.copyright
           : copyright // ignore: cast_nullable_to_non_nullable
@@ -1644,8 +1644,8 @@ class _$_Asset extends _Asset {
       this.loop,
       required this.width,
       required this.height,
-      this.description = "",
-      this.title = "",
+      this.description,
+      this.title,
       this.copyright,
       required this.updatedAt})
       : assert(
@@ -1686,12 +1686,10 @@ class _$_Asset extends _Asset {
   final int? width;
   @override
   final int? height;
-  @JsonKey()
   @override
-  final String description;
-  @JsonKey()
+  final String? description;
   @override
-  final String title;
+  final String? title;
   @override
   final String? copyright;
   @override
@@ -1769,8 +1767,8 @@ abstract class _Asset extends Asset {
       bool? loop,
       required int? width,
       required int? height,
-      String description,
-      String title,
+      String? description,
+      String? title,
       String? copyright,
       required String updatedAt}) = _$_Asset;
   const _Asset._() : super._();
@@ -1800,9 +1798,9 @@ abstract class _Asset extends Asset {
   @override
   int? get height;
   @override
-  String get description;
+  String? get description;
   @override
-  String get title;
+  String? get title;
   @override
   String? get copyright;
   @override

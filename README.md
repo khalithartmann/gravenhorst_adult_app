@@ -18,3 +18,6 @@ coordinates of the stations:
  ["16", 52.287525, 7.623715],
  ["17", 52.287379, 7.623485],
  ["18", 52.286577, 7.622712]]
+
+
+flutter pub run build_runner build --delete-conflicting-outputs

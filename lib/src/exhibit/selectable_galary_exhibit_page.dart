@@ -63,36 +63,39 @@ class _SelectableGalleryExhibitPageState
               runSpacing: 2,
               spacing: 2,
               children: [
-                ...assets.map((asset) => InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectdAsset = asset;
-                          print(
-                              "selected asset is ${selectdAsset.assetUrlLocalPath}");
-                        });
-                      },
-                      child: Container(
-                        color: asset == selectdAsset ? darkGrey : Colors.white,
-                        height: 70,
-                        padding: const EdgeInsets.all(4),
-                        width: screenWidth(context) * 0.45,
-                        child: Center(
-                          child: Text(
-                            asset.title,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline4!
-                                .copyWith(
-                                    fontWeight: FontWeight.w300,
-                                    color: asset == selectdAsset
-                                        ? Colors.white
-                                        : darkGrey,
-                                    height: 1.5),
+                ...assets
+                    .where((element) => element.title != null)
+                    .map((asset) => InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectdAsset = asset;
+                              print(
+                                  "selected asset is ${selectdAsset.assetUrlLocalPath}");
+                            });
+                          },
+                          child: Container(
+                            color:
+                                asset == selectdAsset ? darkGrey : Colors.white,
+                            height: 70,
+                            padding: const EdgeInsets.all(4),
+                            width: screenWidth(context) * 0.45,
+                            child: Center(
+                              child: Text(
+                                asset.title!,
+                                textAlign: TextAlign.left,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                        fontWeight: FontWeight.w300,
+                                        color: asset == selectdAsset
+                                            ? Colors.white
+                                            : darkGrey,
+                                        height: 1.5),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ))
+                        ))
               ],
             ),
           ),
