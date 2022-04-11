@@ -28,6 +28,7 @@ class LocalVideoPlayer extends StatefulWidget {
 class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
   late VideoPlayerController _controller;
   double sliderValue = 0;
+  bool loadingNewVideo = false;
 
   @override
   void initState() {
@@ -48,11 +49,34 @@ class _LocalVideoPlayerState extends State<LocalVideoPlayer> {
         _controller.play();
       }
     });
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final loadedFileName = _controller.dataSource.split('/').last;
+    final currentFileName = widget.localFile.path.split('/').last;
+    if (loadedFileName != currentFileName) {
+      loadingNewVideo = true;
+      _controller = VideoPlayerController.file(
+        widget.localFile,
+      );
+
+      _controller.setLooping(widget.isLooping);
+      _controller.initialize().then((_) {
+        loadingNewVideo = false;
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+        if (widget.autoplay) {
+          _controller.play();
+        }
+      });
+    }
+    if (loadingNewVideo) {
+      return Container();
+    }
+
     return OrientationBuilder(builder: (context, orientation) {
       if (orientation == Orientation.landscape &&
           _controller.value.size.width > _controller.value.size.height) {

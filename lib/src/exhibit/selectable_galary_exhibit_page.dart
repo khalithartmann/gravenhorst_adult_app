@@ -75,6 +75,8 @@ class _SelectableGalleryExhibitPageState
                       onTap: () {
                         setState(() {
                           selectdAsset = asset;
+                          print(
+                              "selected asset is ${selectdAsset.assetUrlLocalPath}");
                         });
                       },
                       child: Container(

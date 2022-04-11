@@ -104,6 +104,8 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
     return Align(
       alignment: Alignment.topLeft,
       child: Container(
+        width: screenWidth(context),
+        height: 300,
         margin: const EdgeInsets.only(
           top: 30,
           left: 60,

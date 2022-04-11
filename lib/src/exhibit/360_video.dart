@@ -30,6 +30,51 @@ class ThreeSixtyVideo extends StatefulWidget {
 class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
   Image? thumbnail;
 
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<ImageProvider>>(
+        future: getFrames(context),
+        builder: (context, futureSnapshot) {
+          if (thumbnail != null && !futureSnapshot.hasData ||
+              futureSnapshot.connectionState == ConnectionState.waiting) {
+            return AspectRatio(
+                aspectRatio: widget.aspectRatio,
+                child: SizedBox(
+                    width: screenWidth(context),
+                    child: Stack(
+                      children: [
+                        Opacity(opacity: 0.5, child: thumbnail),
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: deepOrange,
+                          ),
+                        )
+                      ],
+                    )));
+          }
+          if (!futureSnapshot.hasData) {
+            return AspectRatio(
+              aspectRatio: 4 / 3,
+              child: Container(
+                height: screenHeight(context),
+                color: Colors.red,
+                width: screenWidth(context),
+              ),
+            );
+          }
+          return Opacity(
+            opacity: futureSnapshot.hasData ? 1 : 0.5,
+            child: ImageView360(
+              key: UniqueKey(),
+              swipeSensitivity: 2,
+              imageList: futureSnapshot.data!,
+              rotationDirection: RotationDirection.anticlockwise,
+              frameChangeDuration: const Duration(milliseconds: 30),
+            ),
+          );
+        });
+  }
+
   Future<List<ImageProvider>> getFrames(BuildContext context) async {
     final List<ImageProvider> imageList = <ImageProvider>[];
 
@@ -80,50 +125,5 @@ class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
       logger.e(e.toString(), e, s);
       return [];
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<ImageProvider>>(
-        future: getFrames(context),
-        builder: (context, futureSnapshot) {
-          if (thumbnail != null && !futureSnapshot.hasData ||
-              futureSnapshot.connectionState == ConnectionState.waiting) {
-            return AspectRatio(
-                aspectRatio: widget.aspectRatio,
-                child: SizedBox(
-                    width: screenWidth(context),
-                    child: Stack(
-                      children: [
-                        Opacity(opacity: 0.5, child: thumbnail),
-                        const Center(
-                          child: CircularProgressIndicator(
-                            color: deepOrange,
-                          ),
-                        )
-                      ],
-                    )));
-          }
-          if (!futureSnapshot.hasData) {
-            return AspectRatio(
-              aspectRatio: 4 / 3,
-              child: Container(
-                height: screenHeight(context),
-                color: Colors.red,
-                width: screenWidth(context),
-              ),
-            );
-          }
-          return Opacity(
-            opacity: futureSnapshot.hasData ? 1 : 0.5,
-            child: ImageView360(
-              key: UniqueKey(),
-              swipeSensitivity: 2,
-              imageList: futureSnapshot.data!,
-              rotationDirection: RotationDirection.anticlockwise,
-              frameChangeDuration: const Duration(milliseconds: 30),
-            ),
-          );
-        });
   }
 }
