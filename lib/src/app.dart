@@ -4,7 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/dependency_injection/dependency_injection.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
-import 'package:http/http.dart';
+
 import 'package:provider/provider.dart';
 import 'home/home_page.dart';
 
@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
           future: getIt.allReady(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return MaterialApp();
+              return const MaterialApp();
             }
 
             return MaterialApp(

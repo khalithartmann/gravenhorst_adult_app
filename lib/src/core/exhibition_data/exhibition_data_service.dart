@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
@@ -90,7 +89,7 @@ class ExhibitionService {
     } catch (e, s) {
       logger.w('exception: $e , $s');
       throw Exception(
-          '[fetchExhibitionData] Failed to get exhibition data for locale. \n Exception: $s, \stacktrace: $s');
+          '[fetchExhibitionData] Failed to get exhibition data for locale. \n Exception: $s, stacktrace: $s');
     }
   }
 

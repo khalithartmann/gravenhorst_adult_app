@@ -7,12 +7,10 @@ import 'package:path/path.dart' as p;
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:imageview360/imageview360.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_player/video_player.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-class ThreeSixtyVideo extends StatefulWidget {
-  const ThreeSixtyVideo(
+class ThreeSixtyVideoView extends StatefulWidget {
+  const ThreeSixtyVideoView(
       {Key? key,
       required this.localFile,
       required this.duration,
@@ -24,10 +22,10 @@ class ThreeSixtyVideo extends StatefulWidget {
   final double aspectRatio;
 
   @override
-  State<ThreeSixtyVideo> createState() => _ThreeSixtyVideoState();
+  State<ThreeSixtyVideoView> createState() => _ThreeSixtyVideoViewState();
 }
 
-class _ThreeSixtyVideoState extends State<ThreeSixtyVideo> {
+class _ThreeSixtyVideoViewState extends State<ThreeSixtyVideoView> {
   Image? thumbnail;
 
   @override

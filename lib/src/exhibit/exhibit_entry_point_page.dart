@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 
 import 'audio_player_controller.dart';
 import 'image_description.dart';
-import 'local_asset.dart';
 import 'title_text.dart';
 
 class ExhibitEntryPointPage extends StatefulWidget {
@@ -105,7 +103,6 @@ class _ExhibitEntryPointPageState extends State<ExhibitEntryPointPage> {
       alignment: Alignment.topLeft,
       child: Container(
         width: screenWidth(context),
-        height: 300,
         margin: const EdgeInsets.only(
           top: 30,
           left: 60,

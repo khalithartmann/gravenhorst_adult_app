@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data_controller.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_locale.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/title_text.dart';
 import 'package:provider/src/provider.dart';

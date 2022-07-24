@@ -49,7 +49,7 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
         children: [
           buildAudioPlayerActionButton(),
           StreamBuilder<Duration>(
-            stream: widget.audioPlayer.onAudioPositionChanged,
+            stream: widget.audioPlayer.onPositionChanged,
             builder: (context, positionSnapshot) {
               if (audioDuration == null || !positionSnapshot.hasData) {
                 currentPositionInPercent = 0.0;
@@ -90,42 +90,30 @@ class _AudioPlayerControllerState extends State<AudioPlayerController> {
   Future<void> play() async {
     var audioPath = (await widget.audioAsset.localFile()).path;
 
-    int result = await widget.audioPlayer.play(audioPath, isLocal: true);
-    if (result != 1) {
-      logger.i('todo show snackbar: could not play audio ');
-      // success
-    } else {
-      // workaround [https://github.com/bluefireteam/audioplayers/issues/588]
-      await Future.delayed(const Duration(milliseconds: 100));
+    await widget.audioPlayer.play(DeviceFileSource(audioPath));
 
-      audioDuration = await widget.audioPlayer.getDuration();
-    }
+    // workaround [https://github.com/bluefireteam/audioplayers/issues/588]
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    audioDuration = await widget.audioPlayer.getDuration();
   }
 
   Future<void> pause() async {
-    int result = await widget.audioPlayer.pause();
-    if (result != 1) {
-      logger.i('todo show snackbar: could not play audio ');
-      // success
-    }
+    await widget.audioPlayer.pause();
   }
 
   Future<void> resume() async {
-    int result = await widget.audioPlayer.resume();
-    if (result != 1) {
-      logger.i('todo show snackbar: could not play audio ');
-      // success
-    }
+    await widget.audioPlayer.resume();
   }
 
   Widget buildAudioPlayerActionButton() {
     var icon = const Icon(Icons.play_arrow, size: 43, color: Colors.white);
     var onTap = play;
 
-    if (widget.audioPlayer.state == PlayerState.PLAYING) {
+    if (widget.audioPlayer.state == PlayerState.playing) {
       icon = const Icon(Icons.pause, size: 43, color: Colors.white);
       onTap = pause;
-    } else if (widget.audioPlayer.state == PlayerState.PAUSED) {
+    } else if (widget.audioPlayer.state == PlayerState.paused) {
       onTap = resume;
     }
 

@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: deepOrange,
       body: Stack(
         children: [
-          MapView(),
+          const MapView(),
           Consumer<ExhibitoinDataController>(builder: (context, controller, _) {
             if (controller.exhibitionDataList.isEmpty &&
                 controller.supportedLocales.isNotEmpty) {

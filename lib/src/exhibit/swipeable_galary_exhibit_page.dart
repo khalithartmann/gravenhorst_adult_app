@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/description_container.dart';
-import 'package:gravenhorst_adults_app/src/exhibit/image_description.dart';
-import 'package:gravenhorst_adults_app/src/exhibit/local_asset.dart';
+import 'package:gravenhorst_adults_app/src/exhibit/media_view/media_view.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/title_text.dart';
-import 'package:provider/provider.dart';
 
 class SwipeableGalleryExhibit extends StatefulWidget {
-  SwipeableGalleryExhibit({Key? key, required this.entry}) : super(key: key);
+  const SwipeableGalleryExhibit({Key? key, required this.entry})
+      : super(key: key);
   final Entry entry;
 
   static const type = 'SwipingGallery';
@@ -32,44 +30,44 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
       children: [
         if (widget.entry.title != null)
           Padding(
-              padding: EdgeInsets.only(left: 40, top: 60, bottom: 30),
+              padding: const EdgeInsets.only(left: 40, top: 60, bottom: 30),
               child: Headline3Text(text: widget.entry.title!)),
         IndexedStack(
+          alignment: Alignment.bottomCenter,
           index: stackIndex.toInt(),
           children: [
             ...widget.entry.assets.map((asset) => Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    LocalAsset(
+                    MediaView(
                       asset: asset,
-                      assetChild: Positioned(
-                        bottom: 30,
-                        width: screenWidth(context),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth(context) * 0.05),
-                          child: SliderTheme(
-                            data: SliderThemeData(
-                                trackHeight: 3,
-                                thumbShape: CustomSliderThumbRect(
-                                    max: widget.entry.assets.length - 1,
-                                    min: 0,
-                                    thumbHeight: 20,
-                                    thumbRadius: 0)),
-                            child: Slider(
-                                inactiveColor: deepOrange,
-                                thumbColor: Colors.white,
-                                activeColor: Colors.white,
-                                value: stackIndex.toDouble(),
-                                min: 0,
-                                divisions: widget.entry.assets.length - 1,
-                                max: widget.entry.assets.length.toDouble() - 1,
-                                onChanged: (val) {
-                                  setState(() {
-                                    stackIndex = val;
-                                  });
-                                }),
-                          ),
+                      assetChild: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                            screenWidth(context) * 0.04,
+                            0,
+                            screenWidth(context) * 0.04,
+                            screenHeight(context) * 0.03),
+                        child: SliderTheme(
+                          data: SliderThemeData(
+                              trackHeight: 3,
+                              thumbShape: CustomSliderThumbRect(
+                                  max: widget.entry.assets.length - 1,
+                                  min: 0,
+                                  thumbHeight: 20,
+                                  thumbRadius: 0)),
+                          child: Slider(
+                              inactiveColor: deepOrange,
+                              thumbColor: Colors.white,
+                              activeColor: Colors.white,
+                              value: stackIndex.toDouble(),
+                              min: 0,
+                              divisions: widget.entry.assets.length - 1,
+                              max: widget.entry.assets.length.toDouble() - 1,
+                              onChanged: (val) {
+                                setState(() {
+                                  stackIndex = val;
+                                });
+                              }),
                         ),
                       ),
                     ),
@@ -113,7 +111,7 @@ class _SwipeableGalleryExhibitState extends State<SwipeableGalleryExhibit> {
 
 class CustomSliderThumbRect extends SliderComponentShape {
   final double thumbRadius;
-  final thumbHeight;
+  final double thumbHeight;
   final int min;
   final int max;
 
@@ -156,14 +154,14 @@ class CustomSliderThumbRect extends SliderComponentShape {
       ..color = sliderTheme.activeTrackColor! //Thumb Background Color
       ..style = PaintingStyle.fill;
 
-    TextSpan span = new TextSpan(
-        style: new TextStyle(
+    TextSpan span = TextSpan(
+        style: TextStyle(
             fontSize: thumbHeight * .3,
             fontWeight: FontWeight.w700,
             color: sliderTheme.thumbColor,
             height: 1),
-        text: '${getValue(value)}');
-    TextPainter tp = new TextPainter(
+        text: getValue(value));
+    TextPainter tp = TextPainter(
         text: span,
         textAlign: TextAlign.left,
         textDirection: TextDirection.ltr);

@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
-import 'package:gravenhorst_adults_app/src/exhibit/image_description.dart';
 import 'package:gravenhorst_adults_app/src/exhibit/title_text.dart';
 
 import 'description_container.dart';
-import 'local_asset.dart';
+import 'media_view/media_view.dart';
 
 class SelectableGalleryExhibitPage extends StatefulWidget {
   const SelectableGalleryExhibitPage({Key? key, required this.entry})
@@ -39,7 +36,7 @@ class _SelectableGalleryExhibitPageState
   @override
   Widget build(BuildContext context) {
     return Scrollbar(
-      isAlwaysShown: true,
+      thumbVisibility: true,
       controller: scrollController,
       child: SingleChildScrollView(
         controller: scrollController,
@@ -54,7 +51,7 @@ class _SelectableGalleryExhibitPageState
               ),
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: LocalAsset(
+              child: MediaView(
                 asset: selectdAsset,
                 width: MediaQuery.of(context).size.width * 0.8,
               ),
@@ -75,7 +72,7 @@ class _SelectableGalleryExhibitPageState
                       onTap: () {
                         setState(() {
                           selectdAsset = asset;
-                          print(
+                          logger.i(
                               "selected asset is ${selectdAsset.assetUrlLocalPath}");
                         });
                       },

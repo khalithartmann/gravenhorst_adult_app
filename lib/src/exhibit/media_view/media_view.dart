@@ -3,18 +3,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/assets.dart';
-import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
-import 'package:gravenhorst_adults_app/src/exhibit/360_video.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:video_player/video_player.dart';
+import 'package:gravenhorst_adults_app/src/exhibit/media_view/360_video_view.dart';
 
-import 'image_description.dart';
-import 'local_video_player.dart';
+import '../image_description.dart';
+import 'video_player_view.dart';
 
-class LocalAsset extends StatefulWidget {
-  const LocalAsset({
+class MediaView extends StatefulWidget {
+  const MediaView({
     Key? key,
     required this.asset,
     this.height,
@@ -30,10 +27,10 @@ class LocalAsset extends StatefulWidget {
   final Widget? assetChild;
 
   @override
-  State<LocalAsset> createState() => _LocalAssetState();
+  State<MediaView> createState() => _MediaViewState();
 }
 
-class _LocalAssetState extends State<LocalAsset> {
+class _MediaViewState extends State<MediaView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -41,6 +38,7 @@ class _LocalAssetState extends State<LocalAsset> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
               SizedBox(
                 width: widget.width,
@@ -87,7 +85,7 @@ class _LocalAssetState extends State<LocalAsset> {
                       );
                     } else if (widget.asset.assetType == AssetType.video) {
                       if (widget.asset.interactive!) {
-                        return ThreeSixtyVideo(
+                        return ThreeSixtyVideoView(
                           localFile: snapshot.data!,
                           duration:
                               Duration(seconds: widget.asset.duration!.toInt()),
@@ -95,7 +93,7 @@ class _LocalAssetState extends State<LocalAsset> {
                               widget.asset.width! / widget.asset.height!,
                         );
                       } else {
-                        return LocalVideoPlayer(
+                        return VideoPlayerView(
                           localFile: snapshot.data!,
                           autoplay: widget.asset.autoplay!,
                           isLooping: widget.asset.loop!,

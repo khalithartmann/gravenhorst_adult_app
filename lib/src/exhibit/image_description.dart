@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 
 class ImageDescriptionText extends StatelessWidget {
   const ImageDescriptionText({

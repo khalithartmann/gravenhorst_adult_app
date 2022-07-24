@@ -27,7 +27,7 @@ class _ExhibitViewState extends State<ExhibitView>
         TabController(length: widget.exhibit.entries.length, vsync: this);
     _tabController.addListener(() {
       if (_tabController.index != 0 &&
-          _audioPlayer.state == PlayerState.PLAYING) {
+          _audioPlayer.state == PlayerState.playing) {
         _audioPlayer.pause();
       }
     });

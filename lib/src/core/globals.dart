@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flash/flash.dart';
@@ -8,7 +7,6 @@ import 'package:gravenhorst_adults_app/src/core/colors.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'exhibition_data/exhibition_locale.dart';
 
 const standardAnimationDuration = Duration(milliseconds: 300);
 

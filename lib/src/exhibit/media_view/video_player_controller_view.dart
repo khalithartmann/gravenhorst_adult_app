@@ -1,15 +1,10 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
-import 'package:gravenhorst_adults_app/src/core/exhibition_data/exhibition_data.dart';
 import 'package:gravenhorst_adults_app/src/core/globals.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
-
-import 'local_video_player.dart';
 
 class VideoPlayerControllerView extends StatefulWidget {
   const VideoPlayerControllerView({
@@ -17,11 +12,15 @@ class VideoPlayerControllerView extends StatefulWidget {
     required this.videoPlayerController,
     required this.isLooping,
     this.trailingActionButton,
+    this.backgroundColor = darkGrey,
+    this.foregroundColor = Colors.white,
   }) : super(key: key);
 
   final VideoPlayerController videoPlayerController;
   final bool isLooping;
   final Widget? trailingActionButton;
+  final Color backgroundColor;
+  final Color foregroundColor;
 
   @override
   _VideoPlayerControllerViewState createState() =>
@@ -48,9 +47,12 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-          color: darkGrey,
-          boxShadow: [BoxShadow(color: darkGrey, blurRadius: 10)]),
+      decoration: BoxDecoration(color: widget.backgroundColor, boxShadow: [
+        BoxShadow(
+          color: widget.backgroundColor,
+          blurRadius: 10,
+        )
+      ]),
       width: 330,
       height: 70,
       child: Row(
@@ -75,7 +77,7 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                   widget.videoPlayerController.seekTo(Duration.zero);
 
                   if (!widget.isLooping) {
-                    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+                    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
                       print("setting state");
                       setState(() {});
                     });
@@ -89,8 +91,8 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                     percent: currentPositionInPercent,
                     width: 120,
                     lineHeight: 1,
-                    backgroundColor: Colors.white60,
-                    progressColor: Colors.white,
+                    backgroundColor: widget.foregroundColor.withOpacity(0.5),
+                    progressColor: widget.foregroundColor,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -101,14 +103,13 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
                         style: Theme.of(context)
                             .textTheme
                             .headline6!
-                            .copyWith(color: Colors.white)),
+                            .copyWith(color: widget.foregroundColor)),
                   ),
-                  if (widget.trailingActionButton != null)
-                    widget.trailingActionButton!,
                 ],
               );
             },
           ),
+          if (widget.trailingActionButton != null) widget.trailingActionButton!,
         ],
       ),
     );
@@ -133,11 +134,11 @@ class _VideoPlayerControllerViewState extends State<VideoPlayerControllerView> {
   }
 
   Widget buildVideoPlayerControllerActionButton() {
-    var icon = const Icon(Icons.play_arrow, size: 43, color: Colors.white);
+    var icon = Icon(Icons.play_arrow, size: 43, color: widget.foregroundColor);
     var onTap = play;
 
     if (widget.videoPlayerController.value.isPlaying) {
-      icon = const Icon(Icons.pause, size: 43, color: Colors.white);
+      icon = Icon(Icons.pause, size: 43, color: widget.foregroundColor);
       onTap = pause;
     } else {
       onTap = resume;

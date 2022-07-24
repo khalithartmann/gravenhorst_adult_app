@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gravenhorst_adults_app/src/core/colors.dart';
+import 'package:gravenhorst_adults_app/src/core/globals.dart';
 
 class Headline2Text extends StatelessWidget {
   const Headline2Text({
@@ -10,8 +11,13 @@ class Headline2Text extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var titleText = text;
+
+    if (isTablet(context)) {
+      titleText = titleText.replaceAll('-', '');
+    }
     return Text(
-      text,
+      titleText,
       style: Theme.of(context)
           .textTheme
           .headline2!
